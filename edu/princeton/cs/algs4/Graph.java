@@ -1,3 +1,9 @@
+package edu.princeton.cs.algs4;
+
+import java.util.NoSuchElementException;
+
+
+
 /******************************************************************************
  *  Compilation:  javac Graph.java        
  *  Execution:    java Graph input.txt
@@ -34,7 +40,6 @@
  *  
  ******************************************************************************/
 
-import java.util.NoSuchElementException;
 
 /**
  *  The {@code Graph} class represents an undirected graph of vertices
@@ -233,3 +238,4 @@ public class Graph {
         Graph G = new Graph(in);
         StdOut.println(G);
     }
+}

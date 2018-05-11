@@ -1,6 +1,6 @@
 package edu.princeton.cs.algs4;
 
-******************************************************************************
+/******************************************************************************
 *  Compilation:  javac BipartiteMatching.java
 *  Execution:    java BipartiteMatching V1 V2 E
 *  Dependencies: BipartiteX.java

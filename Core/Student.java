@@ -92,5 +92,9 @@ public class Student {
 		}
 		
 	}
+	
+	public CapePoints getMapping(int index) {
+		return pointsMapping.get(index);
+	}
 
 }
