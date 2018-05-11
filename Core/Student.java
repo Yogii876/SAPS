@@ -1,12 +1,14 @@
 package Core;
 import java.util.ArrayList; 
+import java.util.Map;
+import java.util.HashMap;
 
 public class Student {
 	private int sid;
 	private String fName, lName;
 	private ArrayList<String> capeSubs;
 	private ArrayList<CSEC> csecSubs;
-	private ArrayList<CapePoints> pointsMapping;
+	private Map<String, Integer> pointMapping = new HashMap<String, Integer>();
 	
 	public Student(int id, String fName, String lName, ArrayList<CSEC> cssubs, ArrayList<String> casubs) {
 		this.sid = id;
@@ -78,23 +80,23 @@ public class Student {
 		
 		if (tGrade != -1 ) {
 			totalPoints = pnts.getPoints("primary", pGrade) + pnts.getPoints("secondary", sGrade) + pnts.getPoints("tertiary", tGrade);
-			pointsMapping.add(new CapePoints(cape.getName(), totalPoints));
+			pointMapping.put(cape.getName(), totalPoints);
 		}
 		
 		else if (sGrade != -1) {
 			totalPoints = pnts.getPoints("primary", pGrade) + pnts.getPoints("secondary", sGrade);
-			pointsMapping.add(new CapePoints(cape.getName(), totalPoints));
+			pointMapping.put(cape.getName(), totalPoints);
 		}
 		
 		else {
 			totalPoints = pnts.getPoints("primary", pGrade);
-			pointsMapping.add(new CapePoints(cape.getName(), totalPoints));
+			pointMapping.put(cape.getName(), totalPoints);
 		}
 		
 	}
 	
-	public CapePoints getMapping(int index) {
-		return pointsMapping.get(index);
+	public Map<String, Integer> getMapping() {
+		return pointMapping;
 	}
 
 }
