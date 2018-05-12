@@ -1,9 +1,13 @@
 package Core;
 
+import java.util.ArrayList;
+
 public class CAPE extends Subject {
 	private String name, primary;
 	private String secondary = null;
-	private String tertiary = null;	
+	private String tertiary = null;
+	private int maxStudents = 0;
+	private ArrayList<Integer> eligibleStudents = new ArrayList<Integer>();
 	
 	public CAPE(String name, String primary, String secondary, String tertiary) {
 		super(name);
@@ -49,5 +53,21 @@ public class CAPE extends Subject {
 	
 	public void setTertiary(String tertiary) {
 		this.tertiary = tertiary;
+	}
+	
+	public void addStudent(int id) {
+		eligibleStudents.add(id);
+	}
+	
+	public void resetStudents() {
+		eligibleStudents = new ArrayList<Integer>();
+	}
+	
+	public void setMax(int m) {
+		maxStudents = m;
+	}
+	
+	public int getMax() {
+		return maxStudents;
 	}
 }

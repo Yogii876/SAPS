@@ -8,7 +8,7 @@ public class Student {
 	private String fName, lName;
 	private ArrayList<String> capeSubs;
 	private ArrayList<CSEC> csecSubs;
-	private Map<String, Integer> pointMapping = new HashMap<String, Integer>();
+	private Map<CAPE, Integer> pointMapping = new HashMap<CAPE, Integer>();
 	
 	public Student(int id, String fName, String lName, ArrayList<CSEC> cssubs, ArrayList<String> casubs) {
 		this.sid = id;
@@ -80,22 +80,22 @@ public class Student {
 		
 		if (tGrade != -1 ) {
 			totalPoints = pnts.getPoints("primary", pGrade) + pnts.getPoints("secondary", sGrade) + pnts.getPoints("tertiary", tGrade);
-			pointMapping.put(cape.getName(), totalPoints);
+			pointMapping.put(cape, totalPoints);
 		}
 		
 		else if (sGrade != -1) {
 			totalPoints = pnts.getPoints("primary", pGrade) + pnts.getPoints("secondary", sGrade);
-			pointMapping.put(cape.getName(), totalPoints);
+			pointMapping.put(cape, totalPoints);
 		}
 		
 		else {
 			totalPoints = pnts.getPoints("primary", pGrade);
-			pointMapping.put(cape.getName(), totalPoints);
+			pointMapping.put(cape, totalPoints);
 		}
 		
 	}
 	
-	public Map<String, Integer> getMapping() {
+	public Map<CAPE, Integer> getMapping() {
 		return pointMapping;
 	}
 
