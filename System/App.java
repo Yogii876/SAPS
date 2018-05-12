@@ -1,9 +1,6 @@
 package System;
 
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
 import Core.*;
 import CSV.*;
 
@@ -15,11 +12,24 @@ public class App {
 	
 	public App () {
 		students = (new Reader("c:/users/yohan/Downloads/students.csv")).getStudents();
+		// Should take the input from the GUI and populate offeredSubjects using populateSubjects
 		generateMappings();
-		
-			
-				
+	}
 	
+	@SuppressWarnings("unused")
+	private void populateSubjects(String name, String pReq, String sReq, String tReq) {
+		if (tReq != null) {
+			offeredSubjects.add(new CAPE(name, pReq, sReq, tReq));
+		}
+		
+		else if (sReq != null) {
+			offeredSubjects.add(new CAPE(name, pReq, sReq));			
+		}
+		
+		else {
+			offeredSubjects.add(new CAPE(name, pReq));						
+		}
+		
 	}
 		
 	private void generateMappings() {
@@ -42,13 +52,13 @@ public class App {
 	}
 			
 			
-	private void assignStudents() {
-		/**Map<Integer, Map<String, Integer>>
+	/*** private void assignStudents() {
+		Map<Integer, Map<String, Integer>>
 		Iterator it = studentMapping.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry pair = (Map.Entry)it.next();
 			Iterator pIT = (pair.getValue()).entrySet().iterator();
-			**/
+			
 		for (Map.Entry<Integer, Map<CAPE, Integer>> sMap : studentMapping.entrySet()) {
 		    Integer sid = sMap.getKey();
 		    Map<CAPE, Integer> value = sMap.getValue();
@@ -61,29 +71,8 @@ public class App {
 		    	}
 		    }
 		}		
-	}
-	
-	private void sortByName() {
-	}
+	}***/
 
-			
-			
-		
-				
-				
-				
-				
-				
-				
-				
-				
-				
-			}
-		
-		}
-		
-		
-	}
 	
 	public void setOfferedSubjects(ArrayList<CAPE> subs) {
 		offeredSubjects = subs;
