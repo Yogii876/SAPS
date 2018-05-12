@@ -72,11 +72,11 @@ public class MainScreen {
 		
 		
 		
-		ImageIcon image1 = new ImageIcon(getClass().getResource("/upload1.png"));
-		ImageIcon image2 = new ImageIcon(getClass().getResource("/reports1.png"));
-		ImageIcon image3 = new ImageIcon(getClass().getResource("/users1.png"));
-		ImageIcon image4 = new ImageIcon(getClass().getResource("/preference1.png"));
-		ImageIcon image5 = new ImageIcon(getClass().getResource("/points1.png"));
+		ImageIcon image1 = new ImageIcon(getClass().getResource("img/upload1.png"));
+		ImageIcon image2 = new ImageIcon(getClass().getResource("img/reports1.png"));
+		ImageIcon image3 = new ImageIcon(getClass().getResource("img/users1.png"));
+		ImageIcon image4 = new ImageIcon(getClass().getResource("img/preference1.png"));
+		ImageIcon image5 = new ImageIcon(getClass().getResource("img/points1.png"));
 		
 		JLabel lblReports = new JLabel("Reports");
 		lblReports.setBounds(380, 152, 60, 20);
