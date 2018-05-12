@@ -1,3 +1,4 @@
+package Interface;
 import java.awt.EventQueue;
 
 import javax.swing.ImageIcon;
