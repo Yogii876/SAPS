@@ -61,7 +61,7 @@ public class AccessStudentsCalls {
 					.executeQuery("select grade.SubjNum, grade.Grade from " + database + ".grade");
 			while (resultSet.next()) {
 				int id = resultSet.getInt("SubjNum");
-				int grade = resultSet.getInt("Grade")
+				int grade = resultSet.getInt("Grade");
 				
 			}
 			}

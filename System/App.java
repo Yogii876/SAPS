@@ -3,6 +3,7 @@ package System;
 import java.util.ArrayList;
 import Core.*;
 import CSV.*;
+import java.io.File;
 
 
 public class App {
@@ -11,7 +12,7 @@ public class App {
 	private Point point = new Point();
 	
 	public App () {
-		students = (new Reader("c:/users/yohan/Downloads/students.csv")).getStudents();
+		students = (new Reader(new File("c:/users/yohan/Downloads/students.csv"))).getStudents();
 		// Should take the input from the GUI and populate offeredSubjects using populateSubjects
 		generateMappings();
 	}

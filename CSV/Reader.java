@@ -1,7 +1,7 @@
 package CSV;
 
 import Core.*;
-
+import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -14,11 +14,12 @@ public class Reader {
 	private ArrayList<CSEC> csecSubs = new ArrayList<CSEC>();
 	private ArrayList<String> capeSubs = new ArrayList<String>();
 	
-	public Reader(String filePath) {
-		String csvFile = filePath;
+	public Reader(File csvFile) {
+		//String csvFile = filePath;
 		BufferedReader br = null;
 	    String line = "";
 	    String cvsSplitBy = ",";
+	    String courseSplitBy = "/";
 	    try {
         	int id_num = 1;
             br = new BufferedReader(new FileReader(csvFile));
@@ -26,7 +27,7 @@ public class Reader {
             	line = line.trim();
                 String[] stud_info = line.split(cvsSplitBy);
                 String fName = stud_info[0].trim(), lName = stud_info[1].trim();               
-                String[] grade_info = line.split("/")[1].split(cvsSplitBy);
+                String[] grade_info = line.split(courseSplitBy)[1].split(cvsSplitBy);
                 int grade_length = grade_info.length;
                 int noTime = grade_length / 2;
                 int count = 0;
@@ -34,14 +35,13 @@ public class Reader {
                 csecSubs = new ArrayList<CSEC>();
                 while (count < noTime) {
                     count++;
-                    //System.out.print(grade_info[gIndex+1]);
+                    System.out.print(grade_info[gIndex+1]);
                     csecSubs.add(new CSEC(((grade_info[gIndex]).trim()).toLowerCase(), Integer.parseInt(grade_info[gIndex+1].trim())));
                     gIndex += 2;                    
                 }
                 count = 0;
                 gIndex = 0;
                 String[] sel_info = line.split("/")[2].split(cvsSplitBy);
-                //writer.write("\nINSERT INTO STUD_SEL VALUES(" + id_num + "," + getCapeCode((sel_info[2])) + ");");
                 while(count < sel_info.length) {
                 	capeSubs.add((sel_info[count].trim()).toLowerCase());
                 	count++;
@@ -54,7 +54,6 @@ public class Reader {
               
 
             }
-            
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
