@@ -12,7 +12,6 @@ public class App {
 	private ArrayList<Student> students;
 	private ArrayList<CAPE> offeredSubjects = new ArrayList<CAPE>();
 	private Point point = new Point();
-	private Map<Integer, Map<CAPE, Integer>> studentMapping = new HashMap<Integer, Map<CAPE, Integer>>();
 	
 	public App () {
 		students = (new Reader("c:/users/yohan/Downloads/students.csv")).getStudents();
@@ -29,9 +28,15 @@ public class App {
 		int m = offeredSubjects.size();
 
 		for (int k = 0; k < n-1; k++) {
+			Student stud = students.get(k);
 			for (int j = 0; j < m-1; j++) {
-				students.get(k).calcPoints(point, offeredSubjects.get(j));
-			studentMapping.put(students.get(k).getSid(), students.get(k).getMapping());
+				CAPE subj = offeredSubjects.get(j);
+				stud.calcPoints(point, subj);
+				int points = stud.getPoints(subj); 
+				if (points > 0) {
+					subj.addStudent(stud.getSid(), points);
+					stud.addPossibleSub(subj.getName());
+				}
 			}
 		}
 	}
@@ -51,25 +56,16 @@ public class App {
 		    // ...
 		    	CAPE sub = cMap.getKey();
 		    	int points = cMap.getValue();
-		    	if (sub.getSecondary() == null) {
-		    		if (points >= 16) {
-		    			sub.addStudent(sid);
-		    		}
+		    	if (points > 0) {
+		    		sub.addStudent(sid);
 		    	}
-		    	else if (sub.getTertiary() == null) {
-		    		if (points >= 24) {
-		    			sub.addStudent(sid);
-		    		}
-		    	}
-		    	else if ()
-		    	}
-		    	
-		    	
 		    }
-		}
-
-		
+		}		
 	}
+	
+	private void sortByName() {
+	}
+
 			
 			
 		

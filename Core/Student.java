@@ -8,6 +8,7 @@ public class Student {
 	private String fName, lName;
 	private ArrayList<String> capeSubs;
 	private ArrayList<CSEC> csecSubs;
+	private ArrayList<String> possibleSubjects = new ArrayList<String>();
 	private Map<CAPE, Integer> pointMapping = new HashMap<CAPE, Integer>();
 	
 	public Student(int id, String fName, String lName, ArrayList<CSEC> cssubs, ArrayList<String> casubs) {
@@ -78,25 +79,42 @@ public class Student {
 			}
 		}
 		
-		if (tGrade != -1 ) {
-			totalPoints = pnts.getPoints("primary", pGrade) + pnts.getPoints("secondary", sGrade) + pnts.getPoints("tertiary", tGrade);
-			pointMapping.put(cape, totalPoints);
+		if (tGrade > 4 || tGrade == -1 || sGrade == -1 || sGrade > 4 || pGrade > 4) {		
+			if (tGrade != -1 ) {
+				totalPoints = pnts.getPoints("primary", pGrade) + pnts.getPoints("secondary", sGrade) + pnts.getPoints("tertiary", tGrade);
+				pointMapping.put(cape, totalPoints);
+			}
+			
+			else if (sGrade != -1 ) {
+				totalPoints = pnts.getPoints("primary", pGrade) + pnts.getPoints("secondary", sGrade);
+				pointMapping.put(cape, totalPoints);
+			}
+			
+			else {
+				totalPoints = pnts.getPoints("primary", pGrade);
+				pointMapping.put(cape, totalPoints);
+			}
 		}
-		
-		else if (sGrade != -1) {
-			totalPoints = pnts.getPoints("primary", pGrade) + pnts.getPoints("secondary", sGrade);
-			pointMapping.put(cape, totalPoints);
-		}
-		
 		else {
-			totalPoints = pnts.getPoints("primary", pGrade);
-			pointMapping.put(cape, totalPoints);
+			pointMapping.put(cape, 0);
 		}
 		
 	}
 	
 	public Map<CAPE, Integer> getMapping() {
 		return pointMapping;
+	}
+	
+	public int getPoints(CAPE obj) {
+		return pointMapping.get(obj);
+	}
+	
+	public void addPossibleSub(String name) {
+		possibleSubjects.add(name);
+	}
+	
+	public ArrayList<String> getPossibleSubjects() {
+		return possibleSubjects;
 	}
 
 }
