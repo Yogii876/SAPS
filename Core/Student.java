@@ -8,7 +8,9 @@ public class Student {
 	private String fName, lName;
 	private ArrayList<String> capeSubs;
 	private ArrayList<CSEC> csecSubs;
-	private ArrayList<String> possibleSubjects = new ArrayList<String>();
+	private ArrayList<CAPE> possibleSubjects = new ArrayList<CAPE>();
+	private ArrayList<CAPE> acceptedFor = new ArrayList<CAPE>();
+	
 	private Map<CAPE, Integer> pointMapping = new HashMap<CAPE, Integer>();
 	
 	public Student(int id, String fName, String lName, ArrayList<CSEC> cssubs, ArrayList<String> casubs) {
@@ -109,12 +111,29 @@ public class Student {
 		return pointMapping.get(obj);
 	}
 	
-	public void addPossibleSub(String name) {
-		possibleSubjects.add(name);
+	public void addPossibleSub(CAPE subj) {
+		possibleSubjects.add(subj);
 	}
 	
-	public ArrayList<String> getPossibleSubjects() {
+	public ArrayList<CAPE> getPossibleSubjects() {
 		return possibleSubjects;
+	}
+	
+	public void addAcceptedSubject(CAPE sub) {
+		this.acceptedFor.add(sub);
+	}
+	
+	public ArrayList<CAPE> getAcceptedSubs() {
+		if (acceptedFor.isEmpty()) {
+			return null;
+		}
+		else {
+			return acceptedFor;
+		}
+	}
+	
+	public String toString() {
+		return sid + " " + " " + fName + " " + lName;
 	}
 
 }

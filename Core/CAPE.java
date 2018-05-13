@@ -16,6 +16,29 @@ public class CAPE extends Subject {
 	private boolean sorted = false;
 	private int maxStudents = -1;
 	private Map<Student, Integer> eligibleStudents = new HashMap<Student, Integer>();
+	private Map <Student, Integer> accepted = new LinkedHashMap<Student, Integer>();
+	
+	
+	public CAPE(String name, String primary, String secondary, String tertiary, int max) {
+		super(name);
+		this.primary = primary;
+		this.secondary=secondary;
+		this.tertiary=tertiary;
+		this.maxStudents = max;
+	}
+	
+	public CAPE(String name, String primary, String secondary, int max) {
+		super(name);
+		this.primary = primary;
+		this.secondary=secondary;
+		this.maxStudents = max;
+	}
+	
+	public CAPE(String name, String primary, int max) {
+		super(name);
+		this.primary = primary;
+		this.maxStudents = max;
+	}
 	
 	public CAPE(String name, String primary, String secondary, String tertiary) {
 		super(name);
@@ -111,6 +134,10 @@ public class CAPE extends Subject {
 			return null;
 		}
 		
+		if (sorted && accepted.isEmpty() == false) {
+			return accepted;
+		}
+		
 		if (sorted == false) {
 			sortStudents();
 		}
@@ -119,10 +146,10 @@ public class CAPE extends Subject {
 			return eligibleStudents;
 		}
 		else {
-			
-			Map<Student, Integer> accepted = new LinkedHashMap<Student, Integer>();
+			accepted = new LinkedHashMap<Student, Integer>();
 			for (Map.Entry<Student, Integer> entry : eligibleStudents.entrySet()) {
 				accepted.put(entry.getKey(), entry.getValue());
+				entry.getKey().addPossibleSub(this);
 				if (maxStudents == accepted.size()) {
 					return accepted;
 				}
@@ -130,6 +157,7 @@ public class CAPE extends Subject {
 		}
 		return eligibleStudents;
 	}
+	
 	public Map<Student, Integer> getAllStudents() {
 		if (eligibleStudents.isEmpty()) {
 			return null;

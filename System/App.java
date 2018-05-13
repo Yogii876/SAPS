@@ -49,7 +49,7 @@ public class App {
 				int points = stud.getPoints(subj); 
 				if (points > 0) {
 					subj.addStudent(stud, points);
-					stud.addPossibleSub(subj.getName());
+					stud.addPossibleSub(subj);
 				}
 			}
 		}
