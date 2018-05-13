@@ -134,16 +134,17 @@ public class CAPE extends Subject {
 			return null;
 		}
 		
-		if (sorted && accepted.isEmpty() == false) {
+		if (sorted && !accepted.isEmpty()) {
 			return accepted;
 		}
 		
-		if (sorted == false) {
+		if (!sorted) {
 			sortStudents();
 		}
 		
 		if (maxStudents == -1 || eligibleStudents.size() < maxStudents) {
-			return eligibleStudents;
+			accepted = eligibleStudents;
+			return accepted;
 		}
 		else {
 			accepted = new LinkedHashMap<Student, Integer>();
