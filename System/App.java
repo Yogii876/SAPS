@@ -17,8 +17,11 @@ public class App {
 		generateMappings();
 	}
 	
-	@SuppressWarnings("unused")
-	private void populateSubjects(String name, String pReq, String sReq, String tReq) {
+	public void populateStudents(File csvFile) {
+		students = (new Reader(csvFile)).getStudents();
+	}
+	
+	public void populateSubjects(String name, String pReq, String sReq, String tReq) {
 		if (tReq != null) {
 			offeredSubjects.add(new CAPE(name, pReq, sReq, tReq));
 		}
@@ -45,7 +48,7 @@ public class App {
 				stud.calcPoints(point, subj);
 				int points = stud.getPoints(subj); 
 				if (points > 0) {
-					subj.addStudent(stud.getSid(), points);
+					subj.addStudent(stud, points);
 					stud.addPossibleSub(subj.getName());
 				}
 			}

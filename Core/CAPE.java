@@ -13,8 +13,9 @@ public class CAPE extends Subject {
 	private String name, primary;
 	private String secondary = null;
 	private String tertiary = null;
-	private int maxStudents = 0;
-	private Map<Integer, Integer> eligibleStudents = new HashMap<Integer, Integer>();
+	private boolean sorted = false;
+	private int maxStudents = -1;
+	private Map<Student, Integer> eligibleStudents = new HashMap<Student, Integer>();
 	
 	public CAPE(String name, String primary, String secondary, String tertiary) {
 		super(name);
@@ -62,12 +63,13 @@ public class CAPE extends Subject {
 		this.tertiary = tertiary;
 	}
 	
-	public void addStudent(int key, int value) {
+	public void addStudent(Student key, int value) {
 		eligibleStudents.put(key, value);
+		sorted = false;
 	}
 	
 	public void resetStudents() {
-		eligibleStudents = new HashMap<Integer, Integer>();
+		eligibleStudents = new HashMap<Student, Integer>();
 	}
 	
 	public void setMax(int m) {
@@ -78,28 +80,66 @@ public class CAPE extends Subject {
 		return maxStudents;
 	}
 	
-	 public Map<Integer, Integer> sortStudents()
+	private void sortStudents()
 	    {
 	
-	        List<Entry<Integer, Integer>> list = new LinkedList<Entry<Integer, Integer>>(eligibleStudents.entrySet());
+	        List<Entry<Student, Integer>> list = new LinkedList<Entry<Student, Integer>>(eligibleStudents.entrySet());
 	
 	        // Sorting the list based on values
-	        Collections.sort(list, new Comparator<Entry<Integer, Integer>>()
+	        Collections.sort(list, new Comparator<Entry<Student, Integer>>()
 	        {
-	            public int compare(Entry<Integer, Integer> o1,
-	                    Entry<Integer, Integer> o2)
+	            public int compare(Entry<Student, Integer> o1,
+	                    Entry<Student, Integer> o2)
 	            {
 	                    return o2.getValue().compareTo(o1.getValue());
 	            }
 	        });
 	
 	        // Maintaining insertion order with the help of LinkedList
-	        Map<Integer, Integer> sortedMap = new LinkedHashMap<Integer, Integer>();
-	        for (Entry<Integer, Integer> entry : list)
+	        Map<Student, Integer> sortedMap = new LinkedHashMap<Student, Integer>();
+	        for (Entry<Student, Integer> entry : list)
 	        {
 	            sortedMap.put(entry.getKey(), entry.getValue());
 	        }
-	
-	        return sortedMap;
+	        eligibleStudents = sortedMap;
+	        sorted = true;
+	        //return sortedMap;
 	    }
+	
+	public Map<Student, Integer> getAcceptedStudents() {
+		if (eligibleStudents.isEmpty()){
+			return null;
+		}
+		
+		if (sorted == false) {
+			sortStudents();
+		}
+		
+		if (maxStudents == -1 || eligibleStudents.size() < maxStudents) {
+			return eligibleStudents;
+		}
+		else {
+			
+			Map<Student, Integer> accepted = new LinkedHashMap<Student, Integer>();
+			for (Map.Entry<Student, Integer> entry : eligibleStudents.entrySet()) {
+				accepted.put(entry.getKey(), entry.getValue());
+				if (maxStudents == accepted.size()) {
+					return accepted;
+				}
+			}
+		}
+		return eligibleStudents;
+	}
+	public Map<Student, Integer> getAllStudents() {
+		if (eligibleStudents.isEmpty()) {
+			return null;
+		}
+		if (sorted) {
+			return eligibleStudents;
+		}
+		else {
+			sortStudents();
+			return eligibleStudents;
+		}
+	}
 }
