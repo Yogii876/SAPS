@@ -40,24 +40,6 @@ public class CAPE extends Subject {
 		this.maxStudents = max;
 	}
 	
-	public CAPE(String name, String primary, String secondary, String tertiary) {
-		super(name);
-		this.primary = primary;
-		this.secondary=secondary;
-		this.tertiary=tertiary;
-	}
-	
-	public CAPE(String name, String primary, String secondary) {
-		super(name);
-		this.primary = primary;
-		this.secondary=secondary;
-	}
-	
-	public CAPE(String name, String primary) {
-		super(name);
-		this.primary = primary;
-	}
-	
 	public String getName() {
 		return this.name;
 	}
@@ -147,16 +129,20 @@ public class CAPE extends Subject {
 			return accepted;
 		}
 		else {
-			accepted = new LinkedHashMap<Student, Integer>();
-			for (Map.Entry<Student, Integer> entry : eligibleStudents.entrySet()) {
-				accepted.put(entry.getKey(), entry.getValue());
-				entry.getKey().addPossibleSub(this);
-				if (maxStudents == accepted.size()) {
-					return accepted;
-				}
+			generateAcceptedList();
+			return accepted;
+		}
+	}
+	
+	private void generateAcceptedList() {
+		accepted = new LinkedHashMap<Student, Integer>();
+		for (Map.Entry<Student, Integer> entry : eligibleStudents.entrySet()) {
+			accepted.put(entry.getKey(), entry.getValue());
+			entry.getKey().addAcceptedSubject(this);
+			if (maxStudents == accepted.size()) {
+				break;
 			}
 		}
-		return eligibleStudents;
 	}
 	
 	public Map<Student, Integer> getAllStudents() {

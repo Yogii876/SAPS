@@ -41,7 +41,7 @@ public class Student {
 		return csecSubs;
 	}
 	
-	public void calcPoints(Point pnts, CAPE cape) {
+	public int calcPoints(Point pnts, CAPE cape) {
 		String primary = cape.getPrimary();
 		String secondary = cape.getSecondary();
 		String tertiary = cape.getTertiary();
@@ -98,8 +98,9 @@ public class Student {
 			}
 		}
 		else {
-			pointMapping.put(cape, 0);
+			pointMapping.put(cape, totalPoints);
 		}
+		return totalPoints;
 		
 	}
 	

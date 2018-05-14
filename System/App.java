@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import Core.*;
 import CSV.*;
 import java.io.File;
+import java.lang.NullPointerException;
 
 
 public class App {
@@ -12,41 +13,48 @@ public class App {
 	private Point point = new Point();
 	
 	public App () {
-		students = (new Reader(new File("c:/users/yohan/Downloads/students.csv"))).getStudents();
 		// Should take the input from the GUI and populate offeredSubjects using populateSubjects
 		generateMappings();
 	}
 	
-	public void populateStudents(File csvFile) {
+	public void populateStudents(File csvFile) throws Exception {
 		students = (new Reader(csvFile)).getStudents();
 	}
 	
-	public void populateSubjects(String name, String pReq, String sReq, String tReq) {
+	public void populateSubjects(String name, String pReq, String sReq, String tReq, int maxStud) {
 		if (tReq != null) {
-			offeredSubjects.add(new CAPE(name, pReq, sReq, tReq));
+			offeredSubjects.add(new CAPE(name, pReq, sReq, tReq, maxStud));
 		}
 		
 		else if (sReq != null) {
-			offeredSubjects.add(new CAPE(name, pReq, sReq));			
+			offeredSubjects.add(new CAPE(name, pReq, sReq, maxStud));			
 		}
 		
 		else {
-			offeredSubjects.add(new CAPE(name, pReq));						
+			offeredSubjects.add(new CAPE(name, pReq, maxStud));						
 		}
 		
 	}
 		
-	private void generateMappings() {
+	public void generateMappings() throws NullPointerException {
 		// creating n by m matrix, where n is the number of students and m the number of subjects offered.
+		if (students.isEmpty()) {
+			throw new NullPointerException("Please upload a file before proceeding");
+		}
+		if (offeredSubjects.isEmpty()) {
+			throw new NullPointerException("Please enter offered CAPE subjects");
+		}
+		
 		int n = students.size();
 		int m = offeredSubjects.size();
+		
 
 		for (int k = 0; k < n-1; k++) {
 			Student stud = students.get(k);
 			for (int j = 0; j < m-1; j++) {
 				CAPE subj = offeredSubjects.get(j);
-				stud.calcPoints(point, subj);
-				int points = stud.getPoints(subj); 
+				int points = stud.calcPoints(point, subj);
+				//int points = stud.getPoints(subj); 
 				if (points > 0) {
 					subj.addStudent(stud, points);
 					stud.addPossibleSub(subj);
