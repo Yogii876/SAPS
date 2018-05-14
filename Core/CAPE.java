@@ -1,6 +1,7 @@
 package Core;
 
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.LinkedHashMap;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Comparator;
+import java.util.Set;
 
 public class CAPE extends Subject {
 	private String name, primary;
@@ -111,13 +113,13 @@ public class CAPE extends Subject {
 	        //return sortedMap;
 	    }
 	
-	public Map<Student, Integer> getAcceptedStudents() {
+	public Set<Student> getAcceptedStudents() {
 		if (eligibleStudents.isEmpty()){
 			return null;
 		}
 		
 		if (sorted && !accepted.isEmpty()) {
-			return accepted;
+			return accepted.keySet();
 		}
 		
 		if (!sorted) {
@@ -126,15 +128,15 @@ public class CAPE extends Subject {
 		
 		if (maxStudents == -1 || eligibleStudents.size() < maxStudents) {
 			accepted = eligibleStudents;
-			return accepted;
+			return accepted.keySet();
 		}
 		else {
 			generateAcceptedList();
-			return accepted;
+			return accepted.keySet();
 		}
 	}
 	
-	private void generateAcceptedList() {
+	public void generateAcceptedList() {
 		accepted = new LinkedHashMap<Student, Integer>();
 		for (Map.Entry<Student, Integer> entry : eligibleStudents.entrySet()) {
 			accepted.put(entry.getKey(), entry.getValue());

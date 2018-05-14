@@ -33,6 +33,10 @@ public class Student {
 		return this.lName;
 	}
 	
+	public String getFullName() {
+		return this.fName + " " + this.lName;
+	}
+	
 	public ArrayList<String> getCape() {
 		return capeSubs;
 	}

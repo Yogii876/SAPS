@@ -1,10 +1,14 @@
 package System;
 
 import java.util.ArrayList;
+import java.util.Set;
 import Core.*;
 import CSV.*;
 import java.io.File;
 import java.lang.NullPointerException;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 
 public class App {
@@ -18,7 +22,9 @@ public class App {
 	}
 	
 	public void populateStudents(File csvFile) throws Exception {
-		students = (new Reader(csvFile)).getStudents();
+		Reader fileReader = new Reader(csvFile);
+		
+		students = fileReader.getStudents();
 	}
 	
 	public void populateSubjects(String name, String pReq, String sReq, String tReq, int maxStud) {
@@ -62,6 +68,30 @@ public class App {
 			}
 		}
 	}
+	
+	public void assignStudents() {
+		for (CAPE subj: offeredSubjects ) {
+			subj.generateAcceptedList();
+		}
+	}
+	
+	public Map<Student, Integer> getEligible(CAPE subj) {
+		return subj.getAllStudents();
+	}
+	
+	public ArrayList<String> getAcceptedStudents(CAPE subj) {
+		Set<Student> studs = subj.getAcceptedStudents();
+		if (!studs.isEmpty()) {
+			ArrayList<String> students = new ArrayList<String>();
+			for (Student stud: studs) {
+				students.add(stud.toString());
+			}
+			return students;
+		}
+		else {
+			return null;
+		}
+	}
 			
 			
 	/*** private void assignStudents() {
@@ -90,6 +120,13 @@ public class App {
 		offeredSubjects = subs;
 	}
 	
-	
-	
+	public CAPE getSubject(String name) {
+		for (CAPE subj : offeredSubjects) {
+			if (((subj.getName()).toLowerCase()).equals(name.toLowerCase())) {
+				return subj;
+			}
+		}
+		return null;	
+	}
+
 }
