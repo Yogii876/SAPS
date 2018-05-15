@@ -17,8 +17,7 @@ import java.awt.Font;
 
 public class Preferences {
 
-	public static JFrame prefFrame = (new myframe()).getFrame();
-	private JFrame frame2;
+	public static JFrame prefFrame;
 
 	/**
 	 * Launch the application.
@@ -47,9 +46,7 @@ public class Preferences {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
-		JFrame frameo = (new myframe()).getFrame();
-		
+	private void initialize() {		
 		prefFrame = new JFrame();
 		prefFrame.setResizable(false);
 		prefFrame.getContentPane().setBackground(new Color(255, 255, 255));
@@ -135,8 +132,5 @@ public class Preferences {
 		prefFrame.getContentPane().add(comboBox_6);
 		
 
-	}
-	public static Preferences getWindow() {
-		return window;
 	}
 }

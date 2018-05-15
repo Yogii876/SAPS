@@ -134,7 +134,7 @@ public class Login {
 					txt_Username.setText(null);
 					frame.dispose();
 
-					Report rep = new Report(app);
+					Report rep = new Report();
 					Report.main(null);
 					
 				}

@@ -19,7 +19,7 @@ public class CAPE extends Subject {
 	private int maxStudents = -1;
 	private Map<Student, Integer> eligibleStudents = new HashMap<Student, Integer>();
 	private Map <Student, Integer> accepted = new LinkedHashMap<Student, Integer>();
-	
+	private ArrayList<String> antiRequisites = new ArrayList<String>();
 	
 	public CAPE(String name, String primary, String secondary, String tertiary, int max) {
 		super(name);
@@ -79,6 +79,26 @@ public class CAPE extends Subject {
 		eligibleStudents = new HashMap<Student, Integer>();
 	}
 	
+	public void addAntiReq(String s) {
+		antiRequisites.add(s.toLowerCase());
+	}
+	
+	public void removeAntiReq(String s) {
+		antiRequisites.remove(s);
+	}
+	
+	public boolean hasAnti() {
+		return !antiRequisites.isEmpty();
+	}
+	
+	public boolean hasAccepted() {
+		return !accepted.isEmpty();
+	}
+
+	public boolean hasEligible() {
+		return !eligibleStudents.isEmpty();
+	}
+	
 	public void setMax(int m) {
 		maxStudents = m;
 	}
@@ -113,21 +133,23 @@ public class CAPE extends Subject {
 	        //return sortedMap;
 	    }
 	
-	public Set<Student> getAcceptedStudents() {
-		if (eligibleStudents.isEmpty()){
-			return null;
-		}
-		
-		if (sorted && !accepted.isEmpty()) {
-			return accepted.keySet();
-		}
-		
+	public ArrayList<String> getAcceptedStudents() {
 		if (!sorted) {
 			sortStudents();
 		}
 		
 		generateAcceptedList();
-		return accepted.keySet();
+
+		if (accepted.isEmpty()){
+			return null;
+		}
+				
+		Set<Student> studs = accepted.keySet();
+		ArrayList<String> students = new ArrayList<String>();
+		for (Student stud: studs) {
+			students.add(stud.toString());
+		}
+		return students;
 	}
 	
 	public void generateAcceptedList() {
@@ -146,16 +168,17 @@ public class CAPE extends Subject {
 		}
 	}
 	
-	public Map<Student, Integer> getAllStudents() {
+	public ArrayList<String> getAllStudents() {
 		if (eligibleStudents.isEmpty()) {
 			return null;
 		}
-		if (sorted) {
-			return eligibleStudents;
-		}
 		else {
-			sortStudents();
-			return eligibleStudents;
+			Set<Student> studs = eligibleStudents.keySet();
+			ArrayList<String> students = new ArrayList<String>();
+			for (Student stud: studs) {
+				students.add(stud.toString());
+			}
+			return students;			
 		}
 	}
 }

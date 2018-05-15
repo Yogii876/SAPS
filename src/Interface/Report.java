@@ -39,7 +39,7 @@ public class Report {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Report window = new Report(app);
+					Report window = new Report();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -51,8 +51,8 @@ public class Report {
 	/**
 	 * Create the application.
 	 */
-	public Report(App app) {
-		this.app = app;
+	public Report() {
+		//this.app = app;
 		initialize();
 		frame.setVisible(true);
 	}

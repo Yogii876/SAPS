@@ -65,14 +65,12 @@ public class MainScreen {
 		lblLogout.setBounds(1600, 13, 150, 100);
 		frame.getContentPane().add(lblLogout);
 		
-<<<<<<< HEAD
 		JLabel lblUploadFilw = new JLabel("Upload File");
 		lblUploadFilw.setFont(new Font("Agency FB", Font.BOLD, 28));
-		lblUploadFilw.addMouseListener(new MouseAdapter() {
-=======
+		//lblUploadFilw.addMouseListener(new MouseAdapter() {
 		JLabel lblUploadFile = new JLabel("Upload File");
+		lblUploadFile.setFont(new Font("Agency FB", Font.BOLD, 28));
 		lblUploadFile.addMouseListener(new MouseAdapter() {
->>>>>>> 743c155d00d6bfc7bf4fbdc2b769d0b3b589e7ce
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 			
@@ -90,17 +88,14 @@ public class MainScreen {
 				}
 			}
 			}});
-<<<<<<< HEAD
 		lblUploadFilw.setBounds(318, 510, 150, 100);
 		frame.getContentPane().add(lblUploadFilw);
 		
-=======
 		lblUploadFile.setBounds(125, 172, 72, 16);
 		frame.getContentPane().add(lblUploadFile);
 		
 		
 		
->>>>>>> 743c155d00d6bfc7bf4fbdc2b769d0b3b589e7ce
 		ImageIcon image1 = new ImageIcon(getClass().getResource("../img/upload1.png"));
 		ImageIcon image2 = new ImageIcon(getClass().getResource("../img/reports1.png"));
 		ImageIcon image3 = new ImageIcon(getClass().getResource("../img/users1.png"));

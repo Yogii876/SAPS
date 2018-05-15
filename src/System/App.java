@@ -18,11 +18,11 @@ public class App {
 	private Point point = new Point();
 	private BinarySearchTree studentBST;
 	private BinarySearchTree capeBST;
+	private boolean status = false;
 	
 	
 	public App () {
 		// Should take the input from the GUI and populate offeredSubjects using populateSubjects
-		generateMappings();
 	}
 	
 	
@@ -62,6 +62,11 @@ public class App {
 			offeredSubjects.add(subj);
 			capeBST.insert(name.toLowerCase(), subj);
 		}
+		status = false;
+	}
+	
+	public boolean getStatus() {
+		return status;
 	}
 		
 	public void generateMappings() throws NullPointerException {
@@ -89,30 +94,22 @@ public class App {
 				}
 			}
 		}
+		assignStudents();
+		status = true;
 	}
 	
-	public void assignStudents() {
+	private void assignStudents() {
 		for (CAPE subj: offeredSubjects ) {
 			subj.generateAcceptedList();
 		}
 	}
 	
-	public Map<Student, Integer> getEligible(CAPE subj) {
+	public ArrayList<String> getEligible(CAPE subj) {
 		return subj.getAllStudents();
 	}
 	
 	public ArrayList<String> getAcceptedStudents(CAPE subj) {
-		Set<Student> studs = subj.getAcceptedStudents();
-		if (!studs.isEmpty()) {
-			ArrayList<String> students = new ArrayList<String>();
-			for (Student stud: studs) {
-				students.add(stud.toString());
-			}
-			return students;
-		}
-		else {
-			return null;
-		}
+		return subj.getAcceptedStudents();
 	}
 			
 			
