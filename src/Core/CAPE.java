@@ -1,11 +1,11 @@
 package Core;
 
 import java.util.HashMap;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Comparator;
@@ -136,11 +136,16 @@ public class CAPE extends Subject {
 		}
 	}
 	
-	public void generateAcceptedList() {
+	private void generateAcceptedList() {
+		if (!sorted) sortStudents();
 		accepted = new LinkedHashMap<Student, Integer>();
 		for (Map.Entry<Student, Integer> entry : eligibleStudents.entrySet()) {
-			accepted.put(entry.getKey(), entry.getValue());
-			entry.getKey().addAcceptedSubject(this);
+			Student stud = entry.getKey();
+			ArrayList<String> choices = stud.getChoices();
+			if (choices.contains((this.name).toLowerCase())) {
+				accepted.put(stud, entry.getValue());
+				stud.addAcceptedSubject(this);
+			}
 			if (maxStudents == accepted.size()) {
 				break;
 			}
