@@ -20,6 +20,7 @@ public class CAPE extends Subject {
 	private Map<Student, Integer> eligibleStudents = new HashMap<Student, Integer>();
 	private Map <Student, Integer> accepted = new LinkedHashMap<Student, Integer>();
 	private ArrayList<String> antiRequisites = new ArrayList<String>();
+	private ArrayList<Student> conflictStudents = new ArrayList<Student>();
 	
 	public CAPE(String name, String primary, String secondary, String tertiary, int max) {
 		super(name);
@@ -27,6 +28,7 @@ public class CAPE extends Subject {
 		this.secondary=secondary;
 		this.tertiary=tertiary;
 		this.maxStudents = max;
+		this.antiRequisites.add(name);
 	}
 	
 	public CAPE(String name, String primary, String secondary, int max) {
@@ -151,7 +153,7 @@ public class CAPE extends Subject {
 		}
 		return students;
 	}
-	
+	// Add antirequisite stuff here
 	public void generateAcceptedList() {
 		if (!sorted) sortStudents();
 		accepted = new LinkedHashMap<Student, Integer>();
@@ -159,8 +161,13 @@ public class CAPE extends Subject {
 			Student stud = entry.getKey();
 			ArrayList<String> choices = stud.getChoices();
 			if (choices.contains((this.name).toLowerCase())) {
-				accepted.put(stud, entry.getValue());
-				stud.addAcceptedSubject(this);
+				if (Collections.disjoint(choices, antiRequisites)) {
+					accepted.put(stud, entry.getValue());
+					stud.addAcceptedSubject(this);
+				}
+				else {
+					conflictStudents.add(stud, entry.getValue());
+				}
 			}
 			if (maxStudents == accepted.size()) {
 				break;
