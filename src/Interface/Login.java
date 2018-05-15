@@ -1,5 +1,6 @@
 package Interface;
 import java.awt.EventQueue;
+import java.io.File;
 
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
@@ -12,6 +13,9 @@ import java.awt.SystemColor;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import System.App;
+
 import javax.swing.JSeparator;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
@@ -27,6 +31,7 @@ public class Login {
 	private JFrame frame;
 	private JTextField txt_Username;
 	private JPasswordField txt_Password;
+	private static App app;
 
 	/**
 	 * Launch the application.
@@ -35,7 +40,7 @@ public class Login {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Login window = new Login();
+					Login window = new Login(app);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,9 +52,11 @@ public class Login {
 	/**
 	 * Create the application.
 	 */
-	public Login() {
+	public Login(App app) {
+		this.app = app;
 		initialize();
 	}
+
 
 	/**
 	 * Initialize the contents of the frame.
@@ -127,7 +134,7 @@ public class Login {
 					txt_Username.setText(null);
 					frame.dispose();
 
-					Report rep = new Report();
+					Report rep = new Report(app);
 					Report.main(null);
 					
 				}

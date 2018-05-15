@@ -20,6 +20,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.SystemColor;
 import javax.swing.UIManager;
+
+import System.App;
+
 import javax.swing.JFileChooser;
 import java.io.File; 
 
@@ -27,6 +30,7 @@ public class Report {
 
 	private JFrame frame;
 	private JTextField textField;
+	private static App app;
 
 	/**
 	 * Launch the application.
@@ -35,7 +39,7 @@ public class Report {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Report window = new Report();
+					Report window = new Report(app);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,7 +51,8 @@ public class Report {
 	/**
 	 * Create the application.
 	 */
-	public Report() {
+	public Report(App app) {
+		this.app = app;
 		initialize();
 	}
 
@@ -160,7 +165,7 @@ public class Report {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				frame.dispose();
-				Login exit = new Login();
+				Login exit = new Login(app);
 				Login.main(null);
 				
 				

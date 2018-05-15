@@ -4,15 +4,20 @@ import java.awt.EventQueue;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+import System.App;
+
 import javax.swing.JFileChooser;
 import java.io.File;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Color;
 
+
 public class MainScreen {
 
 	private JFrame frame;
+	private static App app;
 
 	/**
 	 * Launch the application.
@@ -21,7 +26,7 @@ public class MainScreen {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainScreen window = new MainScreen();
+					MainScreen window = new MainScreen(app);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -33,7 +38,8 @@ public class MainScreen {
 	/**
 	 * Create the application.
 	 */
-	public MainScreen() {
+	public MainScreen(App app) {
+		this.app = app;
 		initialize();
 	}
 
@@ -55,8 +61,8 @@ public class MainScreen {
 		lblLogout.setBounds(714, 13, 56, 16);
 		frame.getContentPane().add(lblLogout);
 		
-		JLabel lblUploadFilw = new JLabel("Upload File");
-		lblUploadFilw.addMouseListener(new MouseAdapter() {
+		JLabel lblUploadFile = new JLabel("Upload File");
+		lblUploadFile.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 			
@@ -66,18 +72,24 @@ public class MainScreen {
 			if (result == JFileChooser.APPROVE_OPTION) {
 			    File selectedFile = fileChooser.getSelectedFile();
 			    System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+			    try {
+					app.populateStudents(selectedFile);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			}});
-		lblUploadFilw.setBounds(125, 172, 72, 16);
-		frame.getContentPane().add(lblUploadFilw);
+		lblUploadFile.setBounds(125, 172, 72, 16);
+		frame.getContentPane().add(lblUploadFile);
 		
 		
 		
-		ImageIcon image1 = new ImageIcon(getClass().getResource("img/upload1.png"));
-		ImageIcon image2 = new ImageIcon(getClass().getResource("img/reports1.png"));
-		ImageIcon image3 = new ImageIcon(getClass().getResource("img/users1.png"));
-		ImageIcon image4 = new ImageIcon(getClass().getResource("img/preference1.png"));
-		ImageIcon image5 = new ImageIcon(getClass().getResource("img/points1.png"));
+		ImageIcon image1 = new ImageIcon(getClass().getResource("../img/upload1.png"));
+		ImageIcon image2 = new ImageIcon(getClass().getResource("../img/reports1.png"));
+		ImageIcon image3 = new ImageIcon(getClass().getResource("../img/users1.png"));
+		ImageIcon image4 = new ImageIcon(getClass().getResource("../img/preference1.png"));
+		ImageIcon image5 = new ImageIcon(getClass().getResource("../img/points1.png"));
 		
 		JLabel lblReports = new JLabel("Reports");
 		lblReports.setBounds(380, 152, 60, 20);
