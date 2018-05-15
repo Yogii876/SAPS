@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class Student {
-	private int sid;
 	private String fName, lName;
 	private ArrayList<String> capeSubs;
 	private ArrayList<CSEC> csecSubs;
@@ -13,17 +12,13 @@ public class Student {
 	
 	private Map<CAPE, Integer> pointMapping = new HashMap<CAPE, Integer>();
 	
-	public Student(int id, String fName, String lName, ArrayList<CSEC> cssubs, ArrayList<String> casubs) {
-		this.sid = id;
+	public Student(String fName, String lName, ArrayList<CSEC> cssubs, ArrayList<String> casubs) {
 		this.fName=fName;
 		this.lName=lName;
 		this.csecSubs = cssubs;
 		this.capeSubs = casubs;
 	}
-	
-	public int getSid() {
-		return this.sid;
-	}
+
 	
 	public String getFirstName() {
 		return this.fName;
@@ -138,7 +133,7 @@ public class Student {
 	}
 	
 	public String toString() {
-		return sid + " " + " " + fName + " " + lName;
+		return fName + " " + lName;
 	}
 
 }

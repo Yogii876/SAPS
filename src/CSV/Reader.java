@@ -7,12 +7,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.lang.Exception;
+import BinaryTree.BinarySearchTree;
 
 
 public class Reader {
 	private ArrayList<Student> students = new ArrayList<Student>();
 	private ArrayList<CSEC> csecSubs = new ArrayList<CSEC>();
 	private ArrayList<String> capeSubs = new ArrayList<String>();
+	private BinarySearchTree bst = new BinarySearchTree();
 	
 	public Reader(File csvFile) throws Exception {
 		//String csvFile = filePath;
@@ -23,7 +25,7 @@ public class Reader {
 		    String cvsSplitBy = ",";
 		    String courseSplitBy = "/";
 		    try {
-		    	int id_num = 1;
+		    	//int id_num = 1;
 		        br = new BufferedReader(new FileReader(csvFile));
 		        while ((line = br.readLine()) != null) {
 		        	line = line.trim();
@@ -37,7 +39,6 @@ public class Reader {
 		            csecSubs = new ArrayList<CSEC>();
 		            while (count < noTime) {
 		                count++;
-		                System.out.print(grade_info[gIndex+1]);
 		                csecSubs.add(new CSEC(((grade_info[gIndex]).trim()).toLowerCase(), Integer.parseInt(grade_info[gIndex+1].trim())));
 		                gIndex += 2;                    
 		            }
@@ -48,13 +49,9 @@ public class Reader {
 		            	capeSubs.add((sel_info[count].trim()).toLowerCase());
 		            	count++;
 		            }
-		            students.add(new Student(id_num,fName, lName, csecSubs, capeSubs));
-		            String sid = Integer.toString(students.get(id_num-1).getSid());
-		            System.out.println(sid + " " + students.get(id_num-1).getFirstName() + " " + students.get(id_num-1).getLastName()+" "+students.get(id_num-1).getCSEC().get(0).getName()+" "+students.get(id_num-1).getCSEC().get(4).getName());
-		            id_num++;
-		            
-		          
-		
+		            Student stud = new Student(fName, lName, csecSubs, capeSubs);
+		            bst.insert(fName.toLowerCase() + " " + lName.toLowerCase(), stud);
+		            students.add(stud);
 		        }
 		    }
 		    catch (Exception e) {
@@ -74,6 +71,10 @@ public class Reader {
 		}
 
     }
+	
+	public BinarySearchTree getTree() {
+		return bst;
+	}
 	
 	public ArrayList<Student> getStudents() {
 		return this.students;

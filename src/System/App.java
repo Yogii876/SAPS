@@ -7,39 +7,61 @@ import CSV.*;
 import java.io.File;
 import java.lang.NullPointerException;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+//import java.util.HashMap;
+//import java.util.LinkedHashMap;
+import BinaryTree.BinarySearchTree;
 
 
 public class App {
 	private ArrayList<Student> students;
 	private ArrayList<CAPE> offeredSubjects = new ArrayList<CAPE>();
 	private Point point = new Point();
+	private BinarySearchTree studentBST;
+	private BinarySearchTree capeBST;
+	
 	
 	public App () {
 		// Should take the input from the GUI and populate offeredSubjects using populateSubjects
 		generateMappings();
 	}
 	
+	
 	public void populateStudents(File csvFile) throws Exception {
 		Reader fileReader = new Reader(csvFile);
-		
 		students = fileReader.getStudents();
+		studentBST = fileReader.getTree();
+	}
+	
+	public CAPE searchSubjects(String sName) {
+		CAPE subj = (CAPE)capeBST.get(sName);
+		return subj;
+	}
+	
+	public Student searchStudents(String name) {
+		Student subj = (Student)studentBST.get(name);
+		return subj;
 	}
 	
 	public void populateSubjects(String name, String pReq, String sReq, String tReq, int maxStud) {
 		if (tReq != null) {
-			offeredSubjects.add(new CAPE(name, pReq, sReq, tReq, maxStud));
+			CAPE subj = new CAPE(name, pReq, sReq, tReq, maxStud);
+			offeredSubjects.add(subj);
+			capeBST.insert(name.toLowerCase(), subj);
+			
 		}
 		
 		else if (sReq != null) {
-			offeredSubjects.add(new CAPE(name, pReq, sReq, maxStud));			
+			CAPE subj = new CAPE(name, pReq, sReq, maxStud);
+			offeredSubjects.add(subj);
+			capeBST.insert(name.toLowerCase(), subj);
+
 		}
 		
 		else {
-			offeredSubjects.add(new CAPE(name, pReq, maxStud));						
+			CAPE subj = new CAPE(name, pReq, maxStud);
+			offeredSubjects.add(subj);
+			capeBST.insert(name.toLowerCase(), subj);
 		}
-		
 	}
 		
 	public void generateMappings() throws NullPointerException {
