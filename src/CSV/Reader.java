@@ -30,7 +30,7 @@ public class Reader {
 		        while ((line = br.readLine()) != null) {
 		        	line = line.trim();
 		            String[] stud_info = line.split(cvsSplitBy);
-		            String fName = stud_info[0].trim(), lName = stud_info[1].trim();               
+		            String fName = (stud_info[0].trim()).toLowerCase(), lName = (stud_info[1].trim()).toLowerCase();               
 		            String[] grade_info = line.split(courseSplitBy)[1].split(cvsSplitBy);
 		            int grade_length = grade_info.length;
 		            int noTime = grade_length / 2;

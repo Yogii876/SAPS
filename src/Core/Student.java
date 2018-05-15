@@ -32,7 +32,7 @@ public class Student {
 		return this.fName + " " + this.lName;
 	}
 	
-	public ArrayList<String> getCape() {
+	public ArrayList<String> getChoices() {
 		return capeSubs;
 	}
 	
