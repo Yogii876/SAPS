@@ -11,20 +11,19 @@ import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
 
-public class AccessStudentsCalls {
+public class AccessDatabase {
 
-	private Connection connect = null;
-	private Statement statement = null;
+	private static Connection connect = null;
+	private static Statement statement = null;
 	private PreparedStatement preparedStatement = null;
-	private ResultSet resultSet = null;
+	private static ResultSet resultSet = null;
 
-	//final private String host = "localhost";
-	final private String host = "localhost";
-	final private String user = "root";
-	final private String passwd = "";
-	final private String database = "saps";
+	final private static String host = "localhost";
+	final private static String user = "root";
+	final private static String passwd = "";
+	final private static String database = "saps";
 
-	public void connectToDB() throws Exception {
+	public static void connectToDB() throws Exception {
 		try {
 			// This will load the MySQL driver, each DB has its own driver
 			Class.forName("com.mysql.jdbc.Driver");
@@ -56,17 +55,19 @@ public class AccessStudentsCalls {
 		}
 	}*/
 	
-	public Map<String, String> getUsers() throws Exception {
+	public static Map<String, String> getUsers() throws Exception {
+		connectToDB();
 		try {
 			Map<String, String> userResults = new HashMap<String, String>();
 			statement = connect.createStatement();
 			resultSet = statement
-					.executeQuery("select users.user, users.password from " + database + ".users");
+					.executeQuery("select user, password from " + "users");
 			while (resultSet.next()) {
 				String user = (resultSet.getString("user")).trim();
 				String password = (resultSet.getString("password")).trim();
 				userResults.put(user, password);
 			}
+			close();
 			return userResults;
 			}
 		catch (Exception e) {
@@ -76,7 +77,7 @@ public class AccessStudentsCalls {
 		
 	}
 	
-	public void addUsers(String name, String password) throws Exception {
+	public static void addUsers(String name, String password) throws Exception {
 		try {
 			statement = connect.createStatement();
 			//String[] test =  {"saps.users.user", "saps.users.password"};
@@ -94,7 +95,7 @@ public class AccessStudentsCalls {
 	
 
 	// You need to close the resultSet
-	public void close() {
+	private static void close() {
 		try {
 			if (resultSet != null) {
 				resultSet.close();

@@ -1,6 +1,8 @@
 package Interface;
 import java.awt.EventQueue;
 
+import java.util.Map;
+
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -13,6 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import System.App;
+import SQL.*;
 
 import javax.swing.JSeparator;
 import javax.swing.JPasswordField;
@@ -28,7 +31,7 @@ public class Login {
 	private JFrame frame;
 	private JTextField txt_Username;
 	private JPasswordField txt_Password;
-	private static App controller = new App();
+	//private static App controller = new App();
 
 	/**
 	 * Launch the application.
@@ -37,7 +40,7 @@ public class Login {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Login window = new Login(app);
+					Login window = new Login();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -122,28 +125,38 @@ public class Login {
 		panel.add(lblNewLabel_1);
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String password = txt_Password.getText();
+				String password = txt_Password.getText().trim();
 				String username = (txt_Username.getText()).trim();
-				
-				
-				
-				
-				if (password.equals("Administrator") && username.equals("admin")){
+				try {
+					Map<String, String> users= AccessDatabase.getUsers();
+					if (users.containsKey(username)) {
+						String pass1 = users.get(username);
+						if (pass1.equals(password)) {
+							txt_Password.setText(null);
+							txt_Username.setText(null);
+							frame.dispose();
+							
+							App controller = new App();
+							new MainScreen(controller);
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "Incorrect Password", "Login Error", JOptionPane.ERROR_MESSAGE);
+							txt_Password.setText(null);
+							txt_Username.setText(null);
+						}
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Invalid User Name", "Login Error", JOptionPane.ERROR_MESSAGE);
+						txt_Password.setText(null);
+						txt_Username.setText(null);
+					}
+				}
+				catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage(), "Login Error", JOptionPane.ERROR_MESSAGE);
 					txt_Password.setText(null);
 					txt_Username.setText(null);
-					frame.dispose();
-					
-					App controller = new App();
-					Report rep = new Report();
-					Report.main(null);
-					
 				}
-				else{
-					JOptionPane.showMessageDialog(null, "Invalid Login", "Login Error", JOptionPane.ERROR_MESSAGE);
-					txt_Password.setText(null);
-					txt_Username.setText(null);
 				}
-			}
 		});
 	}
 }
