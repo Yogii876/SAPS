@@ -14,6 +14,11 @@ import java.awt.event.MouseEvent;
 import javax.swing.JScrollBar;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.Dimension;
 
 public class Preferences {
 
@@ -51,7 +56,7 @@ public class Preferences {
 		prefFrame.setResizable(false);
 		prefFrame.getContentPane().setBackground(new Color(255, 255, 255));
 		prefFrame.getContentPane().setForeground(Color.WHITE);
-		prefFrame.setBounds(257, 133, 885, 427);
+		prefFrame.setBounds(257, 133, 679, 427);
 		prefFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		prefFrame.getContentPane().setLayout(null);
 		
@@ -69,68 +74,84 @@ public class Preferences {
 		String[] cape_subjs = {"ACCOUNTING", "ANIMATION & GAME DESIGN", "AGRICULTURAL SCIENCE", "APPLIED MATHEMATICS", "ART AND DESIGN", "BIOLOGY", "BUILDING AND MECHANICAL ENGINEERING DRAWING", "CARIBBEAN STUDIES", "CHEMISTRY", "COMMUNICATION STUDIES", "COMPUTER SCIENCE", "DIGITAL MEDIA", "ELECTRICAL AND ELECTRONIC ENGINEERING TECHNOLOGY", "ECONOMICS", "ENTREPRENEURSHIP", "ENVIRONMENTAL SCIENCE", "FINANCIAL SERVICES STUDIES", "FOOD AND NUTRITION", "FRENCH", "GEOGRAPHY", "GREEN ENGINEERING", "HISTORY", "INFORMATION TECHNOLOGY", "INTEGRATED MATHEMATICS", "LAW", "LITERATURES IN ENGLISH", "LOGISTICS AND SUPPLY CHAIN OPERATIONS", "MANAGEMENT OF BUSINESS", "PERFORMING ARTS", "PHYSICS", "PHYSICAL EDUCATION AND SPORT", "PURE MATHEMATICS", "SOCIOLOGY", "SPANISH", "TOURISM"};
 		String[] cape_subjs2 = {"NONE", "ACCOUNTING", "ANIMATION & GAME DESIGN", "AGRICULTURAL SCIENCE", "APPLIED MATHEMATICS", "ART AND DESIGN", "BIOLOGY", "BUILDING AND MECHANICAL ENGINEERING DRAWING", "CARIBBEAN STUDIES", "CHEMISTRY", "COMMUNICATION STUDIES", "COMPUTER SCIENCE", "DIGITAL MEDIA", "ELECTRICAL AND ELECTRONIC ENGINEERING TECHNOLOGY", "ECONOMICS", "ENTREPRENEURSHIP", "ENVIRONMENTAL SCIENCE", "FINANCIAL SERVICES STUDIES", "FOOD AND NUTRITION", "FRENCH", "GEOGRAPHY", "GREEN ENGINEERING", "HISTORY", "INFORMATION TECHNOLOGY", "INTEGRATED MATHEMATICS", "LAW", "LITERATURES IN ENGLISH", "LOGISTICS AND SUPPLY CHAIN OPERATIONS", "MANAGEMENT OF BUSINESS", "PERFORMING ARTS", "PHYSICS", "PHYSICAL EDUCATION AND SPORT", "PURE MATHEMATICS", "SOCIOLOGY", "SPANISH", "TOURISM"};
 		JComboBox comboBox_1 = new JComboBox(cape_subjs);
-		comboBox_1.setBounds(12, 84, 309, 22);
+		comboBox_1.setBounds(163, 82, 309, 22);
 		prefFrame.getContentPane().add(comboBox_1);
 		
 		JLabel lblSelectPrimaryPrerequisite = new JLabel("Select primary pre-requisite");
 		lblSelectPrimaryPrerequisite.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblSelectPrimaryPrerequisite.setBounds(12, 122, 182, 16);
+		lblSelectPrimaryPrerequisite.setBounds(28, 137, 182, 16);
 		prefFrame.getContentPane().add(lblSelectPrimaryPrerequisite);
 		
 		String[] csec_subjs = {"NONE", "ADDITIONAL MATHEMATICS", "AGRICULTURAL SCIENCE", "BIOLOGY", "CARIBBEAN HISTORY", "CHEMISTRY", "ECONOMICS", "ELECTRONIC DOCUMENT PREPARATION AND MANAGEMENT", "ENGLISH A", "ENGLISH B", "FAMILY AND RESOURCE MANAGEMENT", "FOOD, NUTRITION AND HEALTH", "FRENCH", "GEOGRAPHY", "HOME ECONOMICS", "HUMAN AND SOCIAL BIOLOGY", "INDUSTRIAL TECHNOLOGY", "INFORMATION TECHNOLOGY", "INTEGRATED SCIENCE", "MATHEMATICS", "MUSIC", "OFFICE ADMINISTRATION", "PHYSICAL EDUCATION AND SPORT", "PHYSICS", "PORTUGUESE", "PRINCIPLES OF ACCOUNTS", "PRINCIPLES OF BUSINESS", "RELIGIOUS EDUCATION", "SOCIAL STUDIES", "SPANISH", "TECHNICAL DRAWING", "TEXTILES, CLOTHING AND FASHION", "THEATRE ARTS", "VISUAL ARTS"};
 		JComboBox comboBox = new JComboBox(csec_subjs);
-		comboBox.setBounds(210, 119, 195, 22);
+		comboBox.setBounds(468, 121, 195, 22);
 		prefFrame.getContentPane().add(comboBox);
 		
 		JLabel lblSelectSecondaryPrerequisite = new JLabel("Select secondary pre-requisite");
 		lblSelectSecondaryPrerequisite.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblSelectSecondaryPrerequisite.setBounds(12, 151, 217, 16);
+		lblSelectSecondaryPrerequisite.setBounds(28, 164, 217, 16);
 		prefFrame.getContentPane().add(lblSelectSecondaryPrerequisite);
 		
 		JComboBox comboBox_2 = new JComboBox(csec_subjs);
-		comboBox_2.setBounds(210, 270, 195, 22);
+		comboBox_2.setBounds(468, 271, 195, 22);
 		prefFrame.getContentPane().add(comboBox_2);
 		
 		JLabel lblSelectTernaryPrerequisite = new JLabel("Select ternary pre-requisite");
 		lblSelectTernaryPrerequisite.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblSelectTernaryPrerequisite.setBounds(12, 191, 166, 16);
+		lblSelectTernaryPrerequisite.setBounds(28, 191, 166, 16);
 		prefFrame.getContentPane().add(lblSelectTernaryPrerequisite);
 		
 		JComboBox comboBox_3 = new JComboBox(csec_subjs);
-		comboBox_3.setBounds(210, 154, 195, 22);
+		comboBox_3.setBounds(468, 154, 195, 22);
 		prefFrame.getContentPane().add(comboBox_3);
 		
 		JButton btnSubmit = new JButton("Add");
-		btnSubmit.setBounds(183, 354, 97, 25);
+		btnSubmit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnSubmit.setBounds(441, 362, 97, 25);
 		prefFrame.getContentPane().add(btnSubmit);
 		
 		JLabel lblSelectAntirequisite = new JLabel("Select anti-requisite 1");
 		lblSelectAntirequisite.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblSelectAntirequisite.setBounds(12, 237, 166, 16);
+		lblSelectAntirequisite.setBounds(28, 247, 166, 16);
 		prefFrame.getContentPane().add(lblSelectAntirequisite);
 		
 		JLabel lblSelectAntirequisite_1 = new JLabel("Select anti-requisite 2");
 		lblSelectAntirequisite_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblSelectAntirequisite_1.setBounds(12, 272, 166, 16);
+		lblSelectAntirequisite_1.setBounds(28, 283, 166, 16);
 		prefFrame.getContentPane().add(lblSelectAntirequisite_1);
 		
 		JLabel lblSelectAntirequisite_2 = new JLabel("Select anti-requisite 3");
 		lblSelectAntirequisite_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblSelectAntirequisite_2.setBounds(12, 299, 166, 16);
+		lblSelectAntirequisite_2.setBounds(28, 310, 166, 16);
 		prefFrame.getContentPane().add(lblSelectAntirequisite_2);
 		
 		JComboBox comboBox_4 = new JComboBox(cape_subjs2);
-		comboBox_4.setBounds(210, 189, 195, 22);
+		comboBox_4.setBounds(468, 190, 195, 22);
 		prefFrame.getContentPane().add(comboBox_4);
 		
 		JComboBox comboBox_5 = new JComboBox(cape_subjs2);
-		comboBox_5.setBounds(210, 234, 195, 22);
+		comboBox_5.setBounds(468, 236, 195, 22);
 		prefFrame.getContentPane().add(comboBox_5);
 		
 		JComboBox comboBox_6 = new JComboBox(cape_subjs2);
-		comboBox_6.setBounds(210, 307, 195, 22);
+		comboBox_6.setBounds(468, 304, 195, 22);
 		prefFrame.getContentPane().add(comboBox_6);
 		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+			}
+		});
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnCancel.setBounds(548, 363, 97, 25);
+		prefFrame.getContentPane().add(btnCancel);		
 
 	}
 }

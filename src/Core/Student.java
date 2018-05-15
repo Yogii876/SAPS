@@ -9,6 +9,8 @@ public class Student {
 	private ArrayList<CSEC> csecSubs;
 	private ArrayList<CAPE> possibleSubjects = new ArrayList<CAPE>();
 	private ArrayList<CAPE> acceptedFor = new ArrayList<CAPE>();
+	private ArrayList<CAPE> conflicts = new ArrayList<CAPE>();
+	private ArrayList<CAPE> alternates = new ArrayList<CAPE>();
 	
 	private Map<CAPE, Integer> pointMapping = new HashMap<CAPE, Integer>();
 	
@@ -115,22 +117,11 @@ public class Student {
 		possibleSubjects.add(subj);
 	}
 	
-	public ArrayList<CAPE> getPossibleSubjects() {
-		return possibleSubjects;
-	}
 	
 	public void addAcceptedSubject(CAPE sub) {
 		this.acceptedFor.add(sub);
 	}
 	
-	public ArrayList<CAPE> getAcceptedSubs() {
-		if (acceptedFor.isEmpty()) {
-			return null;
-		}
-		else {
-			return acceptedFor;
-		}
-	}
 	
 	public String toString() {
 		return fName + " " + lName;
@@ -138,15 +129,43 @@ public class Student {
 
 
 	public void addConflict(CAPE cape) {
-		// TODO Auto-generated method stub
+		conflicts.add(cape);
 		
 	}
 
 
 	public void addAlternate(CAPE cape) {
-		// TODO Auto-generated method stub
+		alternates.add(cape);
 		
 	}
-
-
+	
+	private ArrayList<String> getString(ArrayList<CAPE> cSubs) {
+		if (!cSubs.isEmpty()) {
+			ArrayList<String> names = new ArrayList<String>();
+			for (CAPE c : cSubs) {
+				names.add(c.toString());
+			}
+			return names;
+		}
+		return null;
+	}
+	
+	public ArrayList<String> getAlternates() {
+		return getString(alternates);
+	}
+	
+	public ArrayList<String> getConflicts() {
+		return getString(conflicts);
+	}
+	
+	public ArrayList<String> getAccepted() {
+		return getString(acceptedFor);
+	}
+	
+	public void removeSubject(CAPE c) {
+		possibleSubjects.remove(c);
+		conflicts.remove(c);
+		alternates.remove(c);
+		acceptedFor.remove(c);
+	}
 }

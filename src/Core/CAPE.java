@@ -136,23 +136,8 @@ public class CAPE extends Subject {
 	        //return sortedMap;
 	    }
 	
-	public ArrayList<String> getAcceptedStudents() {
-		if (!sorted) {
-			sortStudents();
-		}
-		
-		generateAcceptedList();
-
-		if (accepted.isEmpty()){
-			return null;
-		}
-				
-		Set<Student> studs = accepted.keySet();
-		ArrayList<String> students = new ArrayList<String>();
-		for (Student stud: studs) {
-			students.add(stud.toString());
-		}
-		return students;
+	private boolean isDisjoint(ArrayList<String> c1, ArrayList<String> c2) {
+		return Collections.disjoint(c1, c2);
 	}
 	
 	// Add antirequisite stuff here
@@ -186,21 +171,40 @@ public class CAPE extends Subject {
 		}
 	}
 	
-	private boolean isDisjoint(ArrayList<String> c1, ArrayList<String> c2) {
-		return Collections.disjoint(c1, c2);
+	private ArrayList<String> getString(Map<Student, Integer> mapping, boolean type) {
+		if (!mapping.isEmpty()) {
+			ArrayList<String> students = new ArrayList<String>();
+			if (type) {
+				Set<Student> studs = mapping.keySet();
+				for (Student stud: studs) {
+					students.add(stud.toString());
+				}
+			}
+			else {
+				for (Map.Entry<Student, Integer> entry : mapping.entrySet()) {
+				    Student key = entry.getKey();
+				    Integer value = entry.getValue();
+				    students.add(key.toString() + "\t\t" + value.toString());
+				}
+			}
+			return students;
+		}
+		return null;
+		
 	}
 	
 	public ArrayList<String> getAllStudents() {
-		if (eligibleStudents.isEmpty()) {
-			return null;
-		}
-		else {
-			Set<Student> studs = eligibleStudents.keySet();
-			ArrayList<String> students = new ArrayList<String>();
-			for (Student stud: studs) {
-				students.add(stud.toString());
-			}
-			return students;			
-		}
+		return getString(eligibleStudents, true);
+	}
+	
+	public ArrayList<String> getAccepted() {
+		return getString(accepted, false);
+	}
+	
+	public ArrayList<String> getConflicts() {
+		return getString(conflictStudents, false);
+	}
+	public ArrayList<String> getAlternates() {
+		return getString(alternateStudents, false);
 	}
 }
