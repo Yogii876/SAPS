@@ -136,4 +136,17 @@ public class Student {
 		return fName + " " + lName;
 	}
 
+
+	public void addConflict(CAPE cape) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void addAlternate(CAPE cape) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 }

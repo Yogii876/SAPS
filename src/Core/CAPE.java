@@ -20,7 +20,8 @@ public class CAPE extends Subject {
 	private Map<Student, Integer> eligibleStudents = new HashMap<Student, Integer>();
 	private Map <Student, Integer> accepted = new LinkedHashMap<Student, Integer>();
 	private ArrayList<String> antiRequisites = new ArrayList<String>();
-	private ArrayList<Student> conflictStudents = new ArrayList<Student>();
+	private Map<Student, Integer> conflictStudents = new LinkedHashMap<Student, Integer>();
+	private Map<Student, Integer> alternateStudents = new LinkedHashMap<Student, Integer>();
 	
 	public CAPE(String name, String primary, String secondary, String tertiary, int max) {
 		super(name);
@@ -153,26 +154,40 @@ public class CAPE extends Subject {
 		}
 		return students;
 	}
+	
 	// Add antirequisite stuff here
 	public void generateAcceptedList() {
 		if (!sorted) sortStudents();
 		accepted = new LinkedHashMap<Student, Integer>();
+		int sSize = 0;
+		boolean noMax = (maxStudents == -1);
 		for (Map.Entry<Student, Integer> entry : eligibleStudents.entrySet()) {
 			Student stud = entry.getKey();
 			ArrayList<String> choices = stud.getChoices();
 			if (choices.contains((this.name).toLowerCase())) {
-				if (Collections.disjoint(choices, antiRequisites)) {
+				boolean exculsive = isDisjoint(choices, antiRequisites);
+				if (exculsive && (noMax || ((accepted.size() + conflictStudents.size() < maxStudents)))) {
 					accepted.put(stud, entry.getValue());
 					stud.addAcceptedSubject(this);
 				}
+				else if (!exculsive) {
+					conflictStudents.put(stud, entry.getValue());
+					stud.addConflict(this);
+				}
 				else {
-					conflictStudents.add(stud, entry.getValue());
+					alternateStudents .put(stud, entry.getValue());
+					stud.addAlternate(this);
 				}
 			}
-			if (maxStudents == accepted.size()) {
+			sSize++;
+			if (maxStudents == sSize) {
 				break;
 			}
 		}
+	}
+	
+	private boolean isDisjoint(ArrayList<String> c1, ArrayList<String> c2) {
+		return Collections.disjoint(c1, c2);
 	}
 	
 	public ArrayList<String> getAllStudents() {
