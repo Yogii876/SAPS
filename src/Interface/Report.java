@@ -54,6 +54,7 @@ public class Report {
 	public Report(App app) {
 		this.app = app;
 		initialize();
+		frame.setVisible(true);
 	}
 
 	/**
@@ -61,6 +62,7 @@ public class Report {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setResizable(false);
 		frame.getContentPane().setBackground(SystemColor.textHighlight);
 		
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();

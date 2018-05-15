@@ -126,17 +126,11 @@ public class CAPE extends Subject {
 			sortStudents();
 		}
 		
-		if (maxStudents == -1 || eligibleStudents.size() < maxStudents) {
-			accepted = eligibleStudents;
-			return accepted.keySet();
-		}
-		else {
-			generateAcceptedList();
-			return accepted.keySet();
-		}
+		generateAcceptedList();
+		return accepted.keySet();
 	}
 	
-	private void generateAcceptedList() {
+	public void generateAcceptedList() {
 		if (!sorted) sortStudents();
 		accepted = new LinkedHashMap<Student, Integer>();
 		for (Map.Entry<Student, Integer> entry : eligibleStudents.entrySet()) {
