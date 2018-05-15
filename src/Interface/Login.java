@@ -1,14 +1,12 @@
 package Interface;
 import java.awt.EventQueue;
-import java.io.File;
+
 
 import javax.swing.JFrame;
-import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
-import javax.swing.BoxLayout;
 import java.awt.SystemColor;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -23,7 +21,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.ImageIcon;
-import javax.swing.JTextArea;
 import java.awt.Toolkit;
 
 public class Login {
@@ -31,7 +28,7 @@ public class Login {
 	private JFrame frame;
 	private JTextField txt_Username;
 	private JPasswordField txt_Password;
-	private static App app;
+	private static App controller = new App();
 
 	/**
 	 * Launch the application.
@@ -52,8 +49,7 @@ public class Login {
 	/**
 	 * Create the application.
 	 */
-	public Login(App app) {
-		this.app = app;
+	public Login() {
 		initialize();
 	}
 
@@ -127,13 +123,17 @@ public class Login {
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String password = txt_Password.getText();
-				String username = txt_Username.getText();
+				String username = (txt_Username.getText()).trim();
+				
+				
+				
 				
 				if (password.equals("Administrator") && username.equals("admin")){
 					txt_Password.setText(null);
 					txt_Username.setText(null);
 					frame.dispose();
-
+					
+					App controller = new App();
 					Report rep = new Report();
 					Report.main(null);
 					

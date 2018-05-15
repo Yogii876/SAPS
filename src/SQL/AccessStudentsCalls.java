@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import java.util.Map;
+import java.util.HashMap;
 
 public class AccessStudentsCalls {
 
@@ -54,17 +56,38 @@ public class AccessStudentsCalls {
 		}
 	}*/
 	
-	public void readStudents() throws Exception {
+	public Map<String, String> getUsers() throws Exception {
 		try {
+			Map<String, String> userResults = new HashMap<String, String>();
 			statement = connect.createStatement();
 			resultSet = statement
-					.executeQuery("select grade.SubjNum, grade.Grade from " + database + ".grade");
+					.executeQuery("select users.user, users.password from " + database + ".users");
 			while (resultSet.next()) {
-				int id = resultSet.getInt("SubjNum");
-				int grade = resultSet.getInt("Grade");
-				
+				String user = (resultSet.getString("user")).trim();
+				String password = (resultSet.getString("password")).trim();
+				userResults.put(user, password);
 			}
+			return userResults;
 			}
+		catch (Exception e) {
+			throw new Exception("Error reading users from database, please try again");
+		}
+		
+		
+	}
+	
+	public void addUsers(String name, String password) throws Exception {
+		try {
+			statement = connect.createStatement();
+			//String[] test =  {"saps.users.user", "saps.users.password"};
+			statement
+				.executeUpdate("INSERT INTO users(user, password) VALUES('" + name + "','" + password +"');");
+			//statement.executeQuery("use " + database + ".users;insert into users values (" + name + "," + password + ");");
+			}
+		catch (Exception e) {
+			System.out.println(e.getMessage());
+			throw new Exception("Error reading users from database, please try again");
+		}
 		
 		
 	}
