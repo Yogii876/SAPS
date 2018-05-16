@@ -123,6 +123,19 @@ public class MainScreen {
 				    }				    
 				}
 			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				JLabel src = (JLabel)e.getSource();
+	            src.setForeground(Color.BLUE);
+	            src.setFont(new Font("Corbel", Font.BOLD, 16));
+			}
+			public void mouseExited(MouseEvent e) {
+				JLabel src = (JLabel)e.getSource();
+	            src.setForeground(Color.BLACK);
+	            src.setBackground(Color.BLACK);
+	            src.setFont(new Font("Corbel", Font.PLAIN, 14));
+			}
+			
 		});
 		lblUploadFilw.setBounds(145, 212, 82, 16);
 		frmSaps.getContentPane().add(lblUploadFilw);
@@ -130,10 +143,9 @@ public class MainScreen {
 		
 		
 		ImageIcon image1 = new ImageIcon(getClass().getResource("../img/upload1.png"));
-		ImageIcon image2 = new ImageIcon(getClass().getResource("../img/reports1.png"));
-		ImageIcon image3 = new ImageIcon(getClass().getResource("../img/users1.png"));
+		ImageIcon image2 = new ImageIcon(getClass().getResource("../img/report3.png"));
+		ImageIcon image3 = new ImageIcon(getClass().getResource("../img/users1.png"));	
 		ImageIcon image4 = new ImageIcon(getClass().getResource("../img/preference1.png"));
-		ImageIcon image5 = new ImageIcon(getClass().getResource("../img/points1.png"));
 		
 		JLabel lblReports = new JLabel("Reports");
 		lblReports.setFont(new Font("Corbel", Font.PLAIN, 14));
@@ -165,7 +177,7 @@ public class MainScreen {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-					Preferences windoww = new Preferences();
+					Preferences windoww = new Preferences(new App());
 					//windoww.frame.setVisible(true);
 				} catch (Exception ex) {
 					ex.printStackTrace();
@@ -209,11 +221,21 @@ public class MainScreen {
 				    }				    
 				}
 			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				JLabel src = (JLabel)e.getSource();
+				src.setBounds(117, 78, 140, 138);
+			}
+			
+			public void mouseExited(MouseEvent e) {
+				JLabel src = (JLabel)e.getSource();
+				src.setBounds(134, 78, 120, 118);
+			}
 		});
 		lblUpl.setBounds(134, 78, 120, 118);
 		frmSaps.getContentPane().add(lblUpl);
 		
-		JLabel lblLabel = new JLabel(new ImageIcon(MainScreen.class.getResource("/img/report3.png")));
+		JLabel lblLabel = new JLabel(image2);
 		lblLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
