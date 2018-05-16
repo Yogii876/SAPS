@@ -24,11 +24,14 @@ import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.SwingConstants;
+import java.awt.Font;
+import java.awt.Toolkit;
 
 public class MainScreen {
 	private App controller;
 
-	private JFrame frame;
+	private JFrame frmSaps;
 
 	/**
 	 * Launch the application.
@@ -40,7 +43,7 @@ public class MainScreen {
 					App test = new App();
 					UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 					MainScreen window = new MainScreen(test);
-					window.frame.setVisible(true);
+					window.frmSaps.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -60,7 +63,11 @@ public class MainScreen {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
+		frmSaps = new JFrame();
+		frmSaps.setTitle("Sixth Form Application Processing System");
+		frmSaps.setFont(new Font("Corbel", Font.PLAIN, 14));
+		frmSaps.setResizable(false);
+		frmSaps.setIconImage(Toolkit.getDefaultToolkit().getImage(MainScreen.class.getResource("/img/saps-logo.png")));
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
@@ -68,20 +75,21 @@ public class MainScreen {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
-		frame.getContentPane().setBackground(Color.WHITE);
-		frame.setBounds(300, 300, 800, 400);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frmSaps.getContentPane().setBackground(Color.WHITE);
+		frmSaps.setBounds(300, 300, 708, 451);
+		frmSaps.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmSaps.getContentPane().setLayout(null);
 		
-		JLabel lblWelcomeSapsUser = new JLabel("Welcome SAPS User");
-		lblWelcomeSapsUser.setBounds(12, 13, 155, 16);
-		frame.getContentPane().add(lblWelcomeSapsUser);
-		
-		JLabel lblLogout = new JLabel("Logout");
-		lblLogout.setBounds(714, 13, 56, 16);
-		frame.getContentPane().add(lblLogout);
+		JLabel lblWelcomeSapsUser = new JLabel("Welcome");
+		lblWelcomeSapsUser.setHorizontalAlignment(SwingConstants.CENTER);
+		lblWelcomeSapsUser.setForeground(new Color(0, 128, 128));
+		lblWelcomeSapsUser.setFont(new Font("Franklin Gothic Demi Cond", Font.BOLD, 27));
+		lblWelcomeSapsUser.setBounds(10, 21, 128, 32);
+		frmSaps.getContentPane().add(lblWelcomeSapsUser);
 		
 		JLabel lblUploadFilw = new JLabel("Upload File");
+		lblUploadFilw.setFont(new Font("Corbel", Font.PLAIN, 14));
+		lblUploadFilw.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUploadFilw.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -104,7 +112,7 @@ public class MainScreen {
 				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
 				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 				fileChooser.setAcceptAllFileFilterUsed(false);
-				int result = fileChooser.showOpenDialog(frame);
+				int result = fileChooser.showOpenDialog(frmSaps);
 				if (result == JFileChooser.APPROVE_OPTION) {
 				    File selectedFile = fileChooser.getSelectedFile();
 				    try {
@@ -116,8 +124,8 @@ public class MainScreen {
 				}
 			}
 		});
-		lblUploadFilw.setBounds(205, 172, 72, 16);
-		frame.getContentPane().add(lblUploadFilw);
+		lblUploadFilw.setBounds(145, 212, 82, 16);
+		frmSaps.getContentPane().add(lblUploadFilw);
 		
 		
 		
@@ -128,7 +136,9 @@ public class MainScreen {
 		ImageIcon image5 = new ImageIcon(getClass().getResource("../img/points1.png"));
 		
 		JLabel lblReports = new JLabel("Reports");
-		lblReports.setBounds(441, 322, 60, 20);
+		lblReports.setFont(new Font("Corbel", Font.PLAIN, 14));
+		lblReports.setHorizontalAlignment(SwingConstants.CENTER);
+		lblReports.setBounds(513, 362, 78, 20);
 		lblReports.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -140,13 +150,17 @@ public class MainScreen {
 				}
 			}
 		});
-		frame.getContentPane().add(lblReports);
+		frmSaps.getContentPane().add(lblReports);
 		
 		JLabel lblManageUsers = new JLabel("Manage Users");
-		lblManageUsers.setBounds(412, 172, 99, 16);
-		frame.getContentPane().add(lblManageUsers);
+		lblManageUsers.setFont(new Font("Corbel", Font.PLAIN, 14));
+		lblManageUsers.setHorizontalAlignment(SwingConstants.CENTER);
+		lblManageUsers.setBounds(492, 212, 99, 16);
+		frmSaps.getContentPane().add(lblManageUsers);
 		
 		JLabel lblSetPreferences = new JLabel("Set Preferences");
+		lblSetPreferences.setFont(new Font("Corbel", Font.PLAIN, 14));
+		lblSetPreferences.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSetPreferences.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -158,8 +172,8 @@ public class MainScreen {
 				}
 			}
 		});
-		lblSetPreferences.setBounds(205, 324, 99, 16);
-		frame.getContentPane().add(lblSetPreferences);
+		lblSetPreferences.setBounds(145, 364, 99, 16);
+		frmSaps.getContentPane().add(lblSetPreferences);
 		
 		JLabel lblUpl = new JLabel(image1);
 		lblUpl.addMouseListener(new MouseAdapter() {
@@ -184,7 +198,7 @@ public class MainScreen {
 				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
 				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 				fileChooser.setAcceptAllFileFilterUsed(false);
-				int result = fileChooser.showOpenDialog(frame);
+				int result = fileChooser.showOpenDialog(frmSaps);
 				if (result == JFileChooser.APPROVE_OPTION) {
 				    File selectedFile = fileChooser.getSelectedFile();
 				    try {
@@ -196,10 +210,10 @@ public class MainScreen {
 				}
 			}
 		});
-		lblUpl.setBounds(135, 0, 225, 225);
-		frame.getContentPane().add(lblUpl);
+		lblUpl.setBounds(134, 78, 120, 118);
+		frmSaps.getContentPane().add(lblUpl);
 		
-		JLabel lblLabel = new JLabel(image2);
+		JLabel lblLabel = new JLabel(new ImageIcon(MainScreen.class.getResource("/img/report3.png")));
 		lblLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -211,12 +225,12 @@ public class MainScreen {
 				}
 			}
 		});
-		lblLabel.setBounds(399, 241, 120, 50);
-		frame.getContentPane().add(lblLabel);
+		lblLabel.setBounds(510, 253, 100, 100);
+		frmSaps.getContentPane().add(lblLabel);
 		
 		JLabel lblHehe = new JLabel(image3);
-		lblHehe.setBounds(353, 13, 216, 199);
-		frame.getContentPane().add(lblHehe);
+		lblHehe.setBounds(482, 78, 128, 118);
+		frmSaps.getContentPane().add(lblHehe);
 		
 		JLabel lblLabl = new JLabel(image4);
 		lblLabl.addMouseListener(new MouseAdapter() {
@@ -231,7 +245,18 @@ public class MainScreen {
 				
 			}
 		});
-		lblLabl.setBounds(205, 218, 100, 100);
-		frame.getContentPane().add(lblLabl);
+		lblLabl.setBounds(145, 253, 100, 100);
+		frmSaps.getContentPane().add(lblLabl);
+		
+		JButton btnLogOut = new JButton("Log Out");
+		btnLogOut.setFont(new Font("Corbel", Font.BOLD, 14));
+		btnLogOut.setBackground(new Color(0, 128, 128));
+		btnLogOut.setForeground(new Color(0, 128, 128));
+		btnLogOut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnLogOut.setBounds(593, 11, 99, 21);
+		frmSaps.getContentPane().add(btnLogOut);
 	}
 }
