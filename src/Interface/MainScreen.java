@@ -4,13 +4,29 @@ import java.awt.EventQueue;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JFileChooser;
 import java.io.File;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Color;
+import System.App;
+import Components.*;
+
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+ 
+import javax.swing.JButton;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class MainScreen {
+	private App controller;
 
 	private JFrame frame;
 
@@ -21,7 +37,9 @@ public class MainScreen {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainScreen window = new MainScreen();
+					App test = new App();
+					UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+					MainScreen window = new MainScreen(test);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -33,8 +51,9 @@ public class MainScreen {
 	/**
 	 * Create the application.
 	 */
-	public MainScreen() {
+	public MainScreen(App app) {
 		initialize();
+		this.controller = app;
 	}
 
 	/**
@@ -42,6 +61,13 @@ public class MainScreen {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setBounds(300, 300, 800, 400);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -58,16 +84,38 @@ public class MainScreen {
 		JLabel lblUploadFilw = new JLabel("Upload File");
 		lblUploadFilw.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
-			
-			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-			int result = fileChooser.showOpenDialog(frame);
-			if (result == JFileChooser.APPROVE_OPTION) {
-			    File selectedFile = fileChooser.getSelectedFile();
-			    System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+			public void mouseClicked(MouseEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.addChoosableFileFilter(new FileFilter() {
+
+				    public String getDescription() {
+				        return "Comma-Separated Value Files (*.csv)";
+				    }
+				 
+				    public boolean accept(File f) {
+				        if (f.isDirectory()) {
+				            return true;
+				        } else {
+				            return f.getName().toLowerCase().endsWith(".csv");
+				        }
+				    }
+				});
+				fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
+				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+				fileChooser.setAcceptAllFileFilterUsed(false);
+				int result = fileChooser.showOpenDialog(frame);
+				if (result == JFileChooser.APPROVE_OPTION) {
+				    File selectedFile = fileChooser.getSelectedFile();
+				    try {
+				    	controller.populateStudents(selectedFile);
+				    }
+				    catch (Exception e1) {
+				    	JOptionPane.showMessageDialog(null, "Incorrect Password", "Login Error", JOptionPane.ERROR_MESSAGE);
+				    }				    
+				}
 			}
-			}});
+		});
 		lblUploadFilw.setBounds(205, 172, 72, 16);
 		frame.getContentPane().add(lblUploadFilw);
 		
@@ -118,11 +166,33 @@ public class MainScreen {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.addChoosableFileFilter(new FileFilter() {
+
+				    public String getDescription() {
+				        return "Comma-Separated Value Files (*.csv)";
+				    }
+				 
+				    public boolean accept(File f) {
+				        if (f.isDirectory()) {
+				            return true;
+				        } else {
+				            return f.getName().toLowerCase().endsWith(".csv");
+				        }
+				    }
+				});
+				fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
 				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+				fileChooser.setAcceptAllFileFilterUsed(false);
 				int result = fileChooser.showOpenDialog(frame);
 				if (result == JFileChooser.APPROVE_OPTION) {
 				    File selectedFile = fileChooser.getSelectedFile();
-				    System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+				    try {
+				    	controller.populateStudents(selectedFile);
+				    }
+				    catch (Exception e1) {
+				    	JOptionPane.showMessageDialog(null, "Incorrect Password", "Login Error", JOptionPane.ERROR_MESSAGE);
+				    }				    
 				}
 			}
 		});
@@ -153,7 +223,7 @@ public class MainScreen {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-					Preferences windoww = new Preferences();
+					Preferences window = new Preferences(controller);
 					//windoww.frame.setVisible(true);
 				} catch (Exception ex) {
 					ex.printStackTrace();

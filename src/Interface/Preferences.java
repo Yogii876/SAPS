@@ -19,10 +19,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.Dimension;
+import System.App;
 
 public class Preferences {
 
 	public static JFrame prefFrame;
+	private App controller;
 
 	/**
 	 * Launch the application.
@@ -31,7 +33,7 @@ public class Preferences {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Preferences window = new Preferences();
+					Preferences window = new Preferences(new App());
 					window.prefFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -43,9 +45,10 @@ public class Preferences {
 	/**
 	 * Create the application.
 	 */
-	public Preferences() {
+	public Preferences(App app) {
 		initialize();
 		prefFrame.setVisible(true);
+		this.controller = app;
 	}
 
 	/**
@@ -105,14 +108,6 @@ public class Preferences {
 		comboBox_3.setBounds(468, 154, 195, 22);
 		prefFrame.getContentPane().add(comboBox_3);
 		
-		JButton btnSubmit = new JButton("Add");
-		btnSubmit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		btnSubmit.setBounds(441, 362, 97, 25);
-		prefFrame.getContentPane().add(btnSubmit);
-		
 		JLabel lblSelectAntirequisite = new JLabel("Select anti-requisite 1");
 		lblSelectAntirequisite.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblSelectAntirequisite.setBounds(28, 247, 166, 16);
@@ -139,6 +134,30 @@ public class Preferences {
 		JComboBox comboBox_6 = new JComboBox(cape_subjs2);
 		comboBox_6.setBounds(468, 304, 195, 22);
 		prefFrame.getContentPane().add(comboBox_6);
+		
+		JButton btnSubmit = new JButton("Add");
+		btnSubmit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String name, pReq, sReq, tReq, anti1, anti2, anti3;
+				name = (String)comboBox_1.getSelectedItem();
+				pReq = (String)comboBox.getSelectedItem();
+				sReq = (String)comboBox_2.getSelectedItem();
+				tReq = (String)comboBox_3.getSelectedItem();
+				anti1 = (String)comboBox_4.getSelectedItem();
+				anti2 = (String)comboBox_5.getSelectedItem();
+				anti3 = (String)comboBox_6.getSelectedItem();
+				
+				
+
+				
+				controller.populateSubjects(name, pReq, sReq, tReq, maxStud);
+				
+			}
+		});
+		btnSubmit.setBounds(441, 362, 97, 25);
+		prefFrame.getContentPane().add(btnSubmit);
+		
+		
 		
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addMouseListener(new MouseAdapter() {
