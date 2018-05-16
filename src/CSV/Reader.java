@@ -23,7 +23,7 @@ public class Reader {
 			BufferedReader br = null;
 		    String line = "";
 		    String cvsSplitBy = ",";
-		    String courseSplitBy = "/";
+		    String courseSplitBy = ",,";
 		    try {
 		    	//int id_num = 1;
 		        br = new BufferedReader(new FileReader(csvFile));
@@ -44,18 +44,20 @@ public class Reader {
 		            }
 		            count = 0;
 		            gIndex = 0;
-		            String[] sel_info = line.split("/")[2].split(cvsSplitBy);
+		            String[] sel_info = line.split(courseSplitBy)[2].split(cvsSplitBy);
 		            while(count < sel_info.length) {
 		            	capeSubs.add((sel_info[count].trim()).toLowerCase());
 		            	count++;
 		            }
 		            Student stud = new Student(fName, lName, csecSubs, capeSubs);
+		            System.out.println(stud.toString());
 		            bst.insert(fName.toLowerCase() + " " + lName.toLowerCase(), stud);
 		            students.add(stud);
 		        }
 		    }
 		    catch (Exception e) {
-		    	throw new Exception("Error while parsing file, please sure values are stored in a comma-separated format");
+		    	//throw new Exception("Error while parsing file, please sure values are stored in a comma-separated format");
+		    	e.printStackTrace();
 		    }
 		    finally {
 		        if (br != null) {

@@ -57,6 +57,7 @@ public class MainScreen {
 	public MainScreen(App app) {
 		initialize();
 		this.controller = app;
+		frmSaps.setVisible(true);
 	}
 
 	/**
@@ -177,7 +178,7 @@ public class MainScreen {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-					Preferences windoww = new Preferences(new App());
+					//Preferences windoww = new Preferences(new App());
 					//windoww.frame.setVisible(true);
 				} catch (Exception ex) {
 					ex.printStackTrace();
@@ -217,7 +218,7 @@ public class MainScreen {
 				    	controller.populateStudents(selectedFile);
 				    }
 				    catch (Exception e1) {
-				    	JOptionPane.showMessageDialog(null, "Incorrect Password", "Login Error", JOptionPane.ERROR_MESSAGE);
+				    	JOptionPane.showMessageDialog(null, e1.getMessage(), "Parsing Error", JOptionPane.ERROR_MESSAGE);
 				    }				    
 				}
 			}
@@ -280,5 +281,9 @@ public class MainScreen {
 		});
 		btnLogOut.setBounds(593, 11, 99, 21);
 		frmSaps.getContentPane().add(btnLogOut);
+	}
+	
+	public void setVisible(boolean b) {
+		frmSaps.setVisible(b);
 	}
 }

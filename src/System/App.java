@@ -42,27 +42,25 @@ public class App {
 		return subj;
 	}
 	
-	public void populateSubjects(String name, String pReq, String sReq, String tReq, int maxStud) {
+	public CAPE populateSubjects(String name, String pReq, String sReq, String tReq, int maxStud) {
+		CAPE subj;
 		if (tReq != null) {
-			CAPE subj = new CAPE(name, pReq, sReq, tReq, maxStud);
+			subj = new CAPE(name, pReq, sReq, tReq, maxStud);
 			offeredSubjects.add(subj);
-			capeBST.insert(name.toLowerCase(), subj);
-			
+			//capeBST.insert(name.toLowerCase(), subj);
 		}
-		
 		else if (sReq != null) {
-			CAPE subj = new CAPE(name, pReq, sReq, maxStud);
+			subj = new CAPE(name, pReq, sReq, maxStud);
 			offeredSubjects.add(subj);
-			capeBST.insert(name.toLowerCase(), subj);
-
+			//capeBST.insert(name.toLowerCase(), subj);
 		}
-		
 		else {
-			CAPE subj = new CAPE(name, pReq, maxStud);
+			subj = new CAPE(name, pReq, maxStud);
 			offeredSubjects.add(subj);
-			capeBST.insert(name.toLowerCase(), subj);
+			//capeBST.insert(name.toLowerCase(), subj);
 		}
 		status = false;
+		return subj;
 	}
 	
 	public boolean getStatus() {
