@@ -4,21 +4,15 @@ import java.awt.EventQueue;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
-import System.App;
-
 import javax.swing.JFileChooser;
 import java.io.File;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Color;
-import java.awt.Font;
-
 
 public class MainScreen {
 
 	private JFrame frame;
-	private static App app;
 
 	/**
 	 * Launch the application.
@@ -27,7 +21,7 @@ public class MainScreen {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainScreen window = new MainScreen(app);
+					MainScreen window = new MainScreen();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -39,8 +33,7 @@ public class MainScreen {
 	/**
 	 * Create the application.
 	 */
-	public MainScreen(App app) {
-		this.app = app;
+	public MainScreen() {
 		initialize();
 	}
 
@@ -49,28 +42,21 @@ public class MainScreen {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setResizable(false);
 		frame.getContentPane().setBackground(Color.WHITE);
-		frame.setBounds(0, 0, 2000, 1300);
+		frame.setBounds(300, 300, 800, 400);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JLabel lblWelcomeSapsUser = new JLabel("Welcome SAPS User");
-		lblWelcomeSapsUser.setFont(new Font("Agency FB", Font.BOLD, 38));
-		lblWelcomeSapsUser.setBounds(12, 13, 900, 100);
+		lblWelcomeSapsUser.setBounds(12, 13, 155, 16);
 		frame.getContentPane().add(lblWelcomeSapsUser);
 		
 		JLabel lblLogout = new JLabel("Logout");
-		lblLogout.setFont(new Font("Agency FB", Font.BOLD, 34));
-		lblLogout.setBounds(1600, 13, 150, 100);
+		lblLogout.setBounds(714, 13, 56, 16);
 		frame.getContentPane().add(lblLogout);
 		
 		JLabel lblUploadFilw = new JLabel("Upload File");
-		lblUploadFilw.setFont(new Font("Agency FB", Font.BOLD, 28));
-		//lblUploadFilw.addMouseListener(new MouseAdapter() {
-		JLabel lblUploadFile = new JLabel("Upload File");
-		lblUploadFile.setFont(new Font("Agency FB", Font.BOLD, 28));
-		lblUploadFile.addMouseListener(new MouseAdapter() {
+		lblUploadFilw.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 			
@@ -80,19 +66,10 @@ public class MainScreen {
 			if (result == JFileChooser.APPROVE_OPTION) {
 			    File selectedFile = fileChooser.getSelectedFile();
 			    System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-			    try {
-					app.populateStudents(selectedFile);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 			}
 			}});
-		lblUploadFilw.setBounds(318, 510, 150, 100);
+		lblUploadFilw.setBounds(205, 172, 72, 16);
 		frame.getContentPane().add(lblUploadFilw);
-		
-		lblUploadFile.setBounds(125, 172, 72, 16);
-		frame.getContentPane().add(lblUploadFile);
 		
 		
 		
@@ -103,6 +80,7 @@ public class MainScreen {
 		ImageIcon image5 = new ImageIcon(getClass().getResource("../img/points1.png"));
 		
 		JLabel lblReports = new JLabel("Reports");
+		lblReports.setBounds(441, 322, 60, 20);
 		lblReports.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -114,13 +92,10 @@ public class MainScreen {
 				}
 			}
 		});
-		lblReports.setFont(new Font("Agency FB", Font.BOLD, 28));
-		lblReports.setBounds(1474, 508, 150, 100);
 		frame.getContentPane().add(lblReports);
 		
 		JLabel lblManageUsers = new JLabel("Manage Users");
-		lblManageUsers.setFont(new Font("Agency FB", Font.BOLD, 28));
-		lblManageUsers.setBounds(1100, 510, 150, 100);
+		lblManageUsers.setBounds(412, 172, 99, 16);
 		frame.getContentPane().add(lblManageUsers);
 		
 		JLabel lblSetPreferences = new JLabel("Set Preferences");
@@ -135,12 +110,11 @@ public class MainScreen {
 				}
 			}
 		});
-		lblSetPreferences.setFont(new Font("Agency FB", Font.BOLD, 28));
-		lblSetPreferences.setBounds(708, 510, 150, 100);
+		lblSetPreferences.setBounds(205, 324, 99, 16);
 		frame.getContentPane().add(lblSetPreferences);
 		
-		JLabel lblLabel1 = new JLabel(image1);
-		lblLabel1.addMouseListener(new MouseAdapter() {
+		JLabel lblUpl = new JLabel(image1);
+		lblUpl.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
@@ -152,8 +126,8 @@ public class MainScreen {
 				}
 			}
 		});
-		lblLabel1.setBounds(100, 125, 500, 500);
-		frame.getContentPane().add(lblLabel1);
+		lblUpl.setBounds(135, 0, 225, 225);
+		frame.getContentPane().add(lblUpl);
 		
 		JLabel lblLabel = new JLabel(image2);
 		lblLabel.addMouseListener(new MouseAdapter() {
@@ -167,12 +141,12 @@ public class MainScreen {
 				}
 			}
 		});
-		lblLabel.setBounds(1250, 125, 500, 500);
+		lblLabel.setBounds(399, 241, 120, 50);
 		frame.getContentPane().add(lblLabel);
 		
-		JLabel lblLabel2 = new JLabel(image3);
-		lblLabel2.setBounds(850, 125, 600, 500);
-		frame.getContentPane().add(lblLabel2);
+		JLabel lblHehe = new JLabel(image3);
+		lblHehe.setBounds(353, 13, 216, 199);
+		frame.getContentPane().add(lblHehe);
 		
 		JLabel lblLabl = new JLabel(image4);
 		lblLabl.addMouseListener(new MouseAdapter() {
@@ -187,7 +161,7 @@ public class MainScreen {
 				
 			}
 		});
-		lblLabl.setBounds(500, 125, 500, 500);
+		lblLabl.setBounds(205, 218, 100, 100);
 		frame.getContentPane().add(lblLabl);
 	}
 }
