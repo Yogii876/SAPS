@@ -124,7 +124,9 @@ public class Student {
 	
 	
 	public String toString() {
-		return fName + " " + lName;
+		String tFName = (fName.substring(0, 1).toUpperCase()).concat(fName.substring(1));
+		String tLName = (lName.substring(0, 1).toUpperCase()).concat(lName.substring(1));
+		return tFName + " " + tLName;
 	}
 
 

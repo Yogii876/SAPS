@@ -12,6 +12,7 @@ public abstract class Subject {
 	}
 	
 	public String toString() {
-		return this.name;
+		String tName = (name.substring(0, 1).toUpperCase()).concat(name.substring(1));
+		return tName;
 	}
 }
