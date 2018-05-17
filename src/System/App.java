@@ -17,7 +17,7 @@ public class App {
 	private ArrayList<CAPE> offeredSubjects = new ArrayList<CAPE>();
 	private Point point = new Point();
 	private BinarySearchTree studentBST;
-	private BinarySearchTree capeBST;
+	private BinarySearchTree capeBST = new BinarySearchTree();
 	private boolean status = false;
 	
 	
@@ -47,18 +47,19 @@ public class App {
 		if (tReq != null) {
 			subj = new CAPE(name, pReq, sReq, tReq, maxStud);
 			offeredSubjects.add(subj);
-			//capeBST.insert(name.toLowerCase(), subj);
+			System.out.println(subj.getName());
 		}
 		else if (sReq != null) {
 			subj = new CAPE(name, pReq, sReq, maxStud);
 			offeredSubjects.add(subj);
-			//capeBST.insert(name.toLowerCase(), subj);
+			System.out.println(subj.getName());
 		}
 		else {
 			subj = new CAPE(name, pReq, maxStud);
 			offeredSubjects.add(subj);
-			//capeBST.insert(name.toLowerCase(), subj);
+			System.out.println(subj.getName());
 		}
+		capeBST.insert(subj.getName(), subj);
 		status = false;
 		return subj;
 	}

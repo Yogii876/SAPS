@@ -394,6 +394,7 @@ public class Preferences {
 						//System.out.println(s);
 					}
 					searchedSub = null;
+					nameBox.setEnabled(true);
 					resetSelections();
 					edit.setEnabled(false);
 					btnSubmit.setEnabled(true);
@@ -410,10 +411,11 @@ public class Preferences {
 			    if (evt.getStateChange() == ItemEvent.SELECTED) {
 			    	if (!choice.equals("None")) {
 			    		//TODO remove SearchedSub
-			    		//searchedSub = controller.searchSubjects(choice.toLowerCase());
-			    		searchedSub = testSub;
+			    		searchedSub = controller.searchSubjects(choice.toLowerCase());
+			    		//searchedSub = testSub;
 			    		if (searchedSub != null) {
 			    			pBox.setSelectedItem(searchedSub.getPrimary().toUpperCase());
+			    			nameBox.setEnabled(false);
 			    			maxStud = searchedSub.getMax();
 			    			classSize.setText(Integer.toString(maxStud));
 			    			if (searchedSub.getSecondary() != null) sBox.setSelectedItem(searchedSub.getSecondary().toUpperCase());
@@ -430,6 +432,7 @@ public class Preferences {
 			    				}
 			    			}
 			    			edit.setEnabled(true);
+			    			nameBox.setEnabled(false);
 			    			btnSubmit.setEnabled(false);
 			    		}
 			    	}

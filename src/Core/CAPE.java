@@ -46,7 +46,7 @@ public class CAPE extends Subject {
 	}
 	
 	public String getName() {
-		return this.name;
+		return super.name;
 	}
 	
 	public String getPrimary() {
