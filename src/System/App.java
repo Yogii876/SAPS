@@ -109,7 +109,7 @@ public class App {
 	}
 	
 	public ArrayList<String> getAcceptedStudents(CAPE subj) {
-		return subj.getAcceptedStudents();
+		return subj.getAccepted();
 	}
 			
 			
@@ -137,6 +137,10 @@ public class App {
 	
 	public void setOfferedSubjects(ArrayList<CAPE> subs) {
 		offeredSubjects = subs;
+	}
+	
+	public ArrayList<Student> getStudents(){
+		return students;
 	}
 	
 	public CAPE getSubject(String name) {
