@@ -1,10 +1,11 @@
 package Interface;
 import java.awt.EventQueue;
 
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
+import java.util.ArrayList;
 import java.awt.BorderLayout;
 import javax.swing.JTextArea;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
@@ -29,10 +30,13 @@ import java.awt.GridLayout;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.beans.PropertyChangeEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.Toolkit;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class Preferences {
 
@@ -41,6 +45,8 @@ public class Preferences {
 	private JTextField classSize;
 	private MainScreen parent;
 	private int maxStud = -1;
+	private CAPE testSub = new CAPE("accounting", "mathematics", "physics", "biology", 25);
+	private CAPE searchedSub = null;
 
 	/**
 	 * Launch the application.
@@ -178,7 +184,7 @@ public class Preferences {
 		lblSelectTernaryPrerequisite.setFont(new Font("Corbel", Font.PLAIN, 18));
 		prefFrame.getContentPane().add(lblSelectTernaryPrerequisite);
 		
-		JComboBox tBox = new JComboBox(cape_subjs2);
+		JComboBox tBox = new JComboBox(csec_subjs);
 		tBox.setFont(new Font("Corbel", Font.PLAIN, 14));
 		tBox.setBounds(345, 220, 335, 34);
 		tBox.setSelectedIndex(0);
@@ -208,7 +214,7 @@ public class Preferences {
 		lblSelectAntirequisite_1.setFont(new Font("Corbel", Font.PLAIN, 18));
 		prefFrame.getContentPane().add(lblSelectAntirequisite_1);
 		
-		JComboBox a2Box = new JComboBox(csec_subjs);
+		JComboBox a2Box = new JComboBox(cape_subjs2);
 		a2Box.setFont(new Font("Corbel", Font.PLAIN, 14));
 		a2Box.setBounds(344, 348, 335, 34);
 		a2Box.setSelectedIndex(0);
@@ -328,7 +334,112 @@ public class Preferences {
 		edit.setFont(new Font("Corbel", Font.PLAIN, 14));
 		edit.setBounds(462, 454, 102, 38);
 		prefFrame.getContentPane().add(edit);
-		prefFrame.getContentPane().add(btnCancel);		
+		prefFrame.getContentPane().add(btnCancel);
+		edit.addActionListener(new ActionListener() {
+			private void resetSelections() {
+				nameBox.setSelectedIndex(0);
+				pBox.setSelectedIndex(0);
+				sBox.setSelectedIndex(0);
+				tBox.setSelectedIndex(0);
+				a1Box.setSelectedIndex(0);
+				a2Box.setSelectedIndex(0);
+				a3Box.setSelectedIndex(0);
+				classSize.setText(null);
+				maxStud = -1;
+			}
+			
+			public void actionPerformed(ActionEvent arg0) {
+				String name = (String)nameBox.getSelectedItem();
+				String pReq, sReq, tReq, anti1, anti2, anti3;
+				pReq = (String)pBox.getSelectedItem();
+				sReq = (String)sBox.getSelectedItem();
+				tReq = (String)tBox.getSelectedItem();
+				anti1 = (String)a1Box.getSelectedItem();
+				anti2 = (String)a2Box.getSelectedItem();
+				anti3 = (String)a3Box.getSelectedItem();
+				String cSize = classSize.getText();
+				cSize.trim();
+				try {
+					if (cSize.equals("") || cSize.equals(null));
+					else {
+						int size = Integer.parseInt(cSize);
+						maxStud = size;
+						System.out.print(Integer.toString(maxStud));
+					}
+				}
+					catch (NumberFormatException e) {
+					}
+				
+				if  (pReq.equals("None") && (!sReq.equals("None") || !tReq.equals("None"))) {
+					// TODO add JOptionPane
+					JOptionPane.showMessageDialog(prefFrame, "Enter a Primary Pre-Requisite", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				else if (sReq.equals("None") && !tReq.equals("None")) {
+					// TODO JOption for they added a ternary without a secondary
+					JOptionPane.showMessageDialog(prefFrame, "Enter a Secondary Pre-Requisite", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+					if (!tReq.equals("None")) {
+						controller.editSubject(searchedSub,pReq, sReq, tReq, maxStud);				
+					}
+					else if (!sReq.equals("None")) {
+						controller.editSubject(searchedSub,pReq, sReq, null, maxStud);
+					}
+					else {
+						controller.editSubject(searchedSub,pReq, null, null, maxStud);
+					}
+					String[] antiArray = {anti1, anti2, anti3};
+					for (String s: antiArray) {
+						if (!s.equals("None")) searchedSub.addAntiReq(s);
+						//System.out.println(s);
+					}
+					searchedSub = null;
+					resetSelections();
+					edit.setEnabled(false);
+					btnSubmit.setEnabled(true);
+				}
+			}
+		});
+		
+		ItemListener editListener = new ItemListener() {
+			public void itemStateChanged(ItemEvent evt) {
+				JComboBox cb = (JComboBox) evt.getSource();
+				int myIndex = cb.getSelectedIndex();
+			    String choice = (String) evt.getItem();
+
+			    if (evt.getStateChange() == ItemEvent.SELECTED) {
+			    	if (!choice.equals("None")) {
+			    		//TODO remove SearchedSub
+			    		//searchedSub = controller.searchSubjects(choice.toLowerCase());
+			    		searchedSub = testSub;
+			    		if (searchedSub != null) {
+			    			pBox.setSelectedItem(searchedSub.getPrimary().toUpperCase());
+			    			maxStud = searchedSub.getMax();
+			    			classSize.setText(Integer.toString(maxStud));
+			    			if (searchedSub.getSecondary() != null) sBox.setSelectedItem(searchedSub.getSecondary().toUpperCase());
+			    			if (searchedSub.getTertiary() != null) tBox.setSelectedItem(searchedSub.getTertiary().toUpperCase());
+			    			ArrayList<String> anti = searchedSub.getAnti();
+			    			int aLen = anti.size();
+			    			if (aLen != 0) {
+			    				int i = 1;
+			    				while (i <= aLen-1) {
+			    					if (i == 1) a1Box.setSelectedItem(anti.get(i).toUpperCase());
+			    					else if (i == 2) a2Box.setSelectedItem(anti.get(i).toUpperCase());
+			    					else a3Box.setSelectedItem(anti.get(i).toUpperCase());
+			    					i++;
+			    				}
+			    			}
+			    			edit.setEnabled(true);
+			    			btnSubmit.setEnabled(false);
+			    		}
+			    	}
+			      // Item was just selected
+			    } else if (evt.getStateChange() == ItemEvent.DESELECTED) {
+			      // Item is no longer selected
+			    }
+			}
+		};
+		nameBox.addItemListener(editListener);
 
 	}
 }

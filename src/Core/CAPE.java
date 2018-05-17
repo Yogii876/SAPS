@@ -24,24 +24,24 @@ public class CAPE extends Subject {
 	private Map<Student, Integer> alternateStudents = new LinkedHashMap<Student, Integer>();
 	
 	public CAPE(String name, String primary, String secondary, String tertiary, int max) {
-		super(name);
-		this.primary = primary;
-		this.secondary=secondary;
-		this.tertiary=tertiary;
+		super(name.toLowerCase());
+		this.primary = primary.toLowerCase();
+		this.secondary=secondary.toLowerCase();
+		this.tertiary=tertiary.toLowerCase();
 		this.maxStudents = max;
-		this.antiRequisites.add(name);
+		this.antiRequisites.add(name.toLowerCase());
 	}
 	
 	public CAPE(String name, String primary, String secondary, int max) {
-		super(name);
-		this.primary = primary;
-		this.secondary=secondary;
+		super(name.toLowerCase());
+		this.primary = primary.toLowerCase();
+		this.secondary=secondary.toLowerCase();
 		this.maxStudents = max;
 	}
 	
 	public CAPE(String name, String primary, int max) {
-		super(name);
-		this.primary = primary;
+		super(name.toLowerCase());
+		this.primary = primary.toLowerCase();
 		this.maxStudents = max;
 	}
 	
@@ -61,16 +61,20 @@ public class CAPE extends Subject {
 		return this.tertiary;
 	}
 	
+	public ArrayList<String> getAnti() {
+		return antiRequisites;
+	}
+	
 	public void setPrimary(String primary) {
-		this.primary=primary;
+		this.primary=primary.toLowerCase();
 	}
 	
 	public void setSecondary(String secondary) {
-		this.secondary = secondary;
+		this.secondary = secondary.toLowerCase();
 	}
 	
 	public void setTertiary(String tertiary) {
-		this.tertiary = tertiary;
+		this.tertiary = tertiary.toLowerCase();
 	}
 	
 	public void addStudent(Student key, int value) {
@@ -79,15 +83,18 @@ public class CAPE extends Subject {
 	}
 	
 	public void resetStudents() {
-		eligibleStudents = new HashMap<Student, Integer>();
+		this.eligibleStudents = new HashMap<Student, Integer>();
+		this.accepted = new LinkedHashMap<Student, Integer>();
+		this.antiRequisites = new ArrayList<String>();
+		this.conflictStudents = new LinkedHashMap<Student, Integer>();
+		this.alternateStudents = new LinkedHashMap<Student, Integer>();
+		this.sorted = false;
+		this.antiRequisites.add(this.name);
 	}
 	
 	public void addAntiReq(String s) {
+		System.out.println(s);
 		antiRequisites.add(s.toLowerCase());
-	}
-	
-	public void removeAntiReq(String s) {
-		antiRequisites.remove(s);
 	}
 	
 	public boolean hasAnti() {

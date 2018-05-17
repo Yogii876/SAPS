@@ -32,6 +32,7 @@ public class MainScreen {
 	private App controller;
 
 	private JFrame frmSaps;
+	private MainScreen self;
 
 	/**
 	 * Launch the application.
@@ -58,6 +59,7 @@ public class MainScreen {
 		initialize();
 		this.controller = app;
 		frmSaps.setVisible(true);
+		this.self = this;
 	}
 
 	/**
@@ -156,10 +158,10 @@ public class MainScreen {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-					Report window = new Report();
-					//window.frame.setVisible(true);
-				} catch (Exception ec) {
-					ec.printStackTrace();
+					//new Report(self,controller);
+					self.setVisible(false);
+				} catch (Exception ex) {
+					ex.printStackTrace();
 				}
 			}
 		});
@@ -178,8 +180,8 @@ public class MainScreen {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-					//Preferences windoww = new Preferences(new App());
-					//windoww.frame.setVisible(true);
+					new Preferences(self,controller);
+					self.setVisible(false);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
@@ -241,10 +243,11 @@ public class MainScreen {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				try {
-					Report window = new Report();
-					//window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
+					//TODO change report
+					//new Report(self,controller);
+					self.setVisible(false);
+				} catch (Exception ex) {
+					ex.printStackTrace();
 				}
 			}
 		});
@@ -260,7 +263,8 @@ public class MainScreen {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-					Preferences window = new Preferences(controller);
+					Preferences window = new Preferences(self,controller);
+					self.setVisible(false);
 					//windoww.frame.setVisible(true);
 				} catch (Exception ex) {
 					ex.printStackTrace();

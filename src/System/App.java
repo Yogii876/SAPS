@@ -145,5 +145,12 @@ public class App {
 		}
 		return null;	
 	}
+	public void editSubject(CAPE c, String p, String s, String t, int max) {
+		c.resetStudents();
+		c.setPrimary(p);
+		if (s != null) c.setSecondary(s);
+		if (t != null) c.setTertiary(t);
+		c.setMax(max);
+	}
 
 }
