@@ -175,10 +175,21 @@ public class MainScreen {
 					return;
 				}
 				try {
-					controller.generateMappings();
-					//new Report(self);
+					int dialogResult = JOptionPane.showConfirmDialog (null, "Is there restriction on the number of courses a student can do?","Warning", JOptionPane.INFORMATION_MESSAGE);
+					if(dialogResult == JOptionPane.YES_OPTION){
+							int ans = Integer.parseInt(JOptionPane.showInputDialog(frmSaps, "Enter number", "Maximum Allocation of Courses", JOptionPane.INFORMATION_MESSAGE));
+							controller.generateMappings(ans);
+					}
+					else {
+						controller.generateMappings(0);
+					}
+					new Report(self);
 					self.setVisible(false);
-				} 
+					
+				}
+				catch(NumberFormatException ne) {
+					JOptionPane.showMessageDialog(frmSaps, "Please enter an Integer", "Error", JOptionPane.ERROR_MESSAGE);
+				}
 				catch (Exception ex) {
 					JOptionPane.showMessageDialog(frmSaps, "Error While Assigning Students, Try Again", "Error", JOptionPane.ERROR_MESSAGE);
 				}

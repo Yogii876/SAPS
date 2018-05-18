@@ -50,32 +50,7 @@ public class Preferences {
 	/**
 	 * Launch the application.
 	 */
-	
-	private static class RoundedBorder implements Border {
 
-	    private int radius;
-
-
-	    RoundedBorder(int radius) {
-	        this.radius = radius;
-	    }
-
-
-	    public Insets getBorderInsets(Component c) {
-	        return new Insets(this.radius+1, this.radius+1, this.radius+2, this.radius);
-	    }
-
-
-	    public boolean isBorderOpaque() {
-	        return true;
-	    }
-
-
-	    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-	        g.drawRoundRect(x, y, width-1, height-1, radius, radius);
-	    }
-	}
-	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -511,6 +486,9 @@ public class Preferences {
 		btnCancel.setOpaque(false);
 		btnCancel.setFocusPainted(false);
 		btnCancel.setBorder(new LineBorder(new Color(0, 128, 128), 2, true));
+		btnSubmit.setOpaque(false);
+		btnSubmit.setFocusPainted(false);
+		btnSubmit.setBorder(new LineBorder(new Color(0, 128, 128), 2, true));
 		nameBox.setRenderer(new MyListCellRenderer());
 	}
 }

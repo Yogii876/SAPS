@@ -12,7 +12,7 @@ import java.util.Map;
 public class App {
 	private ArrayList<Student> students = new ArrayList<Student>();
 	private ArrayList<CAPE> offeredSubjects = new ArrayList<CAPE>();
-	private Map<String, Student>  studentMap;
+	private Map<String, Student>  studentMap = new HashMap<String, Student>();
 	private Map<String, CAPE>  capeBST = new HashMap<String, CAPE>();
 	private boolean status = false;
 	
@@ -35,9 +35,6 @@ public class App {
 		return this.offeredSubjects;
 	}
 	
-	public ArrayList<Student> getStudents() {
-		return this.students;
-	}
 	public void populateStudents(File csvFile) throws Exception {
 		Reader fileReader = new Reader(csvFile);
 		students = fileReader.getStudents();
