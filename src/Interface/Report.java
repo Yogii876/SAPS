@@ -23,34 +23,23 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.SystemColor;
 import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
 
 import Core.Student;
+import Core.CAPE;
 import System.App;
 
-import javax.swing.JFileChooser;
-import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
 import java.awt.Component;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.SpringLayout;
-import javax.swing.JTextArea; 
+import javax.swing.JTextArea;
 
 public class Report {
 
-<<<<<<< HEAD
-	private JFrame frame;
-=======
 	private JFrame frmSixthFormApplication;
->>>>>>> working
 	private JTextField txtStudent;
-	private static App app;
-	private MainScreen mainscreen;
-	private JTextField txtStudentName;
-	private JTextField subjectNameField;
+	private App controller;
+	private MainScreen parent;
 
 	/**
 	 * Launch the application.
@@ -59,7 +48,7 @@ public class Report {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Report window = new Report();
+					Report window = new Report(new MainScreen());
 					window.frmSixthFormApplication.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -71,9 +60,13 @@ public class Report {
 	/**
 	 * Create the application.
 	 */
-	public Report() {
-		//this.app = app;
+	
+	
+	public Report(MainScreen parent) {
+		//this.controller = controller;
 		initialize();
+		this.parent = parent;
+		this.controller = parent.getController();
 		frmSixthFormApplication.setVisible(true);
 	}
 
@@ -83,17 +76,15 @@ public class Report {
 	private void initialize() {
 		frmSixthFormApplication = new JFrame();
 		frmSixthFormApplication.setTitle("Sixth Form Application Processing System");
-		frmSixthFormApplication.setIconImage(Toolkit.getDefaultToolkit().getImage(Report.class.getResource("/img/saps-logo.png")));
-		frmSixthFormApplication.setAlwaysOnTop(true);
 		frmSixthFormApplication.setResizable(false);
-		frmSixthFormApplication.getContentPane().setBackground(SystemColor.textHighlight);
+		frmSixthFormApplication.getContentPane().setBackground(new Color(0, 139, 139));
 		
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		frmSixthFormApplication.setBounds(0, 0,screen.width,screen.height - 30);
+		frmSixthFormApplication.setBounds(0, 0,797,611);
 		frmSixthFormApplication.getContentPane().setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("SAPS");
-		lblNewLabel.setBounds(0, 0, 209, 79);
+		lblNewLabel.setBounds(0, 0, 112, 68);
 		lblNewLabel.setForeground(SystemColor.text);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Rage Italic", Font.BOLD, 35));
@@ -101,13 +92,9 @@ public class Report {
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBackground(SystemColor.text);
-		tabbedPane.setBounds(0,90,1366,756);
+		tabbedPane.setBounds(0,91,791,756);
 		tabbedPane.setFont(new Font("Agency FB", Font.PLAIN, 11));
-<<<<<<< HEAD
-		frame.getContentPane().add(tabbedPane);
-=======
 		frmSixthFormApplication.getContentPane().add(tabbedPane);
->>>>>>> working
 		tabbedPane.setFont(new Font("Agency FB", Font.PLAIN, 11));
 		
 		JPanel panel_1 = new JPanel();
@@ -116,69 +103,64 @@ public class Report {
 		panel_1.setLayout(null);
 		
 		JLabel lblNewLabel_2 = new JLabel("Select class to view from the list:");
-		lblNewLabel_2.setFont(new Font("Agency FB", Font.PLAIN, 18));
-		lblNewLabel_2.setBounds(405, 91, 191, 38);
+		lblNewLabel_2.setForeground(new Color(0, 139, 139));
+		lblNewLabel_2.setFont(new Font("Corbel", Font.BOLD, 18));
+		lblNewLabel_2.setBounds(49, 120, 191, 38);
 		panel_1.add(lblNewLabel_2);
 		
 		//Search by Subject Area
 				JPanel panel_4 = new JPanel();
-				panel_4.setBounds(257, 224, 768, 375);
+				panel_4.setBorder(new LineBorder(new Color(0, 139, 139)));
+				panel_4.setForeground(Color.WHITE);
+				panel_4.setBackground(new Color(255, 255, 255));
+				panel_4.setBounds(312, 0, 470, 460);
 				panel_1.add(panel_4);
-				SpringLayout sl_panel_4 = new SpringLayout();
-				panel_4.setLayout(sl_panel_4);
+				panel_4.setLayout(null);
 				
 				JLabel lblSubject = new JLabel("Subject: ");
-				sl_panel_4.putConstraint(SpringLayout.NORTH, lblSubject, 10, SpringLayout.NORTH, panel_4);
-				sl_panel_4.putConstraint(SpringLayout.WEST, lblSubject, 10, SpringLayout.WEST, panel_4);
+				lblSubject.setBounds(19, 11, 447, 39);
+				lblSubject.setHorizontalAlignment(SwingConstants.CENTER);
+				lblSubject.setFont(new Font("Corbel", Font.BOLD, 30));
+				lblSubject.setForeground(new Color(0, 139, 139));
 				panel_4.add(lblSubject);
 				
-				subjectNameField = new JTextField();
-				sl_panel_4.putConstraint(SpringLayout.NORTH, subjectNameField, 10, SpringLayout.NORTH, panel_4);
-				sl_panel_4.putConstraint(SpringLayout.WEST, subjectNameField, 6, SpringLayout.EAST, lblSubject);
-				sl_panel_4.putConstraint(SpringLayout.EAST, subjectNameField, 436, SpringLayout.EAST, lblSubject);
-				panel_4.add(subjectNameField);
-				subjectNameField.setColumns(10);
-				
 				JLabel lblAcceptedStudents = new JLabel("Accepted Students");
-				sl_panel_4.putConstraint(SpringLayout.NORTH, lblAcceptedStudents, 21, SpringLayout.SOUTH, subjectNameField);
-				sl_panel_4.putConstraint(SpringLayout.WEST, lblAcceptedStudents, 0, SpringLayout.WEST, lblSubject);
+				lblAcceptedStudents.setBounds(19, 75, 131, 17);
+				lblAcceptedStudents.setFont(new Font("Corbel", Font.BOLD, 14));
+				lblAcceptedStudents.setForeground(new Color(0, 0, 0));
 				panel_4.add(lblAcceptedStudents);
 				
 				JTextArea acceptedStudentsArea = new JTextArea();
-<<<<<<< HEAD
-=======
 				acceptedStudentsArea.setEditable(false);
->>>>>>> working
-				sl_panel_4.putConstraint(SpringLayout.NORTH, acceptedStudentsArea, 6, SpringLayout.SOUTH, lblAcceptedStudents);
-				sl_panel_4.putConstraint(SpringLayout.WEST, acceptedStudentsArea, 0, SpringLayout.WEST, lblSubject);
-				sl_panel_4.putConstraint(SpringLayout.EAST, acceptedStudentsArea, 202, SpringLayout.WEST, lblSubject);
+				acceptedStudentsArea.setBounds(19, 103, 441, 87);
 				panel_4.add(acceptedStudentsArea);
 				
 				JLabel lblConflictingStudents = new JLabel("Conflicting Students");
-				sl_panel_4.putConstraint(SpringLayout.NORTH, lblConflictingStudents, 0, SpringLayout.NORTH, lblAcceptedStudents);
-				sl_panel_4.putConstraint(SpringLayout.WEST, lblConflictingStudents, 130, SpringLayout.EAST, lblAcceptedStudents);
+				lblConflictingStudents.setBounds(19, 201, 131, 17);
+				lblConflictingStudents.setFont(new Font("Corbel", Font.BOLD, 14));
+				lblConflictingStudents.setForeground(new Color(0, 0, 0));
 				panel_4.add(lblConflictingStudents);
 				
 				JLabel lblAlternativeStudents = new JLabel("Alternative Students");
-				sl_panel_4.putConstraint(SpringLayout.NORTH, lblAlternativeStudents, 0, SpringLayout.NORTH, lblAcceptedStudents);
-				sl_panel_4.putConstraint(SpringLayout.WEST, lblAlternativeStudents, 144, SpringLayout.EAST, lblConflictingStudents);
+				lblAlternativeStudents.setBounds(19, 329, 131, 17);
+				lblAlternativeStudents.setFont(new Font("Corbel", Font.BOLD, 14));
+				lblAlternativeStudents.setForeground(new Color(0, 0, 0));
 				panel_4.add(lblAlternativeStudents);
 				
 				
 				JTextArea conflictingStudentsArea = new JTextArea();
-				sl_panel_4.putConstraint(SpringLayout.NORTH, conflictingStudentsArea, 3, SpringLayout.SOUTH, lblConflictingStudents);
-				sl_panel_4.putConstraint(SpringLayout.WEST, conflictingStudentsArea, 19, SpringLayout.EAST, acceptedStudentsArea);
-				sl_panel_4.putConstraint(SpringLayout.EAST, conflictingStudentsArea, 221, SpringLayout.EAST, acceptedStudentsArea);
+				conflictingStudentsArea.setEditable(false);
+				conflictingStudentsArea.setBounds(19, 229, 441, 89);
 				panel_4.add(conflictingStudentsArea);
 				
 				JTextArea alternativeStudentsArea = new JTextArea();
-				sl_panel_4.putConstraint(SpringLayout.NORTH, alternativeStudentsArea, 6, SpringLayout.SOUTH, lblAlternativeStudents);
-				sl_panel_4.putConstraint(SpringLayout.WEST, alternativeStudentsArea, 38, SpringLayout.EAST, conflictingStudentsArea);
-				sl_panel_4.putConstraint(SpringLayout.EAST, alternativeStudentsArea, 240, SpringLayout.EAST, conflictingStudentsArea);
+				alternativeStudentsArea.setEditable(false);
+				alternativeStudentsArea.setBounds(19, 357, 441, 91);
 				panel_4.add(alternativeStudentsArea);
 				//End search by students area
 		
 		JComboBox<Object> comboBox = new JComboBox<Object>();
+		comboBox.setForeground(new Color(0, 128, 128));
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -191,18 +173,40 @@ public class Report {
 				String value=(String)comboBox.getSelectedItem();
 				
 				if (value.equals(comboBox.getSelectedItem())){
-					String accepted = "James Hardy\n John Brown\n Daniel Dawson\n Karishma Mirpuri", conflicts ="Sajay Bailey-Management", alternatives="Ricardo Anderson\n Topaz Grant\n Patrice Ewin\n Carla Brown";
+					String accepted_students = "", conflicting_students="", alternate_students="";
 					lbl_combo_selection.setText(value);
 					
-					subjectNameField.setText(null);
+					lblSubject.setText(null);
 					acceptedStudentsArea.setText(null);
 					conflictingStudentsArea.setText(null);
 					alternativeStudentsArea.setText(null);
 					
-					subjectNameField.setText(value);
-					acceptedStudentsArea.append(accepted);
-					conflictingStudentsArea.append(conflicts);
-					alternativeStudentsArea.append(alternatives);
+					
+					CAPE cape = controller.searchSubjects(value.toUpperCase());
+					
+					ArrayList<String> acceptedStudents = cape.getAccepted();
+					ArrayList<String> conflictingStudents = cape.getConflicts();
+					ArrayList<String> alternateStudents = cape.getAlternates();
+					
+					
+					if(!acceptedStudents.isEmpty()) {
+						for(String str : acceptedStudents) {
+							accepted_students.concat(str+"\n ");
+						}
+					}
+					
+					for(String str : conflictingStudents) {
+						conflicting_students.concat(str+"\n ");
+					}
+					
+					for(String str : alternateStudents) {
+						alternate_students.concat(str+"\n ");	
+					}
+					
+					lblSubject.setText(value);
+					acceptedStudentsArea.append(accepted_students);
+					conflictingStudentsArea.append(conflicting_students);
+					alternativeStudentsArea.append(alternate_students);
 					
 					value = null;
 					
@@ -210,9 +214,10 @@ public class Report {
 			}
 		});
 		comboBox.setBackground(new Color(255, 255, 255));
-		comboBox.setFont(new Font("Agency FB", Font.PLAIN, 18));
-		comboBox.setModel(new DefaultComboBoxModel<Object>(new String[] {"", "Chemistry", "Pure Mathematics", "Add Mathematics", "Biology", "Physics", "Computer Science"}));
-		comboBox.setBounds(628, 91, 241, 38);
+		comboBox.setFont(new Font("Corbel", Font.PLAIN, 18));
+		comboBox.setModel(new DefaultComboBoxModel<Object>(new String[] {"None", "ACCOUNTING", "ANIMATION & GAME DESIGN", "AGRICULTURAL SCIENCE", "APPLIED MATHEMATICS", "ART AND DESIGN", "BIOLOGY", "BUILDING AND MECHANICAL ENGINEERING DRAWING", "CARIBBEAN STUDIES", "CHEMISTRY", "COMMUNICATION STUDIES", "COMPUTER SCIENCE", "DIGITAL MEDIA", "ELECTRICAL AND ELECTRONIC ENGINEERING TECHNOLOGY", "ECONOMICS", "ENTREPRENEURSHIP", "ENVIRONMENTAL SCIENCE", "FINANCIAL SERVICES STUDIES", "FOOD AND NUTRITION", "FRENCH", "GEOGRAPHY", "GREEN ENGINEERING", "HISTORY", "INFORMATION TECHNOLOGY", "INTEGRATED MATHEMATICS", "LAW", "LITERATURES IN ENGLISH", "LOGISTICS AND SUPPLY CHAIN OPERATIONS", 
+				"MANAGEMENT OF BUSINESS", "PERFORMING ARTS", "PHYSICS", "PHYSICAL EDUCATION AND SPORT", "PURE MATHEMATICS", "SOCIOLOGY", "SPANISH", "TOURISM"}));
+		comboBox.setBounds(22, 149, 241, 38);
 		panel_1.add(comboBox);
 		
 		JPanel panel = new JPanel();
@@ -221,82 +226,84 @@ public class Report {
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel_1 = new JLabel("Search for a student by full name:");
-		lblNewLabel_1.setFont(new Font("Agency FB", Font.PLAIN, 18));
-		lblNewLabel_1.setBounds(244, 101, 194, 32);
+		lblNewLabel_1.setForeground(new Color(0, 128, 128));
+		lblNewLabel_1.setFont(new Font("Corbel", Font.BOLD, 18));
+		lblNewLabel_1.setBounds(58, 60, 194, 32);
 		panel.add(lblNewLabel_1);
 		
 		//Results Panel Area
 		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(244, 200, 770, 213);
+		panel_2.setBorder(new LineBorder(new Color(0, 128, 128)));
+		panel_2.setBackground(new Color(255, 255, 255));
+		panel_2.setBounds(312, 0, 472, 462);
 		panel.add(panel_2);
-		SpringLayout sl_panel_2 = new SpringLayout();
-		panel_2.setLayout(sl_panel_2);
+		panel_2.setLayout(null);
 		
 		JLabel lblName = new JLabel("Name: ");
-		sl_panel_2.putConstraint(SpringLayout.NORTH, lblName, 13, SpringLayout.NORTH, panel_2);
+		lblName.setHorizontalAlignment(SwingConstants.CENTER);
+		lblName.setBounds(19, 11, 447, 39);
+		lblName.setForeground(new Color(0, 128, 128));
+		lblName.setFont(new Font("Corbel", Font.BOLD, 30));
 		panel_2.add(lblName);
 		
-		txtStudentName = new JTextField();
-		sl_panel_2.putConstraint(SpringLayout.EAST, lblName, -31, SpringLayout.WEST, txtStudentName);
-		sl_panel_2.putConstraint(SpringLayout.NORTH, txtStudentName, -3, SpringLayout.NORTH, lblName);
-		sl_panel_2.putConstraint(SpringLayout.WEST, txtStudentName, 75, SpringLayout.WEST, panel_2);
-		sl_panel_2.putConstraint(SpringLayout.EAST, txtStudentName, -28, SpringLayout.EAST, panel_2);
-		panel_2.add(txtStudentName);
-		txtStudentName.setColumns(10);
-		
 		JLabel lblAccepted = new JLabel("Accepted:");
-		sl_panel_2.putConstraint(SpringLayout.NORTH, lblAccepted, 15, SpringLayout.SOUTH, lblName);
-		sl_panel_2.putConstraint(SpringLayout.WEST, lblAccepted, 0, SpringLayout.WEST, lblName);
+		lblAccepted.setBounds(19, 75, 60, 17);
+		lblAccepted.setForeground(new Color(0, 0, 0));
+		lblAccepted.setFont(new Font("Corbel", Font.BOLD, 14));
 		panel_2.add(lblAccepted);
 		
+		JTextArea conflictingTxtArea = new JTextArea();
+		conflictingTxtArea.setEditable(false);
+		conflictingTxtArea.setBounds(19, 229, 441, 89);
+		panel_2.add(conflictingTxtArea);
+		
 		JTextArea acceptedTxtArea = new JTextArea();
-		sl_panel_2.putConstraint(SpringLayout.NORTH, acceptedTxtArea, 0, SpringLayout.NORTH, lblAccepted);
-		sl_panel_2.putConstraint(SpringLayout.WEST, acceptedTxtArea, 6, SpringLayout.EAST, lblAccepted);
+		acceptedTxtArea.setEditable(false);
+		acceptedTxtArea.setBounds(19, 103, 441, 87);
 		acceptedTxtArea.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panel_2.add(acceptedTxtArea);
 		
 		JLabel lblConflicting = new JLabel("Conflicting:");
-		sl_panel_2.putConstraint(SpringLayout.EAST, lblConflicting, -467, SpringLayout.EAST, panel_2);
-		sl_panel_2.putConstraint(SpringLayout.EAST, acceptedTxtArea, -16, SpringLayout.WEST, lblConflicting);
-		sl_panel_2.putConstraint(SpringLayout.NORTH, lblConflicting, 0, SpringLayout.NORTH, lblAccepted);
+		lblConflicting.setBounds(19, 201, 70, 17);
+		lblConflicting.setForeground(new Color(0, 0, 0));
+		lblConflicting.setFont(new Font("Corbel", Font.BOLD, 14));
 		panel_2.add(lblConflicting);
 		
-		JLabel lblAlternative = new JLabel("Alternative:");
-		sl_panel_2.putConstraint(SpringLayout.NORTH, lblAlternative, 0, SpringLayout.NORTH, lblAccepted);
-		sl_panel_2.putConstraint(SpringLayout.EAST, lblAlternative, -191, SpringLayout.EAST, panel_2);
-		panel_2.add(lblAlternative);
-		
-		JTextArea conflictingTxtArea = new JTextArea();
-		sl_panel_2.putConstraint(SpringLayout.NORTH, conflictingTxtArea, 0, SpringLayout.NORTH, acceptedTxtArea);
-		sl_panel_2.putConstraint(SpringLayout.WEST, conflictingTxtArea, 6, SpringLayout.EAST, lblConflicting);
-		sl_panel_2.putConstraint(SpringLayout.EAST, conflictingTxtArea, -27, SpringLayout.WEST, lblAlternative);
-		panel_2.add(conflictingTxtArea);
-		
 		JTextArea alternativeTxtArea = new JTextArea();
-		sl_panel_2.putConstraint(SpringLayout.NORTH, alternativeTxtArea, 0, SpringLayout.NORTH, acceptedTxtArea);
-		sl_panel_2.putConstraint(SpringLayout.WEST, alternativeTxtArea, 6, SpringLayout.EAST, lblAlternative);
-		sl_panel_2.putConstraint(SpringLayout.EAST, alternativeTxtArea, -2, SpringLayout.EAST, txtStudentName);
+		alternativeTxtArea.setEditable(false);
+		alternativeTxtArea.setBounds(19, 357, 441, 91);
 		panel_2.add(alternativeTxtArea);
-		//End Results Panel Area
+		
+		JLabel lblAlternative = new JLabel("Alternative:");
+		lblAlternative.setBounds(19, 329, 71, 17);
+		lblAlternative.setForeground(new Color(0, 0, 0));
+		lblAlternative.setFont(new Font("Corbel", Font.BOLD, 14));
+		panel_2.add(lblAlternative);
+		//close all students panel area
 		
 		//All students panel area
 		JPanel panel_3 = new JPanel();
-		panel_3.setVisible(false);
-		panel_3.setBounds(244, 200, 770, 213);
+		panel_3.setBounds(312, 0, 470, 460);
 		panel.add(panel_3);
-		SpringLayout sl_panel_3 = new SpringLayout();
-		panel_3.setLayout(sl_panel_3);
-		
+		panel_3.setBackground(new Color(255, 255, 255));
+		panel_3.setBorder(new LineBorder(new Color(0, 139, 139)));
+		panel_3.setLayout(null);
+				
+		JLabel lblAllStudentsResults = new JLabel("All Students Results");
+		lblAllStudentsResults.setForeground(new Color(0, 128, 128));
+		lblAllStudentsResults.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAllStudentsResults.setFont(new Font("Corbel", Font.BOLD, 30));
+		lblAllStudentsResults.setBounds(19, 11, 447, 39);
+		panel_3.add(lblAllStudentsResults);
+				
 		JTextArea allStudentsTxtArea = new JTextArea();
-		sl_panel_3.putConstraint(SpringLayout.NORTH, allStudentsTxtArea, 35, SpringLayout.NORTH, panel_3);
-		sl_panel_3.putConstraint(SpringLayout.WEST, allStudentsTxtArea, 42, SpringLayout.WEST, panel_3);
-		sl_panel_3.putConstraint(SpringLayout.EAST, allStudentsTxtArea, -52, SpringLayout.EAST, panel_3);
+		allStudentsTxtArea.setEditable(false);
+		allStudentsTxtArea.setBounds(19, 80, 447, 350);
 		panel_3.add(allStudentsTxtArea);
-		//close all students panel area
 		
 		JButton btnNewButton = new JButton("Search");
-		btnNewButton.setForeground(SystemColor.text);
-		btnNewButton.setBackground(SystemColor.textHighlight);
+		btnNewButton.setForeground(new Color(0, 128, 128));
+		btnNewButton.setBackground(new Color(220, 220, 220));
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -307,35 +314,37 @@ public class Report {
 				allStudentsTxtArea.setText(null);
 				
 				if(txtStudent.getText().equals("")) {
+					panel_2.setVisible(true);
+					lblName.setText("Name: ");
 					JOptionPane.showMessageDialog(new JFrame(), "Enter a name to search!!", "Dialog",
 					        JOptionPane.ERROR_MESSAGE);
 				}
 				else {
 					panel_2.setVisible(true);
-					txtStudentName.setText("");
+					lblName.setText("");
 					acceptedTxtArea.setText(null);
 					conflictingTxtArea.setText(null);
 					alternativeTxtArea.setText(null);
 					
-					Student student = app.searchStudents(txtStudentName.getText());
+					Student student = controller.searchStudents(txtStudent.getText().toLowerCase());
 					
 					ArrayList<String> acceptedSubjects = student.getAccepted();
 					ArrayList<String> conflictingSubjects = student.getConflicts();
 					ArrayList<String> alternateSubjects = student.getAlternates();
 					
 					for(String str : acceptedSubjects) {
-						accepted.concat(str+" ");
+						accepted.concat(str+"\n ");
 					}
 					
 					for(String str : conflictingSubjects) {
-						conflicts.concat(str+" ");
+						conflicts.concat(str+"\n ");
 					}
 					
 					for(String str : alternateSubjects) {
-						alternate.concat(str+" ");	
+						alternate.concat(str+"\n ");	
 					}
 					
-					txtStudentName.setText("Daniel Dawson");
+					lblName.setText(txtStudent.getText());
 					acceptedTxtArea.append(accepted);
 					conflictingTxtArea.append(conflicts);
 					alternativeTxtArea.append(alternate);
@@ -343,18 +352,18 @@ public class Report {
 			}
 		});
 		btnNewButton.setFont(new Font("Agency FB", Font.BOLD, 18));
-		btnNewButton.setBounds(751, 101, 89, 32);
+		btnNewButton.setBounds(26, 133, 89, 32);
 		panel.add(btnNewButton);
 		
 
 		JButton btnViewAllStudents = new JButton("View all students");
-		btnViewAllStudents.setForeground(SystemColor.text);
+		btnViewAllStudents.setForeground(new Color(0, 128, 128));
 		btnViewAllStudents.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//viewAllStudents(scrollPane);
 				panel_2.setVisible(false);
-				txtStudentName.setText("");
+				lblName.setText("");
 				acceptedTxtArea.setText(null);
 				conflictingTxtArea.setText(null);
 				alternativeTxtArea.setText(null);
@@ -362,7 +371,7 @@ public class Report {
 				panel_3.setVisible(true);
 				allStudentsTxtArea.setText(null);
 				
-				ArrayList<Student> students = app.getStudents(); 
+				ArrayList<Student> students = controller.getStudents(); 
 				
 				for(Student stu : students) {
 					String subjects = "";
@@ -370,57 +379,54 @@ public class Report {
 					for(String str : classes) {
 						subjects.concat(str + " ");
 					}
-					JLabel student_info = new JLabel(stu.getFullName()+ " | " + subjects);
+					JLabel student_info = new JLabel(stu.getFullName()+ " | " + subjects +" ");
 					student_info.setFont(new Font("Agency FB", Font.PLAIN, 18));
 					student_info.setBounds(244, 101, 194, 32);
 					allStudentsTxtArea.add(student_info);
 				}
-				
-				for(int i =0; i<10; i++) {
-					allStudentsTxtArea.append(" Yohan Brown: Mathematics, Computer Science, Physics, Communication Studies, Pure Science\n");
-				}
 			}
 		});
-		btnViewAllStudents.setBackground(SystemColor.textHighlight);
+		btnViewAllStudents.setBackground(new Color(220, 220, 220));
 		btnViewAllStudents.setFont(new Font("Agency FB", Font.BOLD, 18));
-		btnViewAllStudents.setBounds(857, 101, 157, 32);
+		btnViewAllStudents.setBounds(125, 133, 157, 32);
 		panel.add(btnViewAllStudents);
 		
 		txtStudent = new JTextField();
-		txtStudent.setFont(new Font("Agency FB", Font.PLAIN, 18));
-		txtStudent.setBounds(444, 101, 297, 32);
+		txtStudent.setFont(new Font("Corbel", Font.BOLD, 18));
+		txtStudent.setBounds(26, 90, 256, 32);
 		panel.add(txtStudent);
 		txtStudent.setColumns(10);
-		
+		//End Results Panel Area
 		
 		JButton btnNewButton_1 = new JButton("Logout");
-		btnNewButton_1.setForeground(SystemColor.textHighlight);
+		btnNewButton_1.setForeground(new Color(0, 139, 139));
 		btnNewButton_1.setBackground(SystemColor.text);
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-<<<<<<< HEAD
-				frame.dispose();
-=======
 				frmSixthFormApplication.dispose();
->>>>>>> working
-				//Login exit = new Login(app);
+				//Login exit = new Login(controller);
 				Login.main(null);
 				
 				
 			}
 			
 		});
-		btnNewButton_1.setBounds(1258, 55, 82, 32);
+		btnNewButton_1.setBounds(699, 11, 82, 32);
 		frmSixthFormApplication.getContentPane().add(btnNewButton_1);
 		
 		JButton btnHome = new JButton("Home");
-		btnHome.setForeground(SystemColor.textHighlight);
-		btnHome.setBackground(SystemColor.text);
-		btnHome.setBounds(1167, 55, 82, 32);
+		btnHome.setForeground(new Color(0, 139, 139));
+		btnHome.setBackground(new Color(255, 255, 255));
+		btnHome.setBounds(600, 11, 82, 32);
 		frmSixthFormApplication.getContentPane().add(btnHome);
-		frmSixthFormApplication.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
+		
+		
+		
+		
+		
+		frmSixthFormApplication.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-<<<<<<< HEAD
 	}
 	private static class __Tmp {
 		private static void __tmp() {
@@ -428,9 +434,6 @@ public class Report {
 		}
 	}
 	
-=======
-	}	
->>>>>>> working
 	
 	public void setVisible(boolean b) {
 		// TODO Auto-generated method stub

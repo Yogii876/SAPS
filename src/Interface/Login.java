@@ -137,7 +137,7 @@ public class Login {
 							frame.dispose();
 							
 							App controller = new App();
-							new MainScreen(controller);
+							new MainScreen();
 						}
 						else {
 							JOptionPane.showMessageDialog(null, "Incorrect Password", "Login Error", JOptionPane.ERROR_MESSAGE);

@@ -198,8 +198,8 @@ public class MainScreen {
 				    else if (dialogResult == JOptionPane.NO_OPTION){
 						controller.generateMappings(0);
 					}
-					//new Report(self);
-					//self.setVisible(false);
+					new Report(self);
+					self.setVisible(false);
 					
 				}
 				catch(NumberFormatException ne) {
