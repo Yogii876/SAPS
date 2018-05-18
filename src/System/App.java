@@ -1,23 +1,19 @@
 package System;
 
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.HashMap;
 import Core.*;
 import CSV.*;
 import java.io.File;
 import java.lang.NullPointerException;
 import java.util.Map;
-//import java.util.HashMap;
-//import java.util.LinkedHashMap;
-import BinaryTree.BinarySearchTree;
 
 
 public class App {
-	private ArrayList<Student> students;
+	private ArrayList<Student> students = new ArrayList<Student>();
 	private ArrayList<CAPE> offeredSubjects = new ArrayList<CAPE>();
-	private Point point = new Point();
-	private BinarySearchTree studentBST;
-	private BinarySearchTree capeBST = new BinarySearchTree();
+	private Map<String, Student>  studentMap;
+	private Map<String, CAPE>  capeBST = new HashMap<String, CAPE>();
 	private boolean status = false;
 	
 	
@@ -25,11 +21,27 @@ public class App {
 		// Should take the input from the GUI and populate offeredSubjects using populateSubjects
 	}
 	
+	//TODO delete
+	public ArrayList<CAPE> getOffered() {
+		return this.offeredSubjects;
+	}
 	
+	
+	public ArrayList<CAPE> getConflicts() {
+		return this.offeredSubjects;
+	}
+	
+	public ArrayList<CAPE> getAlternates() {
+		return this.offeredSubjects;
+	}
+	
+	public ArrayList<Student> getStudents() {
+		return this.students;
+	}
 	public void populateStudents(File csvFile) throws Exception {
 		Reader fileReader = new Reader(csvFile);
 		students = fileReader.getStudents();
-		studentBST = fileReader.getTree();
+		studentMap = fileReader.getMap();
 	}
 	
 	public CAPE searchSubjects(String sName) {
@@ -38,7 +50,7 @@ public class App {
 	}
 	
 	public Student searchStudents(String name) {
-		Student subj = (Student)studentBST.get(name);
+		Student subj = (Student)studentMap.get(name);
 		return subj;
 	}
 	
@@ -47,19 +59,16 @@ public class App {
 		if (tReq != null) {
 			subj = new CAPE(name, pReq, sReq, tReq, maxStud);
 			offeredSubjects.add(subj);
-			System.out.println(subj.getName());
 		}
 		else if (sReq != null) {
 			subj = new CAPE(name, pReq, sReq, maxStud);
 			offeredSubjects.add(subj);
-			System.out.println(subj.getName());
 		}
 		else {
 			subj = new CAPE(name, pReq, maxStud);
 			offeredSubjects.add(subj);
-			System.out.println(subj.getName());
 		}
-		capeBST.insert(subj.getName(), subj);
+		capeBST.put(subj.getName(), subj);
 		status = false;
 		return subj;
 	}
@@ -68,13 +77,13 @@ public class App {
 		return status;
 	}
 		
-	public void generateMappings() throws NullPointerException {
+	public void generateMappings(int i) throws NullPointerException {
 		// creating n by m matrix, where n is the number of students and m the number of subjects offered.
 		if (students.isEmpty()) {
-			throw new NullPointerException("Please upload a file before proceeding");
+			throw new NullPointerException("Upload Student Data Before Proceeding");
 		}
 		if (offeredSubjects.isEmpty()) {
-			throw new NullPointerException("Please enter offered CAPE subjects");
+			throw new NullPointerException("Set CAPE Preferences Before Proceeding");
 		}
 		
 		int n = students.size();
@@ -85,21 +94,21 @@ public class App {
 			Student stud = students.get(k);
 			for (int j = 0; j < m-1; j++) {
 				CAPE subj = offeredSubjects.get(j);
-				int points = stud.calcPoints(point, subj);
-				//int points = stud.getPoints(subj); 
+				int points = stud.calcPoints(subj);
 				if (points > 0) {
 					subj.addStudent(stud, points);
 					stud.addPossibleSub(subj);
 				}
 			}
 		}
-		assignStudents();
+		assignStudents(i);
 		status = true;
 	}
 	
-	private void assignStudents() {
+	private void assignStudents(int m) {
 		for (CAPE subj: offeredSubjects ) {
-			subj.generateAcceptedList();
+			System.out.println(subj);
+			subj.generateAcceptedList(m);
 		}
 	}
 	

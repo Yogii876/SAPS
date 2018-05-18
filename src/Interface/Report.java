@@ -41,7 +41,11 @@ import javax.swing.JTextArea;
 
 public class Report {
 
+<<<<<<< HEAD
 	private JFrame frame;
+=======
+	private JFrame frmSixthFormApplication;
+>>>>>>> working
 	private JTextField txtStudent;
 	private static App app;
 	private MainScreen mainscreen;
@@ -56,7 +60,7 @@ public class Report {
 			public void run() {
 				try {
 					Report window = new Report();
-					window.frame.setVisible(true);
+					window.frmSixthFormApplication.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -70,33 +74,40 @@ public class Report {
 	public Report() {
 		//this.app = app;
 		initialize();
-		frame.setVisible(true);
+		frmSixthFormApplication.setVisible(true);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setResizable(false);
-		frame.getContentPane().setBackground(SystemColor.textHighlight);
+		frmSixthFormApplication = new JFrame();
+		frmSixthFormApplication.setTitle("Sixth Form Application Processing System");
+		frmSixthFormApplication.setIconImage(Toolkit.getDefaultToolkit().getImage(Report.class.getResource("/img/saps-logo.png")));
+		frmSixthFormApplication.setAlwaysOnTop(true);
+		frmSixthFormApplication.setResizable(false);
+		frmSixthFormApplication.getContentPane().setBackground(SystemColor.textHighlight);
 		
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		frame.setBounds(0, 0,screen.width,screen.height - 30);
-		frame.getContentPane().setLayout(null);
+		frmSixthFormApplication.setBounds(0, 0,screen.width,screen.height - 30);
+		frmSixthFormApplication.getContentPane().setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("SAPS");
-		lblNewLabel.setBounds(0, 0, 112, 68);
+		lblNewLabel.setBounds(0, 0, 209, 79);
 		lblNewLabel.setForeground(SystemColor.text);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Rage Italic", Font.BOLD, 35));
-		frame.getContentPane().add(lblNewLabel);
+		frmSixthFormApplication.getContentPane().add(lblNewLabel);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBackground(SystemColor.text);
 		tabbedPane.setBounds(0,90,1366,756);
 		tabbedPane.setFont(new Font("Agency FB", Font.PLAIN, 11));
+<<<<<<< HEAD
 		frame.getContentPane().add(tabbedPane);
+=======
+		frmSixthFormApplication.getContentPane().add(tabbedPane);
+>>>>>>> working
 		tabbedPane.setFont(new Font("Agency FB", Font.PLAIN, 11));
 		
 		JPanel panel_1 = new JPanel();
@@ -134,6 +145,10 @@ public class Report {
 				panel_4.add(lblAcceptedStudents);
 				
 				JTextArea acceptedStudentsArea = new JTextArea();
+<<<<<<< HEAD
+=======
+				acceptedStudentsArea.setEditable(false);
+>>>>>>> working
 				sl_panel_4.putConstraint(SpringLayout.NORTH, acceptedStudentsArea, 6, SpringLayout.SOUTH, lblAcceptedStudents);
 				sl_panel_4.putConstraint(SpringLayout.WEST, acceptedStudentsArea, 0, SpringLayout.WEST, lblSubject);
 				sl_panel_4.putConstraint(SpringLayout.EAST, acceptedStudentsArea, 202, SpringLayout.WEST, lblSubject);
@@ -383,7 +398,11 @@ public class Report {
 		btnNewButton_1.setBackground(SystemColor.text);
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+<<<<<<< HEAD
 				frame.dispose();
+=======
+				frmSixthFormApplication.dispose();
+>>>>>>> working
 				//Login exit = new Login(app);
 				Login.main(null);
 				
@@ -392,21 +411,16 @@ public class Report {
 			
 		});
 		btnNewButton_1.setBounds(1258, 55, 82, 32);
-		frame.getContentPane().add(btnNewButton_1);
+		frmSixthFormApplication.getContentPane().add(btnNewButton_1);
 		
 		JButton btnHome = new JButton("Home");
 		btnHome.setForeground(SystemColor.textHighlight);
 		btnHome.setBackground(SystemColor.text);
 		btnHome.setBounds(1167, 55, 82, 32);
-		frame.getContentPane().add(btnHome);
-		
-		
-		
-		
-		
-		
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmSixthFormApplication.getContentPane().add(btnHome);
+		frmSixthFormApplication.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+<<<<<<< HEAD
 	}
 	private static class __Tmp {
 		private static void __tmp() {
@@ -414,6 +428,9 @@ public class Report {
 		}
 	}
 	
+=======
+	}	
+>>>>>>> working
 	
 	public void setVisible(boolean b) {
 		// TODO Auto-generated method stub

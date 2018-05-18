@@ -6,6 +6,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.lang.Exception;
 import BinaryTree.BinarySearchTree;
 
@@ -14,7 +16,7 @@ public class Reader {
 	private ArrayList<Student> students = new ArrayList<Student>();
 	private ArrayList<CSEC> csecSubs = new ArrayList<CSEC>();
 	private ArrayList<String> capeSubs = new ArrayList<String>();
-	private BinarySearchTree bst = new BinarySearchTree();
+	private Map<String, Student> sMap = new HashMap<String, Student>();
 	
 	public Reader(File csvFile) throws Exception {
 		//String csvFile = filePath;
@@ -50,8 +52,7 @@ public class Reader {
 		            	count++;
 		            }
 		            Student stud = new Student(fName, lName, csecSubs, capeSubs);
-		            System.out.println(stud.toString());
-		            bst.insert(fName.toLowerCase() + " " + lName.toLowerCase(), stud);
+		            sMap.put(fName.toLowerCase() + " " + lName.toLowerCase(), stud);
 		            students.add(stud);
 		        }
 		    }
@@ -74,8 +75,8 @@ public class Reader {
 
     }
 	
-	public BinarySearchTree getTree() {
-		return bst;
+	public Map<String, Student> getMap() {
+		return sMap;
 	}
 	
 	public ArrayList<Student> getStudents() {
