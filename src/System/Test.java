@@ -20,7 +20,7 @@ public class Test {
 		try {	
 			controller.populateStudents(new File("c:/users/yohan/Downloads/students2.csv"));
 			fakeSubjects();
-			controller.generateMappings(r.nextInt(4)+1);
+			controller.generateMappings(0);
 			for (CAPE c : controller.getOffered()) {
 				System.out.println(c + "\t" + c.getAccepted());
 				System.out.println(c + "\t" + c.getConflicts());

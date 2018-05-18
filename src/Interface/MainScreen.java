@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Random;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.Color;
 import System.App;
 import Core.CAPE;
@@ -48,7 +50,7 @@ public class MainScreen {
 				try {
 					App test = new App();
 					UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-					MainScreen window = new MainScreen(test);
+					MainScreen window = new MainScreen();
 					window.frmSaps.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -60,8 +62,8 @@ public class MainScreen {
 	/**
 	 * Create the application.
 	 */
-	public MainScreen(App app) {
-		this.controller = app;
+	public MainScreen() {
+		this.controller = new App();
 		initialize();
 		frmSaps.setVisible(true);
 		this.self = this;
@@ -105,6 +107,19 @@ public class MainScreen {
 	private void initialize() {
 		
 		frmSaps = new JFrame();
+		frmSaps.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frmSaps.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				int result = JOptionPane.showConfirmDialog(frmSaps, "Are you sure you want to exit the application?", "Exit Application", JOptionPane.YES_NO_OPTION);
+				if (result == JOptionPane.YES_OPTION) {
+					frmSaps.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				}
+				else {
+					frmSaps.setVisible(true);
+				}
+		}
+		});
+			
 		frmSaps.setTitle("Sixth Form Application Processing System");
 		frmSaps.setFont(new Font("Corbel", Font.PLAIN, 14));
 		frmSaps.setResizable(false);
@@ -150,7 +165,7 @@ public class MainScreen {
 			}
 			
 		});
-		lblUploadFilw.setBounds(102, 193, 82, 16);
+		lblUploadFilw.setBounds(112, 193, 82, 16);
 		frmSaps.getContentPane().add(lblUploadFilw);
 		
 		
@@ -165,7 +180,7 @@ public class MainScreen {
 			public void mouseClicked(MouseEvent arg0) {
 				if (controller.getOffered().isEmpty()) {
 					JOptionPane.showMessageDialog(frmSaps, "Set CAPE Preferences Before Proceeding", "Error", JOptionPane.ERROR_MESSAGE);
-					new Preferences(self,controller);
+					new Preferences(self);
 					self.setVisible(false);
 					return;
 					}
@@ -177,10 +192,10 @@ public class MainScreen {
 				try {
 					int dialogResult = JOptionPane.showConfirmDialog (null, "Is there restriction on the number of courses a student can do?","Warning", JOptionPane.INFORMATION_MESSAGE);
 					if(dialogResult == JOptionPane.YES_OPTION){
-							int ans = Integer.parseInt(JOptionPane.showInputDialog(frmSaps, "Enter number", "Maximum Allocation of Courses", JOptionPane.INFORMATION_MESSAGE));
-							controller.generateMappings(ans);
+						int ans = Integer.parseInt(JOptionPane.showInputDialog(frmSaps, "Enter number", "Maximum Allocation of Courses", JOptionPane.INFORMATION_MESSAGE));
+						controller.generateMappings(ans);
 					}
-					else {
+				    else if (dialogResult == JOptionPane.NO_OPTION){
 						controller.generateMappings(0);
 					}
 					//new Report(self);
@@ -200,7 +215,7 @@ public class MainScreen {
 		JLabel repLabel = new JLabel("Generate Report");
 		repLabel.setFont(new Font("Corbel", Font.PLAIN, 14));
 		repLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		repLabel.setBounds(271, 362, 102, 20);
+		repLabel.setBounds(397, 362, 102, 20);
 		repLabel.addMouseListener(clickReport);
 		frmSaps.getContentPane().add(repLabel);
 		
@@ -212,23 +227,25 @@ public class MainScreen {
 		});
 		lblManageUsers.setFont(new Font("Corbel", Font.PLAIN, 14));
 		lblManageUsers.setHorizontalAlignment(SwingConstants.CENTER);
-		lblManageUsers.setBounds(287, 193, 99, 16);
+		lblManageUsers.setBounds(400, 193, 99, 16);
 		frmSaps.getContentPane().add(lblManageUsers);
 		
-		JLabel lblSetPreferences = new JLabel("Set Preferences");
-		lblSetPreferences.setFont(new Font("Corbel", Font.PLAIN, 14));
-		lblSetPreferences.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSetPreferences.addMouseListener(new MouseAdapter() {
+		MouseAdapter clickPref = new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-					new Preferences(self,controller);
+					new Preferences(self);
 					self.setVisible(false);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
 			}
-		});
+		};
+		
+		JLabel lblSetPreferences = new JLabel("Set Preferences");
+		lblSetPreferences.setFont(new Font("Corbel", Font.PLAIN, 14));
+		lblSetPreferences.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSetPreferences.addMouseListener(clickPref);
 		lblSetPreferences.setBounds(102, 364, 99, 16);
 		frmSaps.getContentPane().add(lblSetPreferences);
 		
@@ -237,45 +254,7 @@ public class MainScreen {
 		upLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.addChoosableFileFilter(new FileFilter() {
-
-				    public String getDescription() {
-				        return "Comma-Separated Value Files (*.csv)";
-				    }
-				 
-				    public boolean accept(File f) {
-				        if (f.isDirectory()) {
-				            return true;
-				        } else {
-				            return f.getName().toLowerCase().endsWith(".csv");
-				        }
-				    }
-				});
-				fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
-				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-				fileChooser.setAcceptAllFileFilterUsed(false);
-				int result = fileChooser.showOpenDialog(frmSaps);
-				if (result == JFileChooser.APPROVE_OPTION) {
-				    File selectedFile = fileChooser.getSelectedFile();
-				    try {
-				    	controller.populateStudents(selectedFile);
-				    }
-				    catch (Exception e1) {
-				    	JOptionPane.showMessageDialog(null, e1.getMessage(), "Parsing Error", JOptionPane.ERROR_MESSAGE);
-				    }				    
-				}
-			}
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				JLabel src = (JLabel)e.getSource();
-				src.setBounds(117, 78, 140, 138);
-			}
-			
-			public void mouseExited(MouseEvent e) {
-				JLabel src = (JLabel)e.getSource();
-				src.setBounds(134, 78, 120, 118);
+				chooser();
 			}
 		});
 		upLabel.setBounds(92, 64, 120, 118);
@@ -285,7 +264,7 @@ public class MainScreen {
 		lblLabel.addMouseListener(clickReport);
 		
 		
-		lblLabel.setBounds(261, 223, 128, 128);
+		lblLabel.setBounds(387, 223, 128, 128);
 		frmSaps.getContentPane().add(lblLabel);
 		
 		JLabel lblHehe = new JLabel(image3);
@@ -294,23 +273,11 @@ public class MainScreen {
 			public void mouseClicked(MouseEvent e) {
 			}
 		});
-		lblHehe.setBounds(261, 64, 144, 118);
+		lblHehe.setBounds(382, 64, 144, 118);
 		frmSaps.getContentPane().add(lblHehe);
 		
 		JLabel lblLabl = new JLabel(image4);
-		lblLabl.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				try {
-					Preferences window = new Preferences(self,controller);
-					self.setVisible(false);
-					//windoww.frame.setVisible(true);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-				
-			}
-		});
+		lblLabl.addMouseListener(clickPref);
 		lblLabl.setBounds(101, 234, 100, 100);
 		frmSaps.getContentPane().add(lblLabl);
 		
@@ -365,6 +332,10 @@ public class MainScreen {
 			}
 			cape_subjs2.remove(sub);
 		}
+	}
+	
+	public App getController() {
+		return this.controller;
 	}
 	
 	public void setVisible(boolean b) {

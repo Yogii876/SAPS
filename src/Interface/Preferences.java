@@ -12,31 +12,25 @@ import com.jgoodies.forms.factories.DefaultComponentFactory;
 import Core.CAPE;
 
 import javax.swing.JComboBox;
-import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import System.App;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 import javax.swing.JTextField;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.Toolkit;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import javax.swing.border.LineBorder;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class Preferences {
 
@@ -55,10 +49,9 @@ public class Preferences {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					App con = new App();
-					MainScreen t = new MainScreen(con);
+					MainScreen t = new MainScreen();
 					t.setVisible(false);
-					Preferences window = new Preferences(t, con);
+					Preferences window = new Preferences(t);
 					window.prefFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -70,11 +63,11 @@ public class Preferences {
 	/**
 	 * Create the application.
 	 */
-	public Preferences(MainScreen parent, App app) {
+	public Preferences(MainScreen parent) {
 		initialize();
 		this.parent = parent;
 		prefFrame.setVisible(true);
-		this.controller = app;
+		this.controller = parent.getController();
 		prefFrame.setVisible(true);
 		this.maxStud = -1;
 	}
@@ -93,8 +86,17 @@ public class Preferences {
 		    return component;
 		  }
 	}
+	@SuppressWarnings("unchecked")
 	private void initialize() {		
 		prefFrame = new JFrame();
+		prefFrame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				parent.setVisible(true);
+				prefFrame.dispose();
+			}
+		});
+		prefFrame.setAlwaysOnTop(true);
 		prefFrame.setBackground(new Color(0, 128, 128));
 		prefFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(Preferences.class.getResource("/img/saps-logo.png")));
 		prefFrame.setTitle("Sixth Form Application Processing System");
@@ -104,7 +106,7 @@ public class Preferences {
 		prefFrame.getContentPane().setBackground(new Color(255, 255, 255));
 		prefFrame.getContentPane().setForeground(Color.WHITE);
 		prefFrame.setBounds(257, 133, 710, 565);
-		prefFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		prefFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		prefFrame.getContentPane().setLayout(null);
 		
 		JLabel lblCapePreferences = DefaultComponentFactory.getInstance().createTitle("Register CAPE Subject");
@@ -154,7 +156,7 @@ public class Preferences {
 		//String[] cape_subjs = {"ACCOUNTING", "ANIMATION & GAME DESIGN", "AGRICULTURAL SCIENCE", "APPLIED MATHEMATICS", "ART AND DESIGN", "BIOLOGY", "BUILDING AND MECHANICAL ENGINEERING DRAWING", "CARIBBEAN STUDIES", "CHEMISTRY", "COMMUNICATION STUDIES", "COMPUTER SCIENCE", "DIGITAL MEDIA", "ELECTRICAL AND ELECTRONIC ENGINEERING TECHNOLOGY", "ECONOMICS", "ENTREPRENEURSHIP", "ENVIRONMENTAL SCIENCE", "FINANCIAL SERVICES STUDIES", "FOOD AND NUTRITION", "FRENCH", "GEOGRAPHY", "GREEN ENGINEERING", "HISTORY", "INFORMATION TECHNOLOGY", "INTEGRATED MATHEMATICS", "LAW", "LITERATURES IN ENGLISH", "LOGISTICS AND SUPPLY CHAIN OPERATIONS", "MANAGEMENT OF BUSINESS", "PERFORMING ARTS", "PHYSICS", "PHYSICAL EDUCATION AND SPORT", "PURE MATHEMATICS", "SOCIOLOGY", "SPANISH", "TOURISM"};
 		String[] cape_subjs2 = {"None", "ACCOUNTING", "ANIMATION & GAME DESIGN", "AGRICULTURAL SCIENCE", "APPLIED MATHEMATICS", "ART AND DESIGN", "BIOLOGY", "BUILDING AND MECHANICAL ENGINEERING DRAWING", "CARIBBEAN STUDIES", "CHEMISTRY", "COMMUNICATION STUDIES", "COMPUTER SCIENCE", "DIGITAL MEDIA", "ELECTRICAL AND ELECTRONIC ENGINEERING TECHNOLOGY", "ECONOMICS", "ENTREPRENEURSHIP", "ENVIRONMENTAL SCIENCE", "FINANCIAL SERVICES STUDIES", "FOOD AND NUTRITION", "FRENCH", "GEOGRAPHY", "GREEN ENGINEERING", "HISTORY", "INFORMATION TECHNOLOGY", "INTEGRATED MATHEMATICS", "LAW", "LITERATURES IN ENGLISH", "LOGISTICS AND SUPPLY CHAIN OPERATIONS", "MANAGEMENT OF BUSINESS", "PERFORMING ARTS", "PHYSICS", "PHYSICAL EDUCATION AND SPORT", "PURE MATHEMATICS", "SOCIOLOGY", "SPANISH", "TOURISM"};
 		
-		@SuppressWarnings({ "rawtypes", "unchecked" })
+		@SuppressWarnings({ "rawtypes"})
 		JComboBox nameBox = new JComboBox(cape_subjs2);
 		nameBox.setFont(new Font("Corbel", Font.PLAIN, 14));
 		nameBox.setBounds(343, 54, 336, 34);
@@ -174,6 +176,8 @@ public class Preferences {
 		prefFrame.getContentPane().add(lblSelectPrimaryPrerequisite);
 		
 		String[] csec_subjs = {"None", "ADDITIONAL MATHEMATICS", "AGRICULTURAL SCIENCE", "BIOLOGY", "CARIBBEAN HISTORY", "CHEMISTRY", "ECONOMICS", "ELECTRONIC DOCUMENT PREPARATION AND MANAGEMENT", "ENGLISH A", "ENGLISH B", "FAMILY AND RESOURCE MANAGEMENT", "FOOD, NUTRITION AND HEALTH", "FRENCH", "GEOGRAPHY", "HOME ECONOMICS", "HUMAN AND SOCIAL BIOLOGY", "INDUSTRIAL TECHNOLOGY", "INFORMATION TECHNOLOGY", "INTEGRATED SCIENCE", "MATHEMATICS", "MUSIC", "OFFICE ADMINISTRATION", "PHYSICAL EDUCATION AND SPORT", "PHYSICS", "PORTUGUESE", "PRINCIPLES OF ACCOUNTS", "PRINCIPLES OF BUSINESS", "RELIGIOUS EDUCATION", "SOCIAL STUDIES", "SPANISH", "TECHNICAL DRAWING", "TEXTILES, CLOTHING AND FASHION", "THEATRE ARTS", "VISUAL ARTS"};
+		
+		@SuppressWarnings("rawtypes")
 		JComboBox pBox = new JComboBox(csec_subjs);
 		pBox.setFont(new Font("Corbel", Font.PLAIN, 14));
 		pBox.setBounds(344, 140, 335, 34);
@@ -186,6 +190,7 @@ public class Preferences {
 		lblSelectSecondaryPrerequisite.setFont(new Font("Corbel", Font.PLAIN, 18));
 		prefFrame.getContentPane().add(lblSelectSecondaryPrerequisite);
 		
+		@SuppressWarnings("rawtypes")
 		JComboBox sBox = new JComboBox(csec_subjs);
 		sBox.setFont(new Font("Corbel", Font.PLAIN, 14));
 		sBox.setBounds(344, 185, 335, 34);
@@ -198,6 +203,7 @@ public class Preferences {
 		lblSelectTernaryPrerequisite.setFont(new Font("Corbel", Font.PLAIN, 18));
 		prefFrame.getContentPane().add(lblSelectTernaryPrerequisite);
 		
+		@SuppressWarnings("rawtypes")
 		JComboBox tBox = new JComboBox(csec_subjs);
 		tBox.setFont(new Font("Corbel", Font.PLAIN, 14));
 		tBox.setBounds(343, 236, 335, 34);
@@ -217,6 +223,7 @@ public class Preferences {
 		lblSelectAntirequisite.setFont(new Font("Corbel", Font.PLAIN, 18));
 		prefFrame.getContentPane().add(lblSelectAntirequisite);
 		
+		@SuppressWarnings("rawtypes")
 		JComboBox a1Box = new JComboBox(cape_subjs2);
 		a1Box.setFont(new Font("Corbel", Font.PLAIN, 14));
 		a1Box.setBounds(343, 318, 335, 34);
@@ -229,6 +236,7 @@ public class Preferences {
 		lblSelectAntirequisite_1.setFont(new Font("Corbel", Font.PLAIN, 18));
 		prefFrame.getContentPane().add(lblSelectAntirequisite_1);
 		
+		@SuppressWarnings("rawtypes")
 		JComboBox a2Box = new JComboBox(cape_subjs2);
 		a2Box.setFont(new Font("Corbel", Font.PLAIN, 14));
 		a2Box.setBounds(343, 363, 335, 34);
@@ -241,6 +249,7 @@ public class Preferences {
 		lblSelectAntirequisite_2.setFont(new Font("Corbel", Font.PLAIN, 18));
 		prefFrame.getContentPane().add(lblSelectAntirequisite_2);
 		
+		@SuppressWarnings("rawtypes")
 		JComboBox a3Box = new JComboBox(cape_subjs2);
 		a3Box.setFont(new Font("Corbel", Font.PLAIN, 14));
 		a3Box.setBounds(343, 417, 335, 34);
@@ -490,5 +499,12 @@ public class Preferences {
 		btnSubmit.setFocusPainted(false);
 		btnSubmit.setBorder(new LineBorder(new Color(0, 128, 128), 2, true));
 		nameBox.setRenderer(new MyListCellRenderer());
+		pBox.setRenderer(new MyListCellRenderer());
+		sBox.setRenderer(new MyListCellRenderer());
+		tBox.setRenderer(new MyListCellRenderer());
+		a1Box.setRenderer(new MyListCellRenderer());
+		a2Box.setRenderer(new MyListCellRenderer());
+		a3Box.setRenderer(new MyListCellRenderer());
+		
 	}
 }

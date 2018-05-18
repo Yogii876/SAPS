@@ -164,7 +164,7 @@ public class CAPE extends Subject {
 						accepted.put(stud, entry.getValue());						
 					}
 					else {
-						alternateStudents.put(stud, entry.getValue());
+						//alternateStudents.put(stud, entry.getValue());
 						stud.addAlternate(this);						
 					}
 				}
