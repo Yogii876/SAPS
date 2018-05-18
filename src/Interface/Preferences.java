@@ -6,37 +6,34 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
-import java.awt.BorderLayout;
-import javax.swing.JTextArea;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 
 import Core.CAPE;
 
 import javax.swing.JComboBox;
-import java.awt.SystemColor;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JScrollBar;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.Dimension;
 import System.App;
-import java.awt.GridLayout;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 import javax.swing.JTextField;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.beans.PropertyChangeEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.Toolkit;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import javax.swing.border.LineBorder;
 
 public class Preferences {
 
@@ -45,12 +42,37 @@ public class Preferences {
 	private JTextField classSize;
 	private MainScreen parent;
 	private int maxStud = -1;
-	private CAPE testSub = new CAPE("accounting", "mathematics", "physics", "biology", 25);
 	private CAPE searchedSub = null;
 
 	/**
 	 * Launch the application.
 	 */
+	
+	private static class RoundedBorder implements Border {
+
+	    private int radius;
+
+
+	    RoundedBorder(int radius) {
+	        this.radius = radius;
+	    }
+
+
+	    public Insets getBorderInsets(Component c) {
+	        return new Insets(this.radius+1, this.radius+1, this.radius+2, this.radius);
+	    }
+
+
+	    public boolean isBorderOpaque() {
+	        return true;
+	    }
+
+
+	    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+	        g.drawRoundRect(x, y, width-1, height-1, radius, radius);
+	    }
+	}
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -92,21 +114,21 @@ public class Preferences {
 		prefFrame.setResizable(false);
 		prefFrame.getContentPane().setBackground(new Color(255, 255, 255));
 		prefFrame.getContentPane().setForeground(Color.WHITE);
-		prefFrame.setBounds(257, 133, 710, 540);
+		prefFrame.setBounds(257, 133, 710, 565);
 		prefFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		prefFrame.getContentPane().setLayout(null);
 		
 		JLabel lblCapePreferences = DefaultComponentFactory.getInstance().createTitle("Register CAPE Subject");
 		lblCapePreferences.setForeground(new Color(0, 128, 128));
 		lblCapePreferences.setHorizontalAlignment(SwingConstants.LEFT);
-		lblCapePreferences.setBounds(9, 11, 315, 37);
-		lblCapePreferences.setFont(new Font("Corbel", Font.BOLD, 20));
+		lblCapePreferences.setBounds(10, 10, 269, 37);
+		lblCapePreferences.setFont(new Font("Century Gothic", Font.BOLD, 21));
 		prefFrame.getContentPane().add(lblCapePreferences);
 		
-		JLabel lblClassSize = new JLabel("Class Size");
+		JLabel lblClassSize = new JLabel("Maximum Class Size");
 		lblClassSize.setFont(new Font("Corbel", Font.ITALIC, 18));
 		lblClassSize.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblClassSize.setBounds(475, 16, 71, 32);
+		lblClassSize.setBounds(443, 16, 147, 32);
 		prefFrame.getContentPane().add(lblClassSize);
 		
 		classSize = new JTextField();
@@ -120,41 +142,36 @@ public class Preferences {
 				}
 			}
 		});
-		classSize.addPropertyChangeListener(new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				Object source = evt.getSource();
-				
-			}
-		});
-		classSize.setBounds(556, 23, 86, 20);
+		
+		classSize.setBounds(600, 23, 37, 20);
 		prefFrame.getContentPane().add(classSize);
-		classSize.setColumns(10);
+		classSize.setColumns(3);
 		
 		JLabel lblNewLabel = new JLabel("Subject Name");
-		lblNewLabel.setBounds(2, 65, 243, 20);
+		lblNewLabel.setBounds(2, 60, 243, 20);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Corbel", Font.PLAIN, 18));
 		lblNewLabel.setBackground(Color.WHITE);
 		prefFrame.getContentPane().add(lblNewLabel);
 		
-		String[] cape_subjs = {"ACCOUNTING", "ANIMATION & GAME DESIGN", "AGRICULTURAL SCIENCE", "APPLIED MATHEMATICS", "ART AND DESIGN", "BIOLOGY", "BUILDING AND MECHANICAL ENGINEERING DRAWING", "CARIBBEAN STUDIES", "CHEMISTRY", "COMMUNICATION STUDIES", "COMPUTER SCIENCE", "DIGITAL MEDIA", "ELECTRICAL AND ELECTRONIC ENGINEERING TECHNOLOGY", "ECONOMICS", "ENTREPRENEURSHIP", "ENVIRONMENTAL SCIENCE", "FINANCIAL SERVICES STUDIES", "FOOD AND NUTRITION", "FRENCH", "GEOGRAPHY", "GREEN ENGINEERING", "HISTORY", "INFORMATION TECHNOLOGY", "INTEGRATED MATHEMATICS", "LAW", "LITERATURES IN ENGLISH", "LOGISTICS AND SUPPLY CHAIN OPERATIONS", "MANAGEMENT OF BUSINESS", "PERFORMING ARTS", "PHYSICS", "PHYSICAL EDUCATION AND SPORT", "PURE MATHEMATICS", "SOCIOLOGY", "SPANISH", "TOURISM"};
+		//String[] cape_subjs = {"ACCOUNTING", "ANIMATION & GAME DESIGN", "AGRICULTURAL SCIENCE", "APPLIED MATHEMATICS", "ART AND DESIGN", "BIOLOGY", "BUILDING AND MECHANICAL ENGINEERING DRAWING", "CARIBBEAN STUDIES", "CHEMISTRY", "COMMUNICATION STUDIES", "COMPUTER SCIENCE", "DIGITAL MEDIA", "ELECTRICAL AND ELECTRONIC ENGINEERING TECHNOLOGY", "ECONOMICS", "ENTREPRENEURSHIP", "ENVIRONMENTAL SCIENCE", "FINANCIAL SERVICES STUDIES", "FOOD AND NUTRITION", "FRENCH", "GEOGRAPHY", "GREEN ENGINEERING", "HISTORY", "INFORMATION TECHNOLOGY", "INTEGRATED MATHEMATICS", "LAW", "LITERATURES IN ENGLISH", "LOGISTICS AND SUPPLY CHAIN OPERATIONS", "MANAGEMENT OF BUSINESS", "PERFORMING ARTS", "PHYSICS", "PHYSICAL EDUCATION AND SPORT", "PURE MATHEMATICS", "SOCIOLOGY", "SPANISH", "TOURISM"};
 		String[] cape_subjs2 = {"None", "ACCOUNTING", "ANIMATION & GAME DESIGN", "AGRICULTURAL SCIENCE", "APPLIED MATHEMATICS", "ART AND DESIGN", "BIOLOGY", "BUILDING AND MECHANICAL ENGINEERING DRAWING", "CARIBBEAN STUDIES", "CHEMISTRY", "COMMUNICATION STUDIES", "COMPUTER SCIENCE", "DIGITAL MEDIA", "ELECTRICAL AND ELECTRONIC ENGINEERING TECHNOLOGY", "ECONOMICS", "ENTREPRENEURSHIP", "ENVIRONMENTAL SCIENCE", "FINANCIAL SERVICES STUDIES", "FOOD AND NUTRITION", "FRENCH", "GEOGRAPHY", "GREEN ENGINEERING", "HISTORY", "INFORMATION TECHNOLOGY", "INTEGRATED MATHEMATICS", "LAW", "LITERATURES IN ENGLISH", "LOGISTICS AND SUPPLY CHAIN OPERATIONS", "MANAGEMENT OF BUSINESS", "PERFORMING ARTS", "PHYSICS", "PHYSICAL EDUCATION AND SPORT", "PURE MATHEMATICS", "SOCIOLOGY", "SPANISH", "TOURISM"};
 		
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		JComboBox nameBox = new JComboBox(cape_subjs2);
 		nameBox.setFont(new Font("Corbel", Font.PLAIN, 14));
-		nameBox.setBounds(344, 59, 336, 34);
+		nameBox.setBounds(343, 54, 336, 34);
 		prefFrame.getContentPane().add(nameBox);
 		
-		JLabel lblPrerequisites = new JLabel("PreRequisites");
+		JLabel lblPrerequisites = new JLabel("Pre-Requisites");
 		lblPrerequisites.setForeground(new Color(0, 128, 128));
 		lblPrerequisites.setBackground(Color.WHITE);
-		lblPrerequisites.setFont(new Font("Corbel", Font.BOLD, 18));
-		lblPrerequisites.setBounds(9, 98, 236, 25);
+		lblPrerequisites.setFont(new Font("Century", Font.BOLD, 18));
+		lblPrerequisites.setBounds(9, 95, 236, 25);
 		prefFrame.getContentPane().add(lblPrerequisites);
 		
 		JLabel lblSelectPrimaryPrerequisite = new JLabel("Primary");
-		lblSelectPrimaryPrerequisite.setBounds(0, 134, 243, 20);
+		lblSelectPrimaryPrerequisite.setBounds(2, 146, 243, 20);
 		lblSelectPrimaryPrerequisite.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSelectPrimaryPrerequisite.setFont(new Font("Corbel", Font.PLAIN, 18));
 		prefFrame.getContentPane().add(lblSelectPrimaryPrerequisite);
@@ -162,79 +179,83 @@ public class Preferences {
 		String[] csec_subjs = {"None", "ADDITIONAL MATHEMATICS", "AGRICULTURAL SCIENCE", "BIOLOGY", "CARIBBEAN HISTORY", "CHEMISTRY", "ECONOMICS", "ELECTRONIC DOCUMENT PREPARATION AND MANAGEMENT", "ENGLISH A", "ENGLISH B", "FAMILY AND RESOURCE MANAGEMENT", "FOOD, NUTRITION AND HEALTH", "FRENCH", "GEOGRAPHY", "HOME ECONOMICS", "HUMAN AND SOCIAL BIOLOGY", "INDUSTRIAL TECHNOLOGY", "INFORMATION TECHNOLOGY", "INTEGRATED SCIENCE", "MATHEMATICS", "MUSIC", "OFFICE ADMINISTRATION", "PHYSICAL EDUCATION AND SPORT", "PHYSICS", "PORTUGUESE", "PRINCIPLES OF ACCOUNTS", "PRINCIPLES OF BUSINESS", "RELIGIOUS EDUCATION", "SOCIAL STUDIES", "SPANISH", "TECHNICAL DRAWING", "TEXTILES, CLOTHING AND FASHION", "THEATRE ARTS", "VISUAL ARTS"};
 		JComboBox pBox = new JComboBox(csec_subjs);
 		pBox.setFont(new Font("Corbel", Font.PLAIN, 14));
-		pBox.setBounds(344, 124, 335, 34);
+		pBox.setBounds(344, 140, 335, 34);
 		pBox.setSelectedIndex(0);
 		prefFrame.getContentPane().add(pBox);
 		
 		JLabel lblSelectSecondaryPrerequisite = new JLabel("Secondary");
-		lblSelectSecondaryPrerequisite.setBounds(0, 176, 243, 20);
+		lblSelectSecondaryPrerequisite.setBounds(2, 191, 243, 20);
 		lblSelectSecondaryPrerequisite.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSelectSecondaryPrerequisite.setFont(new Font("Corbel", Font.PLAIN, 18));
 		prefFrame.getContentPane().add(lblSelectSecondaryPrerequisite);
 		
 		JComboBox sBox = new JComboBox(csec_subjs);
 		sBox.setFont(new Font("Corbel", Font.PLAIN, 14));
-		sBox.setBounds(344, 170, 335, 34);
+		sBox.setBounds(344, 185, 335, 34);
 		sBox.setSelectedIndex(0);
 		prefFrame.getContentPane().add(sBox);
 		
 		JLabel lblSelectTernaryPrerequisite = new JLabel("Tertiary");
-		lblSelectTernaryPrerequisite.setBounds(0, 224, 243, 20);
+		lblSelectTernaryPrerequisite.setBounds(2, 242, 243, 20);
 		lblSelectTernaryPrerequisite.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSelectTernaryPrerequisite.setFont(new Font("Corbel", Font.PLAIN, 18));
 		prefFrame.getContentPane().add(lblSelectTernaryPrerequisite);
 		
 		JComboBox tBox = new JComboBox(csec_subjs);
 		tBox.setFont(new Font("Corbel", Font.PLAIN, 14));
-		tBox.setBounds(345, 220, 335, 34);
+		tBox.setBounds(343, 236, 335, 34);
 		tBox.setSelectedIndex(0);
 		prefFrame.getContentPane().add(tBox);
 		
-		JLabel lblAntirequisites = new JLabel("AntiRequisites");
+		JLabel lblAntirequisites = new JLabel("Anti-Requisites");
+		lblAntirequisites.setHorizontalAlignment(SwingConstants.LEFT);
 		lblAntirequisites.setForeground(new Color(0, 128, 128));
-		lblAntirequisites.setFont(new Font("Corbel", Font.BOLD, 18));
-		lblAntirequisites.setBounds(10, 270, 226, 25);
+		lblAntirequisites.setFont(new Font("Century Gothic", Font.BOLD, 18));
+		lblAntirequisites.setBounds(10, 276, 226, 25);
 		prefFrame.getContentPane().add(lblAntirequisites);
 		
 		JLabel lblSelectAntirequisite = new JLabel("First");
-		lblSelectAntirequisite.setBounds(0, 315, 243, 20);
+		lblSelectAntirequisite.setBounds(2, 324, 243, 20);
 		lblSelectAntirequisite.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSelectAntirequisite.setFont(new Font("Corbel", Font.PLAIN, 18));
 		prefFrame.getContentPane().add(lblSelectAntirequisite);
 		
 		JComboBox a1Box = new JComboBox(cape_subjs2);
 		a1Box.setFont(new Font("Corbel", Font.PLAIN, 14));
-		a1Box.setBounds(344, 303, 335, 34);
+		a1Box.setBounds(343, 318, 335, 34);
 		a1Box.setSelectedIndex(0);
 		prefFrame.getContentPane().add(a1Box);
 		
 		JLabel lblSelectAntirequisite_1 = new JLabel("Second");
-		lblSelectAntirequisite_1.setBounds(0, 360, 243, 20);
+		lblSelectAntirequisite_1.setBounds(2, 369, 243, 20);
 		lblSelectAntirequisite_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSelectAntirequisite_1.setFont(new Font("Corbel", Font.PLAIN, 18));
 		prefFrame.getContentPane().add(lblSelectAntirequisite_1);
 		
 		JComboBox a2Box = new JComboBox(cape_subjs2);
 		a2Box.setFont(new Font("Corbel", Font.PLAIN, 14));
-		a2Box.setBounds(344, 348, 335, 34);
+		a2Box.setBounds(343, 363, 335, 34);
 		a2Box.setSelectedIndex(0);
 		prefFrame.getContentPane().add(a2Box);
 		
 		JLabel lblSelectAntirequisite_2 = new JLabel("Third");
-		lblSelectAntirequisite_2.setBounds(0, 405, 243, 20);
+		lblSelectAntirequisite_2.setBounds(0, 423, 243, 20);
 		lblSelectAntirequisite_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSelectAntirequisite_2.setFont(new Font("Corbel", Font.PLAIN, 18));
 		prefFrame.getContentPane().add(lblSelectAntirequisite_2);
 		
 		JComboBox a3Box = new JComboBox(cape_subjs2);
 		a3Box.setFont(new Font("Corbel", Font.PLAIN, 14));
-		a3Box.setBounds(345, 395, 335, 34);
+		a3Box.setBounds(343, 417, 335, 34);
 		a3Box.setSelectedIndex(0);
 		prefFrame.getContentPane().add(a3Box);
 		
 		JButton btnSubmit = new JButton("Add");
+		btnSubmit.setOpaque(false);
+		btnSubmit.setFocusPainted(false);
+		btnSubmit.setBorder(new LineBorder(new Color(0, 128, 128), 2, true));
 		btnSubmit.setFont(new Font("Corbel", Font.PLAIN, 14));
-		btnSubmit.setBounds(342, 454, 102, 38);
+		btnSubmit.setBounds(343, 469, 102, 38);
 		btnSubmit.addActionListener(new ActionListener() {
 			private void resetSelections() {
 				nameBox.setSelectedIndex(0);
@@ -314,25 +335,44 @@ public class Preferences {
 		
 		
 		
-		JButton btnCancel = new JButton("Cancel");
-		btnCancel.setFont(new Font("Corbel", Font.PLAIN, 14));
-		btnCancel.setBounds(579, 454, 102, 38);
-		btnCancel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				prefFrame.dispose();
-				parent.setVisible(true);				
-			}
-		});
-		btnCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		
 		JButton edit = new JButton("Edit");
 		edit.setEnabled(false);
 		edit.setFont(new Font("Corbel", Font.PLAIN, 14));
-		edit.setBounds(462, 454, 102, 38);
+		edit.setBounds(462, 469, 102, 38);
+		
+		JButton btnCancel = new JButton("Back");
+		btnCancel.setFont(new Font("Corbel", Font.PLAIN, 14));
+		btnCancel.setBounds(574, 469, 102, 38);
+		btnCancel.addMouseListener(new MouseAdapter() {
+			private void resetSelections() {
+				nameBox.setSelectedIndex(0);
+				pBox.setSelectedIndex(0);
+				sBox.setSelectedIndex(0);
+				tBox.setSelectedIndex(0);
+				a1Box.setSelectedIndex(0);
+				a2Box.setSelectedIndex(0);
+				a3Box.setSelectedIndex(0);
+				classSize.setText(null);
+				maxStud = -1;
+			}
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if (edit.isEnabled()) {
+					resetSelections();
+					searchedSub = null;
+					edit.setEnabled(false);
+					btnSubmit.setEnabled(true);
+					nameBox.setEnabled(true);
+					btnCancel.setText("Cancel");
+				}
+				else {
+					prefFrame.dispose();
+					parent.setVisible(true);
+				}
+			}
+		});
+		
 		prefFrame.getContentPane().add(edit);
 		prefFrame.getContentPane().add(btnCancel);
 		edit.addActionListener(new ActionListener() {
@@ -395,7 +435,7 @@ public class Preferences {
 					}
 					searchedSub = null;
 					nameBox.setEnabled(true);
-					resetSelections();
+					resetSelections();					
 					edit.setEnabled(false);
 					btnSubmit.setEnabled(true);
 				}
@@ -404,15 +444,14 @@ public class Preferences {
 		
 		ItemListener editListener = new ItemListener() {
 			public void itemStateChanged(ItemEvent evt) {
-				JComboBox cb = (JComboBox) evt.getSource();
-				int myIndex = cb.getSelectedIndex();
+				//JComboBox cb = (JComboBox) evt.getSource();
+				//int myIndex = cb.getSelectedIndex();
 			    String choice = (String) evt.getItem();
 
 			    if (evt.getStateChange() == ItemEvent.SELECTED) {
 			    	if (!choice.equals("None")) {
 			    		//TODO remove SearchedSub
 			    		searchedSub = controller.searchSubjects(choice.toLowerCase());
-			    		//searchedSub = testSub;
 			    		if (searchedSub != null) {
 			    			pBox.setSelectedItem(searchedSub.getPrimary().toUpperCase());
 			    			nameBox.setEnabled(false);
@@ -443,6 +482,11 @@ public class Preferences {
 			}
 		};
 		nameBox.addItemListener(editListener);
-
+		edit.setOpaque(false);
+		edit.setFocusPainted(false);
+		edit.setBorder(new LineBorder(new Color(0, 128, 128), 2, true));
+		btnCancel.setOpaque(false);
+		btnCancel.setFocusPainted(false);
+		btnCancel.setBorder(new LineBorder(new Color(0, 128, 128), 2, true));
 	}
 }

@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class Student {
 	private String fName, lName;
-	private ArrayList<String> capeSubs;
+	private ArrayList<String> choices;
 	private ArrayList<CSEC> csecSubs;
 	private ArrayList<CAPE> possibleSubjects = new ArrayList<CAPE>();
 	private ArrayList<CAPE> acceptedFor = new ArrayList<CAPE>();
@@ -18,7 +18,7 @@ public class Student {
 		this.fName=fName;
 		this.lName=lName;
 		this.csecSubs = cssubs;
-		this.capeSubs = casubs;
+		this.choices = casubs;
 	}
 
 	
@@ -35,14 +35,15 @@ public class Student {
 	}
 	
 	public ArrayList<String> getChoices() {
-		return capeSubs;
+		return choices;
 	}
 	
 	public ArrayList<CSEC> getCSEC() {
 		return csecSubs;
 	}
 	
-	public int calcPoints(Point pnts, CAPE cape) {
+	public int calcPoints(CAPE cape) {
+		//TODO change
 		String primary = cape.getPrimary();
 		String secondary = cape.getSecondary();
 		String tertiary = cape.getTertiary();
@@ -50,6 +51,7 @@ public class Student {
 		int sGrade = -1;
 		int tGrade = -1;
 		int totalPoints = 0;
+		
 		
 		if (tertiary != null) {
 			for (int i = 0; i < csecSubs.size() - 1; i++) {
@@ -82,25 +84,14 @@ public class Student {
 			}
 		}
 		
-		if (tGrade > 4 || tGrade == -1 || sGrade == -1 || sGrade > 4 || pGrade > 4) {		
-			if (tGrade != -1 ) {
-				totalPoints = pnts.getPoints("primary", pGrade) + pnts.getPoints("secondary", sGrade) + pnts.getPoints("tertiary", tGrade);
-				pointMapping.put(cape, totalPoints);
-			}
+		if (pGrade > 0) {	
+			totalPoints += Point.getPoints("primary", pGrade);
+			if (tGrade != -1 ) totalPoints += Point.getPoints("tertiary", tGrade);
+			else if (sGrade != -1 )	totalPoints += Point.getPoints("secondary", sGrade);
 			
-			else if (sGrade != -1 ) {
-				totalPoints = pnts.getPoints("primary", pGrade) + pnts.getPoints("secondary", sGrade);
-				pointMapping.put(cape, totalPoints);
-			}
-			
-			else {
-				totalPoints = pnts.getPoints("primary", pGrade);
-				pointMapping.put(cape, totalPoints);
-			}
+			//if (totalPoints == 0) System.out.println(this.toString() + "\t" + cape.getName() + ":\tPrimary Grade:\t" + pGrade + "\t" + totalPoints);
 		}
-		else {
-			pointMapping.put(cape, totalPoints);
-		}
+		pointMapping.put(cape, totalPoints);
 		return totalPoints;
 		
 	}

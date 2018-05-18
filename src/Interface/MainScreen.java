@@ -7,10 +7,16 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JFileChooser;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Color;
 import System.App;
+import Core.CAPE;
+import Core.Student;
 
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -55,8 +61,8 @@ public class MainScreen {
 	 * Create the application.
 	 */
 	public MainScreen(App app) {
-		initialize();
 		this.controller = app;
+		initialize();
 		frmSaps.setVisible(true);
 		this.self = this;
 	}
@@ -64,7 +70,40 @@ public class MainScreen {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	private void chooser() {
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.addChoosableFileFilter(new FileFilter() {
+
+		    public String getDescription() {
+		        return "Comma-Separated Value Files (*.csv)";
+		    }
+		 
+		    public boolean accept(File f) {
+		        if (f.isDirectory()) {
+		            return true;
+		        } else {
+		            return f.getName().toLowerCase().endsWith(".csv");
+		        }
+		    }
+		});
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
+		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		int result = fileChooser.showOpenDialog(frmSaps);
+		if (result == JFileChooser.APPROVE_OPTION) {
+		    File selectedFile = fileChooser.getSelectedFile();
+		    try {
+		    	controller.populateStudents(selectedFile);
+		    }
+		    catch (Exception e1) {
+		    	JOptionPane.showMessageDialog(null, e1.getMessage(), "Parsing Error", JOptionPane.ERROR_MESSAGE);
+		    }	
+		}
+	}
+	
 	private void initialize() {
+		
 		frmSaps = new JFrame();
 		frmSaps.setTitle("Sixth Form Application Processing System");
 		frmSaps.setFont(new Font("Corbel", Font.PLAIN, 14));
@@ -78,7 +117,7 @@ public class MainScreen {
 			e2.printStackTrace();
 		}
 		frmSaps.getContentPane().setBackground(Color.WHITE);
-		frmSaps.setBounds(300, 300, 708, 451);
+		frmSaps.setBounds(300, 300, 655, 451);
 		frmSaps.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSaps.getContentPane().setLayout(null);
 		
@@ -86,7 +125,7 @@ public class MainScreen {
 		lblWelcomeSapsUser.setHorizontalAlignment(SwingConstants.CENTER);
 		lblWelcomeSapsUser.setForeground(new Color(0, 128, 128));
 		lblWelcomeSapsUser.setFont(new Font("Franklin Gothic Demi Cond", Font.BOLD, 27));
-		lblWelcomeSapsUser.setBounds(10, 21, 128, 32);
+		lblWelcomeSapsUser.setBounds(31, 21, 128, 32);
 		frmSaps.getContentPane().add(lblWelcomeSapsUser);
 		
 		JLabel lblUploadFilw = new JLabel("Upload File");
@@ -95,35 +134,7 @@ public class MainScreen {
 		lblUploadFilw.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.addChoosableFileFilter(new FileFilter() {
-
-				    public String getDescription() {
-				        return "Comma-Separated Value Files (*.csv)";
-				    }
-				 
-				    public boolean accept(File f) {
-				        if (f.isDirectory()) {
-				            return true;
-				        } else {
-				            return f.getName().toLowerCase().endsWith(".csv");
-				        }
-				    }
-				});
-				fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
-				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-				fileChooser.setAcceptAllFileFilterUsed(false);
-				int result = fileChooser.showOpenDialog(frmSaps);
-				if (result == JFileChooser.APPROVE_OPTION) {
-				    File selectedFile = fileChooser.getSelectedFile();
-				    try {
-				    	controller.populateStudents(selectedFile);
-				    }
-				    catch (Exception e1) {
-				    	JOptionPane.showMessageDialog(null, "Incorrect Password", "Login Error", JOptionPane.ERROR_MESSAGE);
-				    }				    
-				}
+				chooser();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -139,7 +150,7 @@ public class MainScreen {
 			}
 			
 		});
-		lblUploadFilw.setBounds(145, 212, 82, 16);
+		lblUploadFilw.setBounds(102, 193, 82, 16);
 		frmSaps.getContentPane().add(lblUploadFilw);
 		
 		
@@ -149,27 +160,48 @@ public class MainScreen {
 		ImageIcon image3 = new ImageIcon(getClass().getResource("../img/users1.png"));	
 		ImageIcon image4 = new ImageIcon(getClass().getResource("../img/preference1.png"));
 		
-		JLabel lblReports = new JLabel("Reports");
-		lblReports.setFont(new Font("Corbel", Font.PLAIN, 14));
-		lblReports.setHorizontalAlignment(SwingConstants.CENTER);
-		lblReports.setBounds(513, 362, 78, 20);
-		lblReports.addMouseListener(new MouseAdapter() {
+		MouseAdapter clickReport = new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				try {
-					//new Report(self,controller);
+			public void mouseClicked(MouseEvent arg0) {
+				if (controller.getOffered().isEmpty()) {
+					JOptionPane.showMessageDialog(frmSaps, "Set CAPE Preferences Before Proceeding", "Error", JOptionPane.ERROR_MESSAGE);
+					new Preferences(self,controller);
 					self.setVisible(false);
-				} catch (Exception ex) {
-					ex.printStackTrace();
+					return;
+					}
+				else if(controller.getStudents().isEmpty()){
+					JOptionPane.showMessageDialog(frmSaps, "Upload Student Data Before Proceeding", "Error", JOptionPane.ERROR_MESSAGE);
+					chooser();
+					return;
+				}
+				try {
+					controller.generateMappings();
+					//new Report(self);
+					self.setVisible(false);
+				} 
+				catch (Exception ex) {
+					JOptionPane.showMessageDialog(frmSaps, "Error While Assigning Students, Try Again", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
-		});
-		frmSaps.getContentPane().add(lblReports);
+		};
+		
+		
+		JLabel repLabel = new JLabel("Generate Report");
+		repLabel.setFont(new Font("Corbel", Font.PLAIN, 14));
+		repLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		repLabel.setBounds(271, 362, 102, 20);
+		repLabel.addMouseListener(clickReport);
+		frmSaps.getContentPane().add(repLabel);
 		
 		JLabel lblManageUsers = new JLabel("Manage Users");
+		lblManageUsers.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
 		lblManageUsers.setFont(new Font("Corbel", Font.PLAIN, 14));
 		lblManageUsers.setHorizontalAlignment(SwingConstants.CENTER);
-		lblManageUsers.setBounds(492, 212, 99, 16);
+		lblManageUsers.setBounds(287, 193, 99, 16);
 		frmSaps.getContentPane().add(lblManageUsers);
 		
 		JLabel lblSetPreferences = new JLabel("Set Preferences");
@@ -186,11 +218,12 @@ public class MainScreen {
 				}
 			}
 		});
-		lblSetPreferences.setBounds(145, 364, 99, 16);
+		lblSetPreferences.setBounds(102, 364, 99, 16);
 		frmSaps.getContentPane().add(lblSetPreferences);
 		
-		JLabel lblUpl = new JLabel(image1);
-		lblUpl.addMouseListener(new MouseAdapter() {
+		
+		JLabel upLabel = new JLabel(image1);
+		upLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
@@ -234,27 +267,23 @@ public class MainScreen {
 				src.setBounds(134, 78, 120, 118);
 			}
 		});
-		lblUpl.setBounds(134, 78, 120, 118);
-		frmSaps.getContentPane().add(lblUpl);
+		upLabel.setBounds(92, 64, 120, 118);
+		frmSaps.getContentPane().add(upLabel);
 		
 		JLabel lblLabel = new JLabel(image2);
-		lblLabel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				try {
-					//TODO change report
-					//new Report(self,controller);
-					self.setVisible(false);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-			}
-		});
-		lblLabel.setBounds(510, 253, 100, 100);
+		lblLabel.addMouseListener(clickReport);
+		
+		
+		lblLabel.setBounds(261, 223, 128, 128);
 		frmSaps.getContentPane().add(lblLabel);
 		
 		JLabel lblHehe = new JLabel(image3);
-		lblHehe.setBounds(482, 78, 128, 118);
+		lblHehe.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
+		lblHehe.setBounds(261, 64, 144, 118);
 		frmSaps.getContentPane().add(lblHehe);
 		
 		JLabel lblLabl = new JLabel(image4);
@@ -271,7 +300,7 @@ public class MainScreen {
 				
 			}
 		});
-		lblLabl.setBounds(145, 253, 100, 100);
+		lblLabl.setBounds(101, 234, 100, 100);
 		frmSaps.getContentPane().add(lblLabl);
 		
 		JButton btnLogOut = new JButton("Log Out");
@@ -282,8 +311,49 @@ public class MainScreen {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnLogOut.setBounds(593, 11, 99, 21);
+		btnLogOut.setBounds(512, 11, 99, 21);
 		frmSaps.getContentPane().add(btnLogOut);
+		fakeSubjects();
+	}
+	
+	private  void fakeSubjects() {
+		Random r = new Random();
+		String[] csec_subjs = {"ADDITIONAL MATHEMATICS", "AGRICULTURAL SCIENCE", "BIOLOGY", "CARIBBEAN HISTORY", "CHEMISTRY", "ECONOMICS", "ELECTRONIC DOCUMENT PREPARATION AND MANAGEMENT", "ENGLISH A", "ENGLISH B", "FAMILY AND RESOURCE MANAGEMENT", "FOOD, NUTRITION AND HEALTH", "FRENCH", "GEOGRAPHY", "HOME ECONOMICS", "HUMAN AND SOCIAL BIOLOGY", "INDUSTRIAL TECHNOLOGY", "INFORMATION TECHNOLOGY", "INTEGRATED SCIENCE", "MATHEMATICS", "MUSIC", "OFFICE ADMINISTRATION", "PHYSICAL EDUCATION AND SPORT", "PHYSICS", "PORTUGUESE", "PRINCIPLES OF ACCOUNTS", "PRINCIPLES OF BUSINESS", "RELIGIOUS EDUCATION", "SOCIAL STUDIES", "SPANISH", "TECHNICAL DRAWING", "TEXTILES, CLOTHING AND FASHION", "THEATRE ARTS", "VISUAL ARTS"};
+		String[] csec_subjs1 = {"None", "ADDITIONAL MATHEMATICS", "AGRICULTURAL SCIENCE", "BIOLOGY", "CARIBBEAN HISTORY", "CHEMISTRY", "ECONOMICS", "ELECTRONIC DOCUMENT PREPARATION AND MANAGEMENT", "ENGLISH A", "ENGLISH B", "FAMILY AND RESOURCE MANAGEMENT", "FOOD, NUTRITION AND HEALTH", "FRENCH", "GEOGRAPHY", "HOME ECONOMICS", "HUMAN AND SOCIAL BIOLOGY", "INDUSTRIAL TECHNOLOGY", "INFORMATION TECHNOLOGY", "INTEGRATED SCIENCE", "MATHEMATICS", "MUSIC", "OFFICE ADMINISTRATION", "PHYSICAL EDUCATION AND SPORT", "PHYSICS", "PORTUGUESE", "PRINCIPLES OF ACCOUNTS", "PRINCIPLES OF BUSINESS", "RELIGIOUS EDUCATION", "SOCIAL STUDIES", "SPANISH", "TECHNICAL DRAWING", "TEXTILES, CLOTHING AND FASHION", "THEATRE ARTS", "VISUAL ARTS"};
+
+		String[] cape_subjs = {"ACCOUNTING", "ANIMATION & GAME DESIGN", "AGRICULTURAL SCIENCE", "APPLIED MATHEMATICS", "ART AND DESIGN", "BIOLOGY", "BUILDING AND MECHANICAL ENGINEERING DRAWING", "CARIBBEAN STUDIES", "CHEMISTRY", "COMMUNICATION STUDIES", "COMPUTER SCIENCE", "DIGITAL MEDIA", "ELECTRICAL AND ELECTRONIC ENGINEERING TECHNOLOGY", "ECONOMICS", "ENTREPRENEURSHIP", "ENVIRONMENTAL SCIENCE", "FINANCIAL SERVICES STUDIES", "FOOD AND NUTRITION", "FRENCH", "GEOGRAPHY", "GREEN ENGINEERING", "HISTORY", "INFORMATION TECHNOLOGY", "INTEGRATED MATHEMATICS", "LAW", "LITERATURES IN ENGLISH", "LOGISTICS AND SUPPLY CHAIN OPERATIONS", "MANAGEMENT OF BUSINESS", "PERFORMING ARTS", "PHYSICS", "PHYSICAL EDUCATION AND SPORT", "PURE MATHEMATICS", "SOCIOLOGY", "SPANISH", "TOURISM"};
+		List<String> cape_subjs3 = Arrays.asList(cape_subjs);
+		ArrayList<String> cape_subjs2 = new ArrayList<String>();
+		cape_subjs2.addAll(cape_subjs3);
+		System.out.println(cape_subjs2.size());
+
+		//int sub = r.nextInt(cape_subjs2.length);  // [0...4] [min = 0, max = 4]
+		while (cape_subjs2.size() != 0) {
+			int sub = r.nextInt(cape_subjs2.size());
+			String name = cape_subjs2.get(sub);
+			String pReq = csec_subjs[r.nextInt(csec_subjs.length)];
+			String sReq = csec_subjs[r.nextInt(csec_subjs.length)];
+			String tReq = csec_subjs1[r.nextInt(csec_subjs1.length)];
+			
+			String anti1 = cape_subjs[r.nextInt(csec_subjs.length)];
+			String anti2 = cape_subjs[r.nextInt(csec_subjs.length)];
+			String anti3 = cape_subjs[r.nextInt(csec_subjs.length)];
+			
+			String[] antis = {anti1, anti2, anti3};
+			
+			int maxStud = r.nextInt(5) + 1;
+			//int maxStud =-1;
+			CAPE cape;
+			
+			if (!tReq.equals("None")) cape = controller.populateSubjects(name, pReq, sReq, tReq, maxStud);
+			else if (!sReq.equals("None")) cape = controller.populateSubjects(name, pReq, sReq, null, maxStud);
+			else cape = controller.populateSubjects(name, pReq, null, null, maxStud);
+
+			for (String s: antis) {
+				if (!s.equals("None")) cape.addAntiReq(s);
+			}
+			cape_subjs2.remove(sub);
+		}
 	}
 	
 	public void setVisible(boolean b) {

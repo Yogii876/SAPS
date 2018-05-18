@@ -12,14 +12,17 @@ import java.util.Comparator;
 import java.util.Set;
 
 public class CAPE extends Subject {
-	private String name, primary;
+	private String primary;
 	private String secondary = null;
 	private String tertiary = null;
 	private boolean sorted = false;
 	private int maxStudents = -1;
-	private Map<Student, Integer> eligibleStudents = new HashMap<Student, Integer>();
-	private Map <Student, Integer> accepted = new LinkedHashMap<Student, Integer>();
+	private Map<Student, Integer> eligibleStudents = new LinkedHashMap<Student, Integer>();
+	//private ArrayList<String> accepted = new ArrayList<String>();
 	private ArrayList<String> antiRequisites = new ArrayList<String>();
+	//private ArrayList<String> conflictStudents = new ArrayList<String>();
+	//private ArrayList<String> alternateStudents = new ArrayList<String>();
+	private Map<Student, Integer> accepted = new LinkedHashMap<Student, Integer>();
 	private Map<Student, Integer> conflictStudents = new LinkedHashMap<Student, Integer>();
 	private Map<Student, Integer> alternateStudents = new LinkedHashMap<Student, Integer>();
 	
@@ -29,20 +32,22 @@ public class CAPE extends Subject {
 		this.secondary=secondary.toLowerCase();
 		this.tertiary=tertiary.toLowerCase();
 		this.maxStudents = max;
-		this.antiRequisites.add(name.toLowerCase());
-	}
+		this.antiRequisites.add(super.name);
+}
 	
 	public CAPE(String name, String primary, String secondary, int max) {
 		super(name.toLowerCase());
 		this.primary = primary.toLowerCase();
 		this.secondary=secondary.toLowerCase();
 		this.maxStudents = max;
-	}
+		this.antiRequisites.add(super.name);
+}
 	
 	public CAPE(String name, String primary, int max) {
 		super(name.toLowerCase());
 		this.primary = primary.toLowerCase();
 		this.maxStudents = max;
+		this.antiRequisites.add(super.name);
 	}
 	
 	public String getName() {
@@ -88,12 +93,12 @@ public class CAPE extends Subject {
 		this.antiRequisites = new ArrayList<String>();
 		this.conflictStudents = new LinkedHashMap<Student, Integer>();
 		this.alternateStudents = new LinkedHashMap<Student, Integer>();
+		this.antiRequisites.add(super.name);
+		
 		this.sorted = false;
-		this.antiRequisites.add(this.name);
 	}
 	
 	public void addAntiReq(String s) {
-		System.out.println(s);
 		antiRequisites.add(s.toLowerCase());
 	}
 	
@@ -134,8 +139,10 @@ public class CAPE extends Subject {
 	
 	        // Maintaining insertion order with the help of LinkedList
 	        Map<Student, Integer> sortedMap = new LinkedHashMap<Student, Integer>();
+	        //System.out.println(super.name);
 	        for (Entry<Student, Integer> entry : list)
 	        {
+	        	//System.out.print(entry.getKey().toString() + ": Points: " + entry.getValue() +"\t");
 	            sortedMap.put(entry.getKey(), entry.getValue());
 	        }
 	        eligibleStudents = sortedMap;
@@ -150,31 +157,32 @@ public class CAPE extends Subject {
 	// Add antirequisite stuff here
 	public void generateAcceptedList() {
 		if (!sorted) sortStudents();
-		accepted = new LinkedHashMap<Student, Integer>();
-		int sSize = 0;
 		boolean noMax = (maxStudents == -1);
 		for (Map.Entry<Student, Integer> entry : eligibleStudents.entrySet()) {
 			Student stud = entry.getKey();
 			ArrayList<String> choices = stud.getChoices();
-			if (choices.contains((this.name).toLowerCase())) {
+			if (choices.contains((super.name).toLowerCase())) {
 				boolean exculsive = isDisjoint(choices, antiRequisites);
 				if (exculsive && (noMax || ((accepted.size() + conflictStudents.size() < maxStudents)))) {
+					System.out.println("Accepted: " + stud);
 					accepted.put(stud, entry.getValue());
 					stud.addAcceptedSubject(this);
 				}
 				else if (!exculsive) {
+					System.out.println("Conflicting: " + stud + "Points -	" + entry.getValue());
 					conflictStudents.put(stud, entry.getValue());
 					stud.addConflict(this);
 				}
 				else {
+					System.out.println("Alternate: " + stud + "Points -	" + entry.getValue());
 					alternateStudents .put(stud, entry.getValue());
 					stud.addAlternate(this);
 				}
 			}
-			sSize++;
-			if (maxStudents == sSize) {
-				break;
+			else {
+				stud.addAlternate(this);
 			}
+			
 		}
 	}
 	
