@@ -183,24 +183,35 @@ public class Report {
 					
 					
 					CAPE cape = controller.searchSubjects(value.toUpperCase());
+					ArrayList<String> acceptedStudents = null, conflictingStudents = null, alternateStudents = null;
+					try{
+						acceptedStudents = cape.getAccepted();
+						conflictingStudents = cape.getConflicts();
+						alternateStudents = cape.getAlternates();
+					}
+					catch(Exception e1){
+						JOptionPane.showMessageDialog(new JFrame(), "No class data found", "Dialog",
+						        JOptionPane.ERROR_MESSAGE);
+					}
 					
-					ArrayList<String> acceptedStudents = cape.getAccepted();
-					ArrayList<String> conflictingStudents = cape.getConflicts();
-					ArrayList<String> alternateStudents = cape.getAlternates();
 					
 					
-					if(!acceptedStudents.isEmpty()) {
+					if(acceptedStudents != null) {
 						for(String str : acceptedStudents) {
 							accepted_students.concat(str+"\n ");
 						}
 					}
 					
-					for(String str : conflictingStudents) {
-						conflicting_students.concat(str+"\n ");
+					if(conflictingStudents != null) {
+						for(String str : conflictingStudents) {
+							conflicting_students.concat(str+"\n ");
+						}
 					}
-					
-					for(String str : alternateStudents) {
-						alternate_students.concat(str+"\n ");	
+						
+					if(alternateStudents != null) {
+						for(String str : alternateStudents) {
+							alternate_students.concat(str+"\n ");	
+						}
 					}
 					
 					lblSubject.setText(value);
@@ -327,21 +338,34 @@ public class Report {
 					alternativeTxtArea.setText(null);
 					
 					Student student = controller.searchStudents(txtStudent.getText().toLowerCase());
+					ArrayList<String> acceptedSubjects = null, conflictingSubjects = null, alternateSubjects = null;
 					
-					ArrayList<String> acceptedSubjects = student.getAccepted();
-					ArrayList<String> conflictingSubjects = student.getConflicts();
-					ArrayList<String> alternateSubjects = student.getAlternates();
-					
-					for(String str : acceptedSubjects) {
-						accepted.concat(str+"\n ");
+					try {
+						acceptedSubjects = student.getAccepted();
+						conflictingSubjects = student.getConflicts();
+						alternateSubjects = student.getAlternates();
+					}
+					catch(Exception e2) {
+						JOptionPane.showMessageDialog(new JFrame(), "No students data found", "Dialog",
+						        JOptionPane.ERROR_MESSAGE);
 					}
 					
-					for(String str : conflictingSubjects) {
-						conflicts.concat(str+"\n ");
+					if(acceptedSubjects != null) {
+						for(String str : acceptedSubjects) {
+							accepted.concat(str+"\n ");
+						}
 					}
 					
-					for(String str : alternateSubjects) {
-						alternate.concat(str+"\n ");	
+					if(acceptedSubjects != null) {
+						for(String str : conflictingSubjects) {
+							conflicts.concat(str+"\n ");
+						}
+					}
+					
+					if(alternateSubjects != null) {
+						for(String str : acceptedSubjects) {
+							alternate.concat(str+"\n ");
+						}
 					}
 					
 					lblName.setText(txtStudent.getText());
@@ -371,18 +395,29 @@ public class Report {
 				panel_3.setVisible(true);
 				allStudentsTxtArea.setText(null);
 				
-				ArrayList<Student> students = controller.getStudents(); 
+				ArrayList<Student> students = null;
+				try {
+					students = controller.getStudents(); 
+				}
+				catch(Exception e3) {
+					JOptionPane.showMessageDialog(new JFrame(), "Students data not found", "Dialog",
+					        JOptionPane.ERROR_MESSAGE);
+				}
 				
-				for(Student stu : students) {
-					String subjects = "";
-					ArrayList<String> classes = stu.getAccepted();
-					for(String str : classes) {
-						subjects.concat(str + " ");
+				if(students != null) {
+					for(Student stu : students) {
+						String subjects = "";
+						ArrayList<String> classes = null;
+						classes = stu.getAccepted();
+						if(classes != null) {
+							for(String str : classes) {
+								subjects.concat(str + " ");
+							}
+						}
+						String student_info = "";
+						student_info = stu.getFullName()+ " | " + subjects +"\n ";
+						allStudentsTxtArea.append(student_info);
 					}
-					JLabel student_info = new JLabel(stu.getFullName()+ " | " + subjects +" ");
-					student_info.setFont(new Font("Agency FB", Font.PLAIN, 18));
-					student_info.setBounds(244, 101, 194, 32);
-					allStudentsTxtArea.add(student_info);
 				}
 			}
 		});
