@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
@@ -12,11 +13,13 @@ import Core.CAPE;
 
 import javax.swing.JComboBox;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Insets;
@@ -104,6 +107,17 @@ public class Preferences {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	
+	private class MyListCellRenderer extends DefaultListCellRenderer {
+		  @Override
+		  public Component getListCellRendererComponent(JList list, Object value,
+		      int index, boolean isSelected, boolean cellHasFocus) {
+		    Component component = super.getListCellRendererComponent(list, value,
+		        index, isSelected, cellHasFocus);
+		    component.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+		    return component;
+		  }
+	}
 	private void initialize() {		
 		prefFrame = new JFrame();
 		prefFrame.setBackground(new Color(0, 128, 128));
@@ -139,6 +153,14 @@ public class Preferences {
 				char c = arg0.getKeyChar();
 				if (!(Character.isDigit(c)) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE)) {
 					arg0.consume();
+				}
+				else {
+					if (classSize.getText().equals("") || classSize.getText() == null);
+					else {
+					String size =	classSize.getText().concat(Character.toString(arg0.getKeyChar()));
+					int cSize = Integer.parseInt(size);
+					if (cSize>=500) arg0.consume();
+					}
 				}
 			}
 		});
@@ -342,9 +364,10 @@ public class Preferences {
 		edit.setBounds(462, 469, 102, 38);
 		
 		JButton btnCancel = new JButton("Back");
+	
 		btnCancel.setFont(new Font("Corbel", Font.PLAIN, 14));
 		btnCancel.setBounds(574, 469, 102, 38);
-		btnCancel.addMouseListener(new MouseAdapter() {
+		btnCancel.addActionListener(new ActionListener() {
 			private void resetSelections() {
 				nameBox.setSelectedIndex(0);
 				pBox.setSelectedIndex(0);
@@ -357,7 +380,7 @@ public class Preferences {
 				maxStud = -1;
 			}
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) {
 				if (edit.isEnabled()) {
 					resetSelections();
 					searchedSub = null;
@@ -488,5 +511,6 @@ public class Preferences {
 		btnCancel.setOpaque(false);
 		btnCancel.setFocusPainted(false);
 		btnCancel.setBorder(new LineBorder(new Color(0, 128, 128), 2, true));
+		nameBox.setRenderer(new MyListCellRenderer());
 	}
 }

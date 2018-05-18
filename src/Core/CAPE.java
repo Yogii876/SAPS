@@ -155,7 +155,7 @@ public class CAPE extends Subject {
 	}
 	
 	// Add antirequisite stuff here
-	public void generateAcceptedList() {
+	public void generateAcceptedList(int maxDoable) {
 		if (!sorted) sortStudents();
 		boolean noMax = (maxStudents == -1);
 		for (Map.Entry<Student, Integer> entry : eligibleStudents.entrySet()) {
@@ -165,8 +165,13 @@ public class CAPE extends Subject {
 				boolean exculsive = isDisjoint(choices, antiRequisites);
 				if (exculsive && (noMax || ((accepted.size() + conflictStudents.size() < maxStudents)))) {
 					System.out.println("Accepted: " + stud);
-					accepted.put(stud, entry.getValue());
-					stud.addAcceptedSubject(this);
+					if (stud.addAcceptedSubject(this, maxDoable)) {
+						accepted.put(stud, entry.getValue());						
+					}
+					else {
+						alternateStudents.put(stud, entry.getValue());
+						stud.addAlternate(this);						
+					}
 				}
 				else if (!exculsive) {
 					System.out.println("Conflicting: " + stud + "Points -	" + entry.getValue());
@@ -175,7 +180,7 @@ public class CAPE extends Subject {
 				}
 				else {
 					System.out.println("Alternate: " + stud + "Points -	" + entry.getValue());
-					alternateStudents .put(stud, entry.getValue());
+					alternateStudents.put(stud, entry.getValue());
 					stud.addAlternate(this);
 				}
 			}

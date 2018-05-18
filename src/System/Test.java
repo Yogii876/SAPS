@@ -16,10 +16,11 @@ public class Test {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		Random r = new Random();
 		try {	
 			controller.populateStudents(new File("c:/users/yohan/Downloads/students2.csv"));
 			fakeSubjects();
-			controller.generateMappings();
+			controller.generateMappings(r.nextInt(4)+1);
 			for (CAPE c : controller.getOffered()) {
 				System.out.println(c + "\t" + c.getAccepted());
 				System.out.println(c + "\t" + c.getConflicts());

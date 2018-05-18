@@ -77,7 +77,7 @@ public class App {
 		return status;
 	}
 		
-	public void generateMappings() throws NullPointerException {
+	public void generateMappings(int i) throws NullPointerException {
 		// creating n by m matrix, where n is the number of students and m the number of subjects offered.
 		if (students.isEmpty()) {
 			throw new NullPointerException("Upload Student Data Before Proceeding");
@@ -101,14 +101,14 @@ public class App {
 				}
 			}
 		}
-		assignStudents();
+		assignStudents(i);
 		status = true;
 	}
 	
-	private void assignStudents() {
+	private void assignStudents(int m) {
 		for (CAPE subj: offeredSubjects ) {
 			System.out.println(subj);
-			subj.generateAcceptedList();
+			subj.generateAcceptedList(m);
 		}
 	}
 	
