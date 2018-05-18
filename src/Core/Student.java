@@ -110,7 +110,7 @@ public class Student {
 	
 	
 	public boolean addAcceptedSubject(CAPE sub, int max) {
-		if ((acceptedFor.size() == max) && (max != 0)) {
+		if ((max != 0) && (acceptedFor.size() == max)) {
 			return false;
 		}
 		this.acceptedFor.add(sub);

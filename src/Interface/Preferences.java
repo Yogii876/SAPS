@@ -460,7 +460,7 @@ public class Preferences {
 			    			ArrayList<String> anti = searchedSub.getAnti();
 			    			int aLen = anti.size();
 			    			if (aLen != 0) {
-			    				int i = 1;
+			    				int i = 0;
 			    				while (i <= aLen-1) {
 			    					if (i == 1) a1Box.setSelectedItem(anti.get(i).toUpperCase());
 			    					else if (i == 2) a2Box.setSelectedItem(anti.get(i).toUpperCase());

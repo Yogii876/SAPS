@@ -25,6 +25,7 @@ public class Test {
 				System.out.println(c + "\t" + c.getAccepted());
 				System.out.println(c + "\t" + c.getConflicts());
 				System.out.println(c + "\t" + c.getAlternates());
+				System.out.println("Working");
  			}			
 		}
 		catch (Exception e) {
@@ -59,7 +60,7 @@ public class Test {
 			String anti3 = cape_subjs[r.nextInt(csec_subjs.length)];
 			
 			//String[] antis = {anti1, anti2, anti3};
-			String[] antis = {anti1};
+			String[] antis = {};
 			
 			int maxStud = r.nextInt(5) + 1;
 			//int maxStud =-1;
@@ -68,10 +69,11 @@ public class Test {
 			if (!tReq.equals("None")) cape = controller.populateSubjects(name, pReq, sReq, tReq, maxStud);
 			else if (!sReq.equals("None")) cape = controller.populateSubjects(name, pReq, sReq, null, maxStud);
 			else cape = controller.populateSubjects(name, pReq, null, null, maxStud);
-
+			/**
 			for (String s: antis) {
 				if (!s.equals("None")) cape.addAntiReq(s);
 			}
+			**/
 			cape_subjs2.remove(sub);
 		}
 

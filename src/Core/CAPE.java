@@ -16,7 +16,7 @@ public class CAPE extends Subject {
 	private String secondary = null;
 	private String tertiary = null;
 	private boolean sorted = false;
-	private int maxStudents = -1;
+	private int classSize = -1;
 	private Map<Student, Integer> eligibleStudents = new LinkedHashMap<Student, Integer>();
 	//private ArrayList<String> accepted = new ArrayList<String>();
 	private ArrayList<String> antiRequisites = new ArrayList<String>();
@@ -31,23 +31,20 @@ public class CAPE extends Subject {
 		this.primary = primary.toLowerCase();
 		this.secondary=secondary.toLowerCase();
 		this.tertiary=tertiary.toLowerCase();
-		this.maxStudents = max;
-		this.antiRequisites.add(super.name);
+		this.classSize = max;
 }
 	
 	public CAPE(String name, String primary, String secondary, int max) {
 		super(name.toLowerCase());
 		this.primary = primary.toLowerCase();
 		this.secondary=secondary.toLowerCase();
-		this.maxStudents = max;
-		this.antiRequisites.add(super.name);
+		this.classSize = max;
 }
 	
 	public CAPE(String name, String primary, int max) {
 		super(name.toLowerCase());
 		this.primary = primary.toLowerCase();
-		this.maxStudents = max;
-		this.antiRequisites.add(super.name);
+		this.classSize = max;
 	}
 	
 	public String getName() {
@@ -92,9 +89,7 @@ public class CAPE extends Subject {
 		this.accepted = new LinkedHashMap<Student, Integer>();
 		this.antiRequisites = new ArrayList<String>();
 		this.conflictStudents = new LinkedHashMap<Student, Integer>();
-		this.alternateStudents = new LinkedHashMap<Student, Integer>();
-		this.antiRequisites.add(super.name);
-		
+		this.alternateStudents = new LinkedHashMap<Student, Integer>();		
 		this.sorted = false;
 	}
 	
@@ -115,11 +110,11 @@ public class CAPE extends Subject {
 	}
 	
 	public void setMax(int m) {
-		maxStudents = m;
+		classSize = m;
 	}
 	
 	public int getMax() {
-		return maxStudents;
+		return classSize;
 	}
 	
 	private void sortStudents()
@@ -157,13 +152,13 @@ public class CAPE extends Subject {
 	// Add antirequisite stuff here
 	public void generateAcceptedList(int maxDoable) {
 		if (!sorted) sortStudents();
-		boolean noMax = (maxStudents == -1);
+		boolean noMax = (classSize == -1);
 		for (Map.Entry<Student, Integer> entry : eligibleStudents.entrySet()) {
 			Student stud = entry.getKey();
 			ArrayList<String> choices = stud.getChoices();
 			if (choices.contains((super.name).toLowerCase())) {
 				boolean exculsive = isDisjoint(choices, antiRequisites);
-				if (exculsive && (noMax || ((accepted.size() + conflictStudents.size() < maxStudents)))) {
+				if (exculsive && (noMax || ((accepted.size() + conflictStudents.size() < classSize)))) {
 					System.out.println("Accepted: " + stud);
 					if (stud.addAcceptedSubject(this, maxDoable)) {
 						accepted.put(stud, entry.getValue());						

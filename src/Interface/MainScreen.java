@@ -169,7 +169,7 @@ public class MainScreen {
 					self.setVisible(false);
 					return;
 					}
-				else if(controller.getStudents().isEmpty()){
+				if(controller.getStudents().isEmpty()){
 					JOptionPane.showMessageDialog(frmSaps, "Upload Student Data Before Proceeding", "Error", JOptionPane.ERROR_MESSAGE);
 					chooser();
 					return;
@@ -183,8 +183,8 @@ public class MainScreen {
 					else {
 						controller.generateMappings(0);
 					}
-					new Report(self);
-					self.setVisible(false);
+					//new Report(self);
+					//self.setVisible(false);
 					
 				}
 				catch(NumberFormatException ne) {
