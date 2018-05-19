@@ -17,11 +17,10 @@ public class CAPE extends Subject {
 	private String tertiary = null;
 	private boolean sorted = false;
 	private int classSize = -1;
+	private int applied = 0;
+	private ArrayList<Student> rejected = new ArrayList<Student>();
 	private Map<Student, Integer> eligibleStudents = new LinkedHashMap<Student, Integer>();
-	//private ArrayList<String> accepted = new ArrayList<String>();
 	private ArrayList<String> antiRequisites = new ArrayList<String>();
-	//private ArrayList<String> conflictStudents = new ArrayList<String>();
-	//private ArrayList<String> alternateStudents = new ArrayList<String>();
 	private Map<Student, Integer> accepted = new LinkedHashMap<Student, Integer>();
 	private Map<Student, Integer> conflictStudents = new LinkedHashMap<Student, Integer>();
 	private Map<Student, Integer> alternateStudents = new LinkedHashMap<Student, Integer>();
@@ -108,6 +107,31 @@ public class CAPE extends Subject {
 	public boolean hasEligible() {
 		return !eligibleStudents.isEmpty();
 	}
+	
+	public void addRejected(Student s) {
+		this.rejected.add(s);
+	}
+	
+	public ArrayList<Student> getRejects() {
+		return this.rejected;
+	}
+	
+	public int getRejectedSize() {
+		return this.rejected.size();
+	}
+	
+	public int getPending() {
+		return this.conflictStudents.size() + this.alternateStudents.size();
+	}
+	
+	public int getClassSize() {
+		if (classSize == -1) return 0;
+		return classSize;
+	}
+	
+	public int getMetReq() {
+		return this.eligibleStudents.size();
+		}
 	
 	public void setMax(int m) {
 		classSize = m;
@@ -211,6 +235,14 @@ public class CAPE extends Subject {
 	
 	public ArrayList<String> getAllStudents() {
 		return getString(eligibleStudents, true);
+	}
+	
+	public void incApplied() {
+		this.applied++;
+	}
+	
+	public int getApplied() {
+		return this.applied;
 	}
 	
 	public ArrayList<String> getAccepted() {

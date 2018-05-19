@@ -1,6 +1,7 @@
 package System;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import Core.*;
 import CSV.*;
@@ -42,7 +43,7 @@ public class App {
 	}
 	
 	public CAPE searchSubjects(String sName) {
-		CAPE subj = (CAPE)capeBST.get(sName);
+		CAPE subj = (CAPE)capeBST.get(sName.toLowerCase());
 		return subj;
 	}
 	
@@ -91,10 +92,14 @@ public class App {
 			Student stud = students.get(k);
 			for (int j = 0; j < m-1; j++) {
 				CAPE subj = offeredSubjects.get(j);
+				if (stud.getChoices().contains(subj.getName())) subj.incApplied();
 				int points = stud.calcPoints(subj);
 				if (points > 0) {
 					subj.addStudent(stud, points);
 					stud.addPossibleSub(subj);
+				}
+				else  {
+					subj.addRejected(stud);
 				}
 			}
 		}
@@ -145,7 +150,7 @@ public class App {
 	}
 	
 	public ArrayList<Student> getStudents(){
-		return students;
+		return this.students;
 	}
 	
 	public CAPE getSubject(String name) {
