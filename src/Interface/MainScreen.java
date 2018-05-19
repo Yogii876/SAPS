@@ -198,6 +198,23 @@ public class MainScreen {
 				    else if (dialogResult == JOptionPane.NO_OPTION){
 						controller.generateMappings(0);
 					}
+					for (CAPE c : controller.getOffered()) {
+						System.out.println(c + "\t" + c.getMax());
+						System.out.println("Accepted Students: \t" + c.getAccepted());
+						System.out.println("Conflict Students: \t"+ c.getConflicts());
+						System.out.println("Alternates Students: \t" + c.getAlternates() + "\n");
+		 			}
+					/**for (Student s: controller.getStudents()) {
+						System.out.println(s + "\t" + s.getChoices());
+						if (s.getAccepted().isEmpty());
+						else System.out.println("Accepted Courses: \t" + s.getAccepted());
+						if (s.getConflicts().isEmpty());
+						else System.out.println("Conflicts Courses: \t" + s.getConflicts());
+						if (s.getAlternates().isEmpty());
+						else System.out.println("Alternate Courses: \t" + s.getAlternates());
+						System.out.println("\n");
+						
+					}**/
 					new Report(self);
 					self.setVisible(false);
 					
@@ -299,7 +316,9 @@ public class MainScreen {
 		String[] csec_subjs = {"ADDITIONAL MATHEMATICS", "AGRICULTURAL SCIENCE", "BIOLOGY", "CARIBBEAN HISTORY", "CHEMISTRY", "ECONOMICS", "ELECTRONIC DOCUMENT PREPARATION AND MANAGEMENT", "ENGLISH A", "ENGLISH B", "FAMILY AND RESOURCE MANAGEMENT", "FOOD, NUTRITION AND HEALTH", "FRENCH", "GEOGRAPHY", "HOME ECONOMICS", "HUMAN AND SOCIAL BIOLOGY", "INDUSTRIAL TECHNOLOGY", "INFORMATION TECHNOLOGY", "INTEGRATED SCIENCE", "MATHEMATICS", "MUSIC", "OFFICE ADMINISTRATION", "PHYSICAL EDUCATION AND SPORT", "PHYSICS", "PORTUGUESE", "PRINCIPLES OF ACCOUNTS", "PRINCIPLES OF BUSINESS", "RELIGIOUS EDUCATION", "SOCIAL STUDIES", "SPANISH", "TECHNICAL DRAWING", "TEXTILES, CLOTHING AND FASHION", "THEATRE ARTS", "VISUAL ARTS"};
 		String[] csec_subjs1 = {"None", "ADDITIONAL MATHEMATICS", "AGRICULTURAL SCIENCE", "BIOLOGY", "CARIBBEAN HISTORY", "CHEMISTRY", "ECONOMICS", "ELECTRONIC DOCUMENT PREPARATION AND MANAGEMENT", "ENGLISH A", "ENGLISH B", "FAMILY AND RESOURCE MANAGEMENT", "FOOD, NUTRITION AND HEALTH", "FRENCH", "GEOGRAPHY", "HOME ECONOMICS", "HUMAN AND SOCIAL BIOLOGY", "INDUSTRIAL TECHNOLOGY", "INFORMATION TECHNOLOGY", "INTEGRATED SCIENCE", "MATHEMATICS", "MUSIC", "OFFICE ADMINISTRATION", "PHYSICAL EDUCATION AND SPORT", "PHYSICS", "PORTUGUESE", "PRINCIPLES OF ACCOUNTS", "PRINCIPLES OF BUSINESS", "RELIGIOUS EDUCATION", "SOCIAL STUDIES", "SPANISH", "TECHNICAL DRAWING", "TEXTILES, CLOTHING AND FASHION", "THEATRE ARTS", "VISUAL ARTS"};
 
-		String[] cape_subjs = {"ACCOUNTING", "ANIMATION & GAME DESIGN", "AGRICULTURAL SCIENCE", "APPLIED MATHEMATICS", "ART AND DESIGN", "BIOLOGY", "BUILDING AND MECHANICAL ENGINEERING DRAWING", "CARIBBEAN STUDIES", "CHEMISTRY", "COMMUNICATION STUDIES", "COMPUTER SCIENCE", "DIGITAL MEDIA", "ELECTRICAL AND ELECTRONIC ENGINEERING TECHNOLOGY", "ECONOMICS", "ENTREPRENEURSHIP", "ENVIRONMENTAL SCIENCE", "FINANCIAL SERVICES STUDIES", "FOOD AND NUTRITION", "FRENCH", "GEOGRAPHY", "GREEN ENGINEERING", "HISTORY", "INFORMATION TECHNOLOGY", "INTEGRATED MATHEMATICS", "LAW", "LITERATURES IN ENGLISH", "LOGISTICS AND SUPPLY CHAIN OPERATIONS", "MANAGEMENT OF BUSINESS", "PERFORMING ARTS", "PHYSICS", "PHYSICAL EDUCATION AND SPORT", "PURE MATHEMATICS", "SOCIOLOGY", "SPANISH", "TOURISM"};
+		String[] cape_subjs = {"ACCOUNTING", "BIOLOGY", "CHEMISTRY", "COMPUTER SCIENCE",
+				"ECONOMICS", "GEOGRAPHY", "HISTORY",
+				 "LAW", "PHYSICS", "PURE MATHEMATICS", "SOCIOLOGY"};
 		List<String> cape_subjs3 = Arrays.asList(cape_subjs);
 		ArrayList<String> cape_subjs2 = new ArrayList<String>();
 		cape_subjs2.addAll(cape_subjs3);
@@ -313,13 +332,13 @@ public class MainScreen {
 			String sReq = csec_subjs[r.nextInt(csec_subjs.length)];
 			String tReq = csec_subjs1[r.nextInt(csec_subjs1.length)];
 			
-			String anti1 = cape_subjs[r.nextInt(csec_subjs.length)];
-			String anti2 = cape_subjs[r.nextInt(csec_subjs.length)];
-			String anti3 = cape_subjs[r.nextInt(csec_subjs.length)];
+			//String anti1 = cape_subjs[r.nextInt(csec_subjs.length)];
+			//String anti2 = cape_subjs[r.nextInt(csec_subjs.length)];
+			//String anti3 = cape_subjs[r.nextInt(csec_subjs.length)];
 			
-			String[] antis = {anti1, anti2, anti3};
+			//String[] antis = {anti1, anti2};
 			
-			int maxStud = r.nextInt(5) + 1;
+			int maxStud = r.nextInt(20) + 10;
 			//int maxStud =-1;
 			CAPE cape;
 			
@@ -327,9 +346,9 @@ public class MainScreen {
 			else if (!sReq.equals("None")) cape = controller.populateSubjects(name, pReq, sReq, null, maxStud);
 			else cape = controller.populateSubjects(name, pReq, null, null, maxStud);
 
-			for (String s: antis) {
+			/**for (String s: antis) {
 				if (!s.equals("None")) cape.addAntiReq(s);
-			}
+			}**/
 			cape_subjs2.remove(sub);
 		}
 	}

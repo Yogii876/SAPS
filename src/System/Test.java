@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import Core.CAPE;
+import Core.Student;
 
 import java.io.File;
 
@@ -22,11 +23,25 @@ public class Test {
 			fakeSubjects();
 			controller.generateMappings(0);
 			for (CAPE c : controller.getOffered()) {
-				System.out.println(c + "\t" + c.getAccepted());
-				System.out.println(c + "\t" + c.getConflicts());
-				System.out.println(c + "\t" + c.getAlternates());
-				System.out.println("Working");
- 			}			
+				System.out.println(c + "\t" + c.getMax());
+				System.out.println("Accepted Students: \t" + c.getAccepted());
+				System.out.println("Conflict Students: \t"+ c.getConflicts());
+				System.out.println("Alternates Students: \t" + c.getAlternates() + "\n");
+ 			}
+			for (Student s: controller.getStudents()) {
+				System.out.println(s + "\t" + s.getChoices());
+				ArrayList<String> sa = s.getAccepted();
+				ArrayList<String> sc = s.getConflicts();
+				ArrayList<String> sal = s.getAlternates();
+				if (sa == null);
+				else System.out.println("Accepted Courses: \t" + s.getAccepted());
+				if (sc == null);
+				else System.out.println("Conflicts Courses: \t" + s.getConflicts());
+				if (sal == null);
+				else System.out.println("Alternate Courses: \t" + s.getAlternates());
+				System.out.println("\n");
+				
+			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -45,7 +60,6 @@ public class Test {
 		List<String> cape_subjs3 = Arrays.asList(cape_subjs);
 		ArrayList<String> cape_subjs2 = new ArrayList<String>();
 		cape_subjs2.addAll(cape_subjs3);
-		System.out.println(cape_subjs2.size());
 
 		//int sub = r.nextInt(cape_subjs2.length);  // [0...4] [min = 0, max = 4]
 		while (cape_subjs2.size() != 0) {

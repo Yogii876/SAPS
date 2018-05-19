@@ -43,14 +43,14 @@ public class Reader {
 		                csecSubs.add(new CSEC(((grade_info[gIndex]).trim()).toLowerCase(), Integer.parseInt(grade_info[gIndex+1].trim())));
 		                gIndex += 2;                    
 		            }
-		            count = 0;
 		            gIndex = 0;
 		            String[] sel_info = line.split(courseSplitBy)[2].split(cvsSplitBy);
-		            while(count < sel_info.length) {
-		            	capeSubs.add((sel_info[count].trim()).toLowerCase());
-		            	count++;
+		            for (String s: sel_info) {
+		            	capeSubs.add((s.trim()).toLowerCase());
 		            }
 		            Student stud = new Student(fName, lName, csecSubs, capeSubs);
+		            csecSubs = new ArrayList<CSEC>();
+		        	capeSubs = new ArrayList<String>();
 		            sMap.put(fName.toLowerCase() + " " + lName.toLowerCase(), stud);
 		            students.add(stud);
 		        }

@@ -104,7 +104,7 @@ public class App {
 	
 	private void assignStudents(int m) {
 		for (CAPE subj: offeredSubjects ) {
-			System.out.println(subj);
+			//System.out.println(subj);
 			subj.generateAcceptedList(m);
 		}
 	}

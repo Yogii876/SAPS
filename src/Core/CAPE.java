@@ -159,7 +159,7 @@ public class CAPE extends Subject {
 			if (choices.contains((super.name).toLowerCase())) {
 				boolean exculsive = isDisjoint(choices, antiRequisites);
 				if (exculsive && (noMax || ((accepted.size() + conflictStudents.size() < classSize)))) {
-					System.out.println("Accepted: " + stud);
+					//System.out.println("Accepted: " + stud);
 					if (stud.addAcceptedSubject(this, maxDoable)) {
 						accepted.put(stud, entry.getValue());						
 					}
@@ -169,12 +169,12 @@ public class CAPE extends Subject {
 					}
 				}
 				else if (!exculsive) {
-					System.out.println("Conflicting: " + stud + "Points -	" + entry.getValue());
+					//System.out.println("Conflicting: " + stud + "Points -	" + entry.getValue());
 					conflictStudents.put(stud, entry.getValue());
 					stud.addConflict(this);
 				}
 				else {
-					System.out.println("Alternate: " + stud + "Points -	" + entry.getValue());
+					//System.out.println("Alternate: " + stud + "Points -	" + entry.getValue());
 					alternateStudents.put(stud, entry.getValue());
 					stud.addAlternate(this);
 				}
@@ -182,6 +182,7 @@ public class CAPE extends Subject {
 			else {
 				stud.addAlternate(this);
 			}
+			choices = new ArrayList<String>();
 			
 		}
 	}
