@@ -11,8 +11,9 @@ public class Student {
 	private ArrayList<CAPE> acceptedFor = new ArrayList<CAPE>();
 	private ArrayList<CAPE> conflicts = new ArrayList<CAPE>();
 	private ArrayList<CAPE> alternates = new ArrayList<CAPE>();
-	
 	private Map<CAPE, Integer> pointMapping = new HashMap<CAPE, Integer>();
+	private Map<CAPE, Map<String, Integer>> courseGrades = new HashMap<CAPE, Map<String, Integer>>();
+	private ArrayList<CAPE> rejected = new ArrayList<CAPE>();
 	
 	public Student(String fName, String lName, ArrayList<CSEC> cssubs, ArrayList<String> casubs) {
 		this.fName=fName;
@@ -55,23 +56,25 @@ public class Student {
 		
 		if (tertiary != null) {
 			for (int i = 0; i < csecSubs.size() - 1; i++) {
-				if (csecSubs.get(i).getName().equals(primary)) {
+				String tName = csecSubs.get(i).getName();
+				if (tName.equals(primary)) {
 					pGrade = csecSubs.get(i).getGrade();
 				} 
-				if (csecSubs.get(i).getName().equals(secondary)) {
+				else if (tName.equals(secondary)) {
 					sGrade = csecSubs.get(i).getGrade();
 				} 
-				if (csecSubs.get(i).getName().equals(tertiary)) {
+				else if (tName.equals(tertiary)) {
 					tGrade = csecSubs.get(i).getGrade();
 				} 
 			}
 		}
 		else if (secondary != null) {
 			for (int i = 0; i < csecSubs.size() - 1; i++) {
-				if (csecSubs.get(i).getName().equals(primary)) {
+				String tName = csecSubs.get(i).getName();
+				if (tName.equals(primary)) {
 					pGrade = csecSubs.get(i).getGrade();
 				} 
-				if (csecSubs.get(i).getName().equals(secondary)) {
+				if (tName.equals(secondary)) {
 					sGrade = csecSubs.get(i).getGrade();
 				}
 			}
@@ -83,6 +86,11 @@ public class Student {
 				} 
 			}
 		}
+		Map<String, Integer> temp = new HashMap<String, Integer>();
+		temp.put("primary", pGrade);
+		temp.put("secondary", sGrade);
+		temp.put("tertiary", tGrade);
+		courseGrades.put(cape, temp);
 		
 		if (pGrade > 0) {	
 			totalPoints += Point.getPoints("primary", pGrade);
@@ -96,10 +104,19 @@ public class Student {
 		
 	}
 	
-	public Map<CAPE, Integer> getMapping() {
-		return pointMapping;
+	public ArrayList<CAPE> getAcceptedFor() {
+		return this.acceptedFor;
 	}
 	
+	public ArrayList<CAPE> getConflictsSubs() {
+		return this.conflicts;
+	}
+	
+	public ArrayList<CAPE> getAlternateSubs() {
+		return this.alternates;
+	}
+	
+
 	public int getPoints(CAPE obj) {
 		return pointMapping.get(obj);
 	}
@@ -134,6 +151,15 @@ public class Student {
 	public void addAlternate(CAPE cape) {
 		alternates.add(cape);
 		
+	}
+	
+	public void addRejected(CAPE c) {
+		this.rejected.add(c); 
+	}
+	
+	public Map<String, Integer> getPreReqInfo(CAPE c) {
+		System.out.println(courseGrades.get(c));
+		return courseGrades.get(c);
 	}
 	
 	private ArrayList<String> getString(ArrayList<CAPE> cSubs) {

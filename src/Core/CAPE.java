@@ -18,12 +18,14 @@ public class CAPE extends Subject {
 	private boolean sorted = false;
 	private int classSize = -1;
 	private int applied = 0;
+	private int rejecSize = 0;
 	private ArrayList<Student> rejected = new ArrayList<Student>();
 	private Map<Student, Integer> eligibleStudents = new LinkedHashMap<Student, Integer>();
 	private ArrayList<String> antiRequisites = new ArrayList<String>();
-	private Map<Student, Integer> accepted = new LinkedHashMap<Student, Integer>();
-	private Map<Student, Integer> conflictStudents = new LinkedHashMap<Student, Integer>();
-	private Map<Student, Integer> alternateStudents = new LinkedHashMap<Student, Integer>();
+	private ArrayList<Student> accepted = new ArrayList<Student>();
+	private ArrayList<Student> conflictStudents = new ArrayList<Student>();
+	private ArrayList<Student> alternateStudents = new ArrayList<Student>();
+	private ArrayList<Student> studFull = new ArrayList<Student>();
 	
 	public CAPE(String name, String primary, String secondary, String tertiary, int max) {
 		super(name.toLowerCase());
@@ -85,11 +87,13 @@ public class CAPE extends Subject {
 	
 	public void resetStudents() {
 		this.eligibleStudents = new HashMap<Student, Integer>();
-		this.accepted = new LinkedHashMap<Student, Integer>();
+		this.accepted = new ArrayList<Student>();
 		this.antiRequisites = new ArrayList<String>();
-		this.conflictStudents = new LinkedHashMap<Student, Integer>();
-		this.alternateStudents = new LinkedHashMap<Student, Integer>();		
+		this.conflictStudents = new ArrayList<Student>();
+		this.alternateStudents = new ArrayList<Student>();
+		this.rejected = new ArrayList<Student>();
 		this.sorted = false;
+		this.applied = 0;
 	}
 	
 	public void addAntiReq(String s) {
@@ -110,6 +114,7 @@ public class CAPE extends Subject {
 	
 	public void addRejected(Student s) {
 		this.rejected.add(s);
+		rejecSize++;
 	}
 	
 	public ArrayList<Student> getRejects() {
@@ -117,11 +122,31 @@ public class CAPE extends Subject {
 	}
 	
 	public int getRejectedSize() {
-		return this.rejected.size();
+		return this.rejecSize;
 	}
 	
 	public int getPending() {
 		return this.conflictStudents.size() + this.alternateStudents.size();
+	}
+	
+	public ArrayList<Student> getAcceptedStudents() {
+		return this.accepted;
+	}
+	
+	public ArrayList<Student> getRejectedStudents() {
+		return this.rejected;
+	}
+	
+	public ArrayList<Student> getConflictStudents() {
+		return this.conflictStudents;
+	}
+	
+	public ArrayList<Student> getAlternateStudents() {
+		return this.alternateStudents;
+	}
+	
+	public int getAccNum() {
+		return this.accepted.size();
 	}
 	
 	public int getClassSize() {
@@ -185,21 +210,22 @@ public class CAPE extends Subject {
 				if (exculsive && (noMax || ((accepted.size() + conflictStudents.size() < classSize)))) {
 					//System.out.println("Accepted: " + stud);
 					if (stud.addAcceptedSubject(this, maxDoable)) {
-						accepted.put(stud, entry.getValue());						
+						accepted.add(stud);						
 					}
 					else {
+						//TODO change to arraylist as GUI can print message
 						//alternateStudents.put(stud, entry.getValue());
+						studFull.add(stud);
 						stud.addAlternate(this);						
 					}
 				}
 				else if (!exculsive) {
-					//System.out.println("Conflicting: " + stud + "Points -	" + entry.getValue());
-					conflictStudents.put(stud, entry.getValue());
+					conflictStudents.add(stud);
 					stud.addConflict(this);
 				}
 				else {
 					//System.out.println("Alternate: " + stud + "Points -	" + entry.getValue());
-					alternateStudents.put(stud, entry.getValue());
+					alternateStudents.add(stud);
 					stud.addAlternate(this);
 				}
 			}
@@ -243,16 +269,5 @@ public class CAPE extends Subject {
 	
 	public int getApplied() {
 		return this.applied;
-	}
-	
-	public ArrayList<String> getAccepted() {
-		return getString(accepted, false);
-	}
-	
-	public ArrayList<String> getConflicts() {
-		return getString(conflictStudents, false);
-	}
-	public ArrayList<String> getAlternates() {
-		return getString(alternateStudents, false);
 	}
 }

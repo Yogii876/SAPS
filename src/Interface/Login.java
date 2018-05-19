@@ -81,7 +81,7 @@ public class Login {
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("SAPS LOGIN");
-		lblNewLabel.setBounds(275, 129, 349, 41);
+		lblNewLabel.setBounds(285, 102, 349, 41);
 		panel.add(lblNewLabel);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Agency FB", Font.BOLD, 24));
@@ -121,7 +121,7 @@ public class Login {
 		
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setIcon(new ImageIcon(Login.class.getResource("../img/lo.png")));
-		lblNewLabel_1.setBounds(139, 0, 555, 349);
+		lblNewLabel_1.setBounds(10, 0, 555, 300);
 		panel.add(lblNewLabel_1);
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -135,8 +135,6 @@ public class Login {
 							txt_Password.setText(null);
 							txt_Username.setText(null);
 							frame.dispose();
-							
-							App controller = new App();
 							new MainScreen();
 						}
 						else {

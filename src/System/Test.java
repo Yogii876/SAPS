@@ -24,9 +24,9 @@ public class Test {
 			controller.generateMappings(0);
 			for (CAPE c : controller.getOffered()) {
 				System.out.println(c + "\t" + c.getMax());
-				System.out.println("Accepted Students: \t" + c.getAccepted());
-				System.out.println("Conflict Students: \t"+ c.getConflicts());
-				System.out.println("Alternates Students: \t" + c.getAlternates() + "\n");
+				//System.out.println("Accepted Students: \t" + c.getAccepted());
+				//System.out.println("Conflict Students: \t"+ c.getConflicts());
+				//System.out.println("Alternates Students: \t" + c.getAlternates() + "\n");
  			}
 			for (Student s: controller.getStudents()) {
 				System.out.println(s + "\t" + s.getChoices());

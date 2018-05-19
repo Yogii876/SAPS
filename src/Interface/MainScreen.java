@@ -200,9 +200,9 @@ public class MainScreen {
 					}
 					for (CAPE c : controller.getOffered()) {
 						System.out.println(c + "\t" + c.getMax());
-						System.out.println("Accepted Students: \t" + c.getAccepted());
-						System.out.println("Conflict Students: \t"+ c.getConflicts());
-						System.out.println("Alternates Students: \t" + c.getAlternates() + "\n");
+						//System.out.println("Accepted Students: \t" + c.getAccepted());
+						//System.out.println("Conflict Students: \t"+ c.getConflicts());
+						//System.out.println("Alternates Students: \t" + c.getAlternates() + "\n");
 		 			}
 					/**for (Student s: controller.getStudents()) {
 						System.out.println(s + "\t" + s.getChoices());
@@ -215,7 +215,15 @@ public class MainScreen {
 						System.out.println("\n");
 						
 					}**/
-					new Report(self);
+					List<Object[]> info = new ArrayList<Object[]>();
+
+					for (CAPE c: controller.getOffered()) {
+						Object [] temp = {c.getName(), c.getClassSize(), c.getMetReq(), c.getApplied(), c.getAccNum(), c.getPending(), c.getRejectedSize()};
+						info.add(temp);
+					}
+					Object[][] data = new Object[info.size()][];
+					data = info.toArray(data);
+					new MainReport(self, data);
 					self.setVisible(false);
 					
 				}

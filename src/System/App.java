@@ -24,6 +24,7 @@ public class App {
 	
 	//TODO delete
 	public ArrayList<CAPE> getOffered() {
+		System.out.println(students.size());
 		return this.offeredSubjects;
 	}
 	
@@ -92,14 +93,15 @@ public class App {
 			Student stud = students.get(k);
 			for (int j = 0; j < m-1; j++) {
 				CAPE subj = offeredSubjects.get(j);
-				if (stud.getChoices().contains(subj.getName())) subj.incApplied();
+				boolean applied = stud.getChoices().contains(subj.getName());
 				int points = stud.calcPoints(subj);
 				if (points > 0) {
 					subj.addStudent(stud, points);
 					stud.addPossibleSub(subj);
 				}
-				else  {
-					subj.addRejected(stud);
+				if (applied) {
+					subj.incApplied();
+					if (points == 0)	subj.addRejected(stud);
 				}
 			}
 		}
@@ -112,14 +114,6 @@ public class App {
 			//System.out.println(subj);
 			subj.generateAcceptedList(m);
 		}
-	}
-	
-	public ArrayList<String> getEligible(CAPE subj) {
-		return subj.getAllStudents();
-	}
-	
-	public ArrayList<String> getAcceptedStudents(CAPE subj) {
-		return subj.getAccepted();
 	}
 			
 			
