@@ -1,45 +1,40 @@
 package Interface;
-import java.awt.Color;
-import java.awt.Dimension;
+
 import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import System.*;
+import Core.*;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
+import java.awt.BorderLayout;
+
+import javax.swing.JScrollPane;
+import java.awt.Toolkit;
+import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import java.awt.SystemColor;
-import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
-
-import Core.Student;
-import Core.CAPE;
-import System.App;
-
+import java.awt.Color;
+import javax.swing.JRadioButton;
+import java.awt.Font;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-import java.awt.Component;
-import javax.swing.JTextArea;
+import javax.swing.JLabel;
+//import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
 
 public class Report {
 
-	private JFrame frmSixthFormApplication;
-	private JTextField txtStudent;
+	private JFrame rpFrame;
+	private JTable table_1;
+	private JTextField textField;
 	private App controller;
-	private MainScreen parent;
+	private JScrollPane scrollPane;
+	private JPanel panel;
 
 	/**
 	 * Launch the application.
@@ -48,8 +43,20 @@ public class Report {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Report window = new Report(new MainScreen());
-					window.frmSixthFormApplication.setVisible(true);
+					Object[][] data = {
+							{"Mary", "Campione", 
+							"Snowboarding", new Integer(5), new Boolean(false), new Integer(12), new Integer(100)},
+							{"Alison", "Huml", 
+							"Rowing", new Integer(3), new Boolean(true), new Integer(12), new Integer(100)},
+							{"Kathy", "Walrath",
+							"Chasing toddlers", new Integer(2), new Boolean(false), new Integer(12), new Integer(100)},
+							{"Mark", "Andrews",
+							"Speed reading", new Integer(20), new Boolean(true), new Integer(12), new Integer(100)},
+							{"Angela", "Lih",
+							"Teaching high school", new Integer(4), new Boolean(false), new Integer(12), new Integer(100)}
+							};
+					Report window = new Report(new MainScreen(), data);
+					window.rpFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -60,418 +67,229 @@ public class Report {
 	/**
 	 * Create the application.
 	 */
-	
-	
-	public Report(MainScreen parent) {
-		//this.controller = controller;
-		initialize();
-		this.parent = parent;
+	public Report(MainScreen parent, Object[][] rowData) {
+		initialize(rowData);
 		this.controller = parent.getController();
-		frmSixthFormApplication.setVisible(true);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
-		frmSixthFormApplication = new JFrame();
-		frmSixthFormApplication.setTitle("Sixth Form Application Processing System");
-		frmSixthFormApplication.setResizable(false);
-		frmSixthFormApplication.getContentPane().setBackground(new Color(0, 139, 139));
-		
-		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		frmSixthFormApplication.setBounds(0, 0,797,611);
-		frmSixthFormApplication.getContentPane().setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("SAPS");
-		lblNewLabel.setBounds(0, 0, 112, 68);
-		lblNewLabel.setForeground(SystemColor.text);
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Rage Italic", Font.BOLD, 35));
-		frmSixthFormApplication.getContentPane().add(lblNewLabel);
-		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBackground(SystemColor.text);
-		tabbedPane.setBounds(0,91,791,756);
-		tabbedPane.setFont(new Font("Agency FB", Font.PLAIN, 11));
-		frmSixthFormApplication.getContentPane().add(tabbedPane);
-		tabbedPane.setFont(new Font("Agency FB", Font.PLAIN, 11));
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(255, 255, 255));
-		tabbedPane.addTab("Class Report", null, panel_1, null);
-		panel_1.setLayout(null);
-		
-		JLabel lblNewLabel_2 = new JLabel("Select class to view from the list:");
-		lblNewLabel_2.setForeground(new Color(0, 139, 139));
-		lblNewLabel_2.setFont(new Font("Corbel", Font.BOLD, 18));
-		lblNewLabel_2.setBounds(49, 120, 191, 38);
-		panel_1.add(lblNewLabel_2);
-		
-		//Search by Subject Area
-				JPanel panel_4 = new JPanel();
-				panel_4.setBorder(new LineBorder(new Color(0, 139, 139)));
-				panel_4.setForeground(Color.WHITE);
-				panel_4.setBackground(new Color(255, 255, 255));
-				panel_4.setBounds(312, 0, 470, 460);
-				panel_1.add(panel_4);
-				panel_4.setLayout(null);
-				
-				JLabel lblSubject = new JLabel("Subject: ");
-				lblSubject.setBounds(19, 11, 447, 39);
-				lblSubject.setHorizontalAlignment(SwingConstants.CENTER);
-				lblSubject.setFont(new Font("Corbel", Font.BOLD, 30));
-				lblSubject.setForeground(new Color(0, 139, 139));
-				panel_4.add(lblSubject);
-				
-				JLabel lblAcceptedStudents = new JLabel("Accepted Students");
-				lblAcceptedStudents.setBounds(19, 75, 131, 17);
-				lblAcceptedStudents.setFont(new Font("Corbel", Font.BOLD, 14));
-				lblAcceptedStudents.setForeground(new Color(0, 0, 0));
-				panel_4.add(lblAcceptedStudents);
-				
-				JTextArea acceptedStudentsArea = new JTextArea();
-				acceptedStudentsArea.setEditable(false);
-				acceptedStudentsArea.setBounds(19, 103, 441, 87);
-				panel_4.add(acceptedStudentsArea);
-				
-				JLabel lblConflictingStudents = new JLabel("Conflicting Students");
-				lblConflictingStudents.setBounds(19, 201, 131, 17);
-				lblConflictingStudents.setFont(new Font("Corbel", Font.BOLD, 14));
-				lblConflictingStudents.setForeground(new Color(0, 0, 0));
-				panel_4.add(lblConflictingStudents);
-				
-				JLabel lblAlternativeStudents = new JLabel("Alternative Students");
-				lblAlternativeStudents.setBounds(19, 329, 131, 17);
-				lblAlternativeStudents.setFont(new Font("Corbel", Font.BOLD, 14));
-				lblAlternativeStudents.setForeground(new Color(0, 0, 0));
-				panel_4.add(lblAlternativeStudents);
-				
-				
-				JTextArea conflictingStudentsArea = new JTextArea();
-				conflictingStudentsArea.setEditable(false);
-				conflictingStudentsArea.setBounds(19, 229, 441, 89);
-				panel_4.add(conflictingStudentsArea);
-				
-				JTextArea alternativeStudentsArea = new JTextArea();
-				alternativeStudentsArea.setEditable(false);
-				alternativeStudentsArea.setBounds(19, 357, 441, 91);
-				panel_4.add(alternativeStudentsArea);
-				//End search by students area
-		
-		JComboBox<Object> comboBox = new JComboBox<Object>();
-		comboBox.setForeground(new Color(0, 128, 128));
-		comboBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				JLabel lbl_combo_selection = new JLabel("");
-				lbl_combo_selection.setHorizontalAlignment(SwingConstants.CENTER);
-				lbl_combo_selection.setFont(new Font("Agency FB", Font.BOLD, 23));
-				lbl_combo_selection.setBounds(507, 225, 232, 31);
-				panel_1.add(lbl_combo_selection);
-				
-				String value=(String)comboBox.getSelectedItem();
-				
-				if (value.equals(comboBox.getSelectedItem())){
-					String accepted_students = "", conflicting_students="", alternate_students="";
-					lbl_combo_selection.setText(value);
-					
-					lblSubject.setText(null);
-					acceptedStudentsArea.setText(null);
-					conflictingStudentsArea.setText(null);
-					alternativeStudentsArea.setText(null);
-					
-					
-					CAPE cape = controller.searchSubjects(value.toUpperCase());
-					ArrayList<String> acceptedStudents = null, conflictingStudents = null, alternateStudents = null;
-					try{
-						acceptedStudents = cape.getAccepted();
-						conflictingStudents = cape.getConflicts();
-						alternateStudents = cape.getAlternates();
-					}
-					catch(Exception e1){
-						JOptionPane.showMessageDialog(new JFrame(), "No class data found", "Dialog",
-						        JOptionPane.ERROR_MESSAGE);
-					}
-					
-					
-					
-					if(acceptedStudents != null) {
-						for(String str : acceptedStudents) {
-							accepted_students.concat(str+"\n ");
-						}
-					}
-					
-					if(conflictingStudents != null) {
-						for(String str : conflictingStudents) {
-							conflicting_students.concat(str+"\n ");
-						}
-					}
-						
-					if(alternateStudents != null) {
-						for(String str : alternateStudents) {
-							alternate_students.concat(str+"\n ");	
-						}
-					}
-					
-					lblSubject.setText(value);
-					acceptedStudentsArea.append(accepted_students);
-					conflictingStudentsArea.append(conflicting_students);
-					alternativeStudentsArea.append(alternate_students);
-					
-					value = null;
-					
-				}
+	
+	private void updateTable(Object[][] row, Object[] col) {
+		table_1 = new JTable();
+		table_1.setModel(new DefaultTableModel(row,col) {
+			boolean[] columnEditables = new boolean[] {
+					false, false, false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return false;
 			}
 		});
-		comboBox.setBackground(new Color(255, 255, 255));
-		comboBox.setFont(new Font("Corbel", Font.PLAIN, 18));
-		comboBox.setModel(new DefaultComboBoxModel<Object>(new String[] {"None", "ACCOUNTING", "ANIMATION & GAME DESIGN", "AGRICULTURAL SCIENCE", "APPLIED MATHEMATICS", "ART AND DESIGN", "BIOLOGY", "BUILDING AND MECHANICAL ENGINEERING DRAWING", "CARIBBEAN STUDIES", "CHEMISTRY", "COMMUNICATION STUDIES", "COMPUTER SCIENCE", "DIGITAL MEDIA", "ELECTRICAL AND ELECTRONIC ENGINEERING TECHNOLOGY", "ECONOMICS", "ENTREPRENEURSHIP", "ENVIRONMENTAL SCIENCE", "FINANCIAL SERVICES STUDIES", "FOOD AND NUTRITION", "FRENCH", "GEOGRAPHY", "GREEN ENGINEERING", "HISTORY", "INFORMATION TECHNOLOGY", "INTEGRATED MATHEMATICS", "LAW", "LITERATURES IN ENGLISH", "LOGISTICS AND SUPPLY CHAIN OPERATIONS", 
-				"MANAGEMENT OF BUSINESS", "PERFORMING ARTS", "PHYSICS", "PHYSICAL EDUCATION AND SPORT", "PURE MATHEMATICS", "SOCIOLOGY", "SPANISH", "TOURISM"}));
-		comboBox.setBounds(22, 149, 241, 38);
-		panel_1.add(comboBox);
+		table_1.getColumnModel().getColumn(0).setPreferredWidth(150);
+		table_1.getColumnModel().getColumn(0).setMinWidth(150);
+		table_1.getColumnModel().getColumn(1).setPreferredWidth(95);
+		table_1.getColumnModel().getColumn(1).setMinWidth(95);
+		table_1.getColumnModel().getColumn(2).setPreferredWidth(107);
+		table_1.getColumnModel().getColumn(2).setMinWidth(95);
+		table_1.getColumnModel().getColumn(3).setPreferredWidth(95);
+		table_1.getColumnModel().getColumn(3).setMinWidth(95);
+		table_1.getColumnModel().getColumn(4).setPreferredWidth(65);
+		table_1.getColumnModel().getColumn(4).setMinWidth(65);
+		table_1.getColumnModel().getColumn(5).setPreferredWidth(200);
+		table_1.getColumnModel().getColumn(5).setMinWidth(200);
+		table_1.setShowVerticalLines(false);
+		table_1.setShowHorizontalLines(false);
+		table_1.setBorder(null);
+		table_1.setFillsViewportHeight(true);
+		table_1.setForeground(new Color(0, 0, 0));
+		table_1.setFont(new Font("Corbel", Font.PLAIN, 14));
+		table_1.setSurrendersFocusOnKeystroke(true);
+		table_1.setBackground(new Color(255, 255, 255));
+		panel.remove(scrollPane);
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(1, 109, 685, 257);
+		scrollPane.add(table_1);
+		scrollPane.setViewportView(table_1);
+		panel.add(scrollPane);
+		panel.repaint();
+	}
+	
+	private void initialize(Object[][] rData) {
+		rpFrame = new JFrame();
+		rpFrame.setBounds(100, 100, 759, 472);
+		rpFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(255, 250, 250));
-		tabbedPane.addTab("Student Report", null, panel, null);
+
+		String[] columnNames = {"Name", "Class Maximum", "Met Requirements", "Applied", "Accepted", "Pending", "Rejected"}; 
+		panel = new JPanel();
+		panel.setBackground(new Color(0, 128, 128));
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel_1 = new JLabel("Search for a student by full name:");
-		lblNewLabel_1.setForeground(new Color(0, 128, 128));
-		lblNewLabel_1.setFont(new Font("Corbel", Font.BOLD, 18));
-		lblNewLabel_1.setBounds(58, 60, 194, 32);
-		panel.add(lblNewLabel_1);
-		
-		//Results Panel Area
-		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new LineBorder(new Color(0, 128, 128)));
-		panel_2.setBackground(new Color(255, 255, 255));
-		panel_2.setBounds(312, 0, 472, 462);
-		panel.add(panel_2);
-		panel_2.setLayout(null);
-		
-		JLabel lblName = new JLabel("Name: ");
-		lblName.setHorizontalAlignment(SwingConstants.CENTER);
-		lblName.setBounds(19, 11, 447, 39);
-		lblName.setForeground(new Color(0, 128, 128));
-		lblName.setFont(new Font("Corbel", Font.BOLD, 30));
-		panel_2.add(lblName);
-		
-		JLabel lblAccepted = new JLabel("Accepted:");
-		lblAccepted.setBounds(19, 75, 60, 17);
-		lblAccepted.setForeground(new Color(0, 0, 0));
-		lblAccepted.setFont(new Font("Corbel", Font.BOLD, 14));
-		panel_2.add(lblAccepted);
-		
-		JTextArea conflictingTxtArea = new JTextArea();
-		conflictingTxtArea.setEditable(false);
-		conflictingTxtArea.setBounds(19, 229, 441, 89);
-		panel_2.add(conflictingTxtArea);
-		
-		JTextArea acceptedTxtArea = new JTextArea();
-		acceptedTxtArea.setEditable(false);
-		acceptedTxtArea.setBounds(19, 103, 441, 87);
-		acceptedTxtArea.setAlignmentX(Component.LEFT_ALIGNMENT);
-		panel_2.add(acceptedTxtArea);
-		
-		JLabel lblConflicting = new JLabel("Conflicting:");
-		lblConflicting.setBounds(19, 201, 70, 17);
-		lblConflicting.setForeground(new Color(0, 0, 0));
-		lblConflicting.setFont(new Font("Corbel", Font.BOLD, 14));
-		panel_2.add(lblConflicting);
-		
-		JTextArea alternativeTxtArea = new JTextArea();
-		alternativeTxtArea.setEditable(false);
-		alternativeTxtArea.setBounds(19, 357, 441, 91);
-		panel_2.add(alternativeTxtArea);
-		
-		JLabel lblAlternative = new JLabel("Alternative:");
-		lblAlternative.setBounds(19, 329, 71, 17);
-		lblAlternative.setForeground(new Color(0, 0, 0));
-		lblAlternative.setFont(new Font("Corbel", Font.BOLD, 14));
-		panel_2.add(lblAlternative);
-		//close all students panel area
-		
-		//All students panel area
-		JPanel panel_3 = new JPanel();
-		panel_3.setBounds(312, 0, 470, 460);
-		panel.add(panel_3);
-		panel_3.setBackground(new Color(255, 255, 255));
-		panel_3.setBorder(new LineBorder(new Color(0, 139, 139)));
-		panel_3.setLayout(null);
-				
-		JLabel lblAllStudentsResults = new JLabel("All Students Results");
-		lblAllStudentsResults.setForeground(new Color(0, 128, 128));
-		lblAllStudentsResults.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAllStudentsResults.setFont(new Font("Corbel", Font.BOLD, 30));
-		lblAllStudentsResults.setBounds(19, 11, 447, 39);
-		panel_3.add(lblAllStudentsResults);
-				
-		JTextArea allStudentsTxtArea = new JTextArea();
-		allStudentsTxtArea.setEditable(false);
-		allStudentsTxtArea.setBounds(19, 80, 447, 350);
-		panel_3.add(allStudentsTxtArea);
-		
-		JButton btnNewButton = new JButton("Search");
-		btnNewButton.setForeground(new Color(0, 128, 128));
-		btnNewButton.setBackground(new Color(220, 220, 220));
-		btnNewButton.addMouseListener(new MouseAdapter() {
+		textField = new JTextField();
+		textField.setBounds(486, 33, 169, 20);
+		panel.add(textField);
+		textField.setColumns(10);
+		rpFrame.addWindowListener(new WindowAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-				String accepted = "", conflicts="", alternate="";
-				
-				panel_3.setVisible(false);
-				allStudentsTxtArea.setText(null);
-				
-				if(txtStudent.getText().equals("")) {
-					panel_2.setVisible(true);
-					lblName.setText("Name: ");
-					JOptionPane.showMessageDialog(new JFrame(), "Enter a name to search!!", "Dialog",
-					        JOptionPane.ERROR_MESSAGE);
-				}
-				else {
-					panel_2.setVisible(true);
-					lblName.setText("");
-					acceptedTxtArea.setText(null);
-					conflictingTxtArea.setText(null);
-					alternativeTxtArea.setText(null);
-					
-					Student student = controller.searchStudents(txtStudent.getText().toLowerCase());
-					ArrayList<String> acceptedSubjects = null, conflictingSubjects = null, alternateSubjects = null;
-					
-					try {
-						acceptedSubjects = student.getAccepted();
-						conflictingSubjects = student.getConflicts();
-						alternateSubjects = student.getAlternates();
-					}
-					catch(Exception e2) {
-						JOptionPane.showMessageDialog(new JFrame(), "No students data found", "Dialog",
-						        JOptionPane.ERROR_MESSAGE);
-					}
-					
-					if(acceptedSubjects != null) {
-						for(String str : acceptedSubjects) {
-							accepted.concat(str+"\n ");
-						}
-					}
-					
-					if(acceptedSubjects != null) {
-						for(String str : conflictingSubjects) {
-							conflicts.concat(str+"\n ");
-						}
-					}
-					
-					if(alternateSubjects != null) {
-						for(String str : acceptedSubjects) {
-							alternate.concat(str+"\n ");
-						}
-					}
-					
-					lblName.setText(txtStudent.getText());
-					acceptedTxtArea.append(accepted);
-					conflictingTxtArea.append(conflicts);
-					alternativeTxtArea.append(alternate);
-				}
+			public void windowClosing(WindowEvent e) {
 			}
 		});
-		btnNewButton.setFont(new Font("Agency FB", Font.BOLD, 18));
-		btnNewButton.setBounds(26, 133, 89, 32);
-		panel.add(btnNewButton);
+		rpFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		rpFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(Report.class.getResource("/img/saps-logo.png")));
+		rpFrame.setResizable(false);
+		rpFrame.setTitle("SAPS");
+		rpFrame.getContentPane().add(panel, BorderLayout.CENTER);
+	
+		Object[][] rowData = {
+				{"Mary", "Campione", 
+				"Snowboarding", new Integer(5), new Boolean(false), new Integer(12), new Integer(100)},
+				{"Alison", "Huml", 
+				"Rowing", new Integer(3), new Boolean(true), new Integer(12), new Integer(100)},
+				{"Kathy", "Walrath",
+				"Chasing toddlers", new Integer(2), new Boolean(false), new Integer(12), new Integer(100)},
+				{"Mark", "Andrews",
+				"Speed reading", new Integer(20), new Boolean(true), new Integer(12), new Integer(100)},
+				{"Angela", "Lih",
+				"Teaching high school", new Integer(4), new Boolean(false), new Integer(12), new Integer(100)}
+				};
+		table_1 = new JTable();
 		
 
-		JButton btnViewAllStudents = new JButton("View all students");
-		btnViewAllStudents.setForeground(new Color(0, 128, 128));
-		btnViewAllStudents.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				//viewAllStudents(scrollPane);
-				panel_2.setVisible(false);
-				lblName.setText("");
-				acceptedTxtArea.setText(null);
-				conflictingTxtArea.setText(null);
-				alternativeTxtArea.setText(null);
-				
-				panel_3.setVisible(true);
-				allStudentsTxtArea.setText(null);
-				
-				ArrayList<Student> students = null;
-				try {
-					students = controller.getStudents(); 
-				}
-				catch(Exception e3) {
-					JOptionPane.showMessageDialog(new JFrame(), "Students data not found", "Dialog",
-					        JOptionPane.ERROR_MESSAGE);
-				}
-				
-				if(students != null) {
-					for(Student stu : students) {
-						String subjects = "";
-						ArrayList<String> classes = null;
-						classes = stu.getAccepted();
-						if(classes != null) {
-							for(String str : classes) {
-								subjects.concat(str + " ");
+
+		table_1.setModel(new DefaultTableModel(
+			rowData,
+			new String[] {
+				"Name", "Class Maximum", "Met Requirements", "Applied", "Accepted", "Pending", "Rejected"
+			}
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		table_1.getColumnModel().getColumn(0).setPreferredWidth(117);
+		table_1.getColumnModel().getColumn(0).setMinWidth(117);
+		table_1.getColumnModel().getColumn(1).setPreferredWidth(95);
+		table_1.getColumnModel().getColumn(1).setMinWidth(95);
+		table_1.getColumnModel().getColumn(2).setPreferredWidth(107);
+		table_1.getColumnModel().getColumn(2).setMinWidth(107);
+		table_1.getColumnModel().getColumn(3).setPreferredWidth(61);
+		table_1.getColumnModel().getColumn(3).setMinWidth(50);
+		table_1.getColumnModel().getColumn(4).setPreferredWidth(61);
+		table_1.getColumnModel().getColumn(4).setMinWidth(60);
+		table_1.getColumnModel().getColumn(5).setPreferredWidth(60);
+		table_1.getColumnModel().getColumn(5).setMinWidth(60);
+		table_1.getColumnModel().getColumn(6).setPreferredWidth(60);
+		table_1.getColumnModel().getColumn(6).setMinWidth(60);
+		table_1.setShowVerticalLines(false);
+		table_1.setShowHorizontalLines(false);
+		table_1.setBorder(null);
+		table_1.setFillsViewportHeight(true);
+		table_1.setForeground(new Color(0, 0, 0));
+		table_1.setFont(new Font("Corbel", Font.PLAIN, 14));
+		table_1.setSurrendersFocusOnKeystroke(true);
+		table_1.setBackground(new Color(255, 255, 255));
+		scrollPane = new JScrollPane(table_1);
+		scrollPane.setBounds(155, 112, 685, 257);
+		panel.add(scrollPane);
+		
+		
+		JRadioButton rdbtnStudent = new JRadioButton("Student");
+		rdbtnStudent.setToolTipText("Search By Student Name Eg. \"John Brown\"");
+		rdbtnStudent.setForeground(new Color(255, 255, 255));
+		rdbtnStudent.setBackground(new Color(0, 128, 128));
+		rdbtnStudent.setSelected(true);
+		rdbtnStudent.setBounds(496, 60, 63, 23);
+		panel.add(rdbtnStudent);
+		
+		JRadioButton rdbtnNewRadioButton = new JRadioButton("Subject");
+		rdbtnNewRadioButton.setToolTipText("Search by subject name. Eg. \"Pure Mathematics\"");
+		rdbtnNewRadioButton.setBackground(new Color(0, 128, 128));
+		rdbtnNewRadioButton.setForeground(new Color(255, 255, 255));
+		rdbtnNewRadioButton.setBounds(569, 60, 61, 23);
+		panel.add(rdbtnNewRadioButton);
+		
+		JLabel lblEnterName = new JLabel("Enter Name:");
+		lblEnterName.setFont(new Font("Corbel", Font.PLAIN, 17));
+		lblEnterName.setForeground(new Color(255, 255, 255));
+		lblEnterName.setLabelFor(textField);
+		lblEnterName.setBounds(392, 33, 98, 20);
+		panel.add(lblEnterName);
+		
+		JLabel lblSaps = new JLabel("SAPS Report");
+		lblSaps.setForeground(new Color(255, 255, 255));
+		lblSaps.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSaps.setFont(new Font("Calisto MT", Font.PLAIN, 33));
+		lblSaps.setBounds(10, -4, 210, 79);
+		panel.add(lblSaps);
+		rpFrame.setSize(904,460);
+		rpFrame.setVisible(true);
+		
+		
+		
+		
+		table_1.addMouseListener(new java.awt.event.MouseAdapter()  {
+			 public void mouseClicked(java.awt.event.MouseEvent e)
+			 {
+				 int row=table_1.rowAtPoint(e.getPoint());
+				 //int col= table.columnAtPoint(e.getPoint());
+				 //JOptionPane.showMessageDialog(null,” Value in the cell clicked :”+ ” ” +table.getValueAt(row,col).toString());
+				 System.out.println(row);
+				 String name = table_1.getValueAt(row,0).toString();
+				 CAPE c = controller.searchSubjects(name.toLowerCase());
+				 System.out.println(name);
+				 if (c != null) {
+					 System.out.println(c);
+					 List<Object[]> info = new ArrayList<Object[]>();
+					 for (Student s : c.getAcceptedStudents()) {
+						 Map<String, Integer> preInfo = s.getPreReqInfo(c);
+						 String pGrade = (preInfo.get("primary")).toString();
+						 String sGrade = (preInfo.get("secondary")).toString();
+						 String tGrade= (preInfo.get("tertiary")).toString();
+						 Object [] temp = {s.toString(), pGrade, sGrade, tGrade, "Accepted", "Because I said so"};
+						 info.add(temp);
+						}
+						Object[][] data = new Object[info.size()][];
+						data = info.toArray(data);
+						String[] col = {
+								"Student", c.getPrimary(), c.getSecondary(), c.getTertiary(), "Status", "Reason"
+							};
+						updateTable(data, col);
+				 }
+				 else {
+					 Student s = controller.searchStudents(name.toLowerCase());
+					 if (s != null) {
+						 List<Object[]> info = new ArrayList<Object[]>();
+						 for (CAPE ca : s.getAcceptedFor()) {
+							 Object [] temp = {ca.toString(), "Accepted", "No Reason Added as Yet"};
+							 info.add(temp);
 							}
-						}
-						String student_info = "";
-						student_info = stu.getFullName()+ " | " + subjects +"\n ";
-						allStudentsTxtArea.append(student_info);
-					}
-				}
-			}
-		});
-		btnViewAllStudents.setBackground(new Color(220, 220, 220));
-		btnViewAllStudents.setFont(new Font("Agency FB", Font.BOLD, 18));
-		btnViewAllStudents.setBounds(125, 133, 157, 32);
-		panel.add(btnViewAllStudents);
+						 for (CAPE ca : s.getAlternateSubs()) {
+							 Object [] temp = {ca.toString(), "Pending", "Alternate Student"};
+							 info.add(temp);
+							}
+						 for (CAPE ca : s.getConflictsSubs()) {
+							 Object [] temp = {ca.toString(), "Pending", "Has AntiRequisite"};
+							 info.add(temp);
+							}
+							Object[][] data = new Object[info.size()][];
+							data = info.toArray(data);
+							String[] col = {
+									"Course", "Status", "Reason"};
+							updateTable(data, col);
+						 
+					 }
+				 }
+				 
+				 //System.out.println(” Value in the cell clicked :”+ ” ” +table.getValueAt(row,col).toString());
+				 }
+			 }
+		 );
 		
-		txtStudent = new JTextField();
-		txtStudent.setFont(new Font("Corbel", Font.BOLD, 18));
-		txtStudent.setBounds(26, 90, 256, 32);
-		panel.add(txtStudent);
-		txtStudent.setColumns(10);
-		//End Results Panel Area
-		
-		JButton btnNewButton_1 = new JButton("Logout");
-		btnNewButton_1.setForeground(new Color(0, 139, 139));
-		btnNewButton_1.setBackground(SystemColor.text);
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				frmSixthFormApplication.dispose();
-				//Login exit = new Login(controller);
-				Login.main(null);
-				
-				
-			}
-			
-		});
-		btnNewButton_1.setBounds(699, 11, 82, 32);
-		frmSixthFormApplication.getContentPane().add(btnNewButton_1);
-		
-		JButton btnHome = new JButton("Home");
-		btnHome.setForeground(new Color(0, 139, 139));
-		btnHome.setBackground(new Color(255, 255, 255));
-		btnHome.setBounds(600, 11, 82, 32);
-		frmSixthFormApplication.getContentPane().add(btnHome);
-		
-		
-		
-		
-		
-		
-		frmSixthFormApplication.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-	}
-	private static class __Tmp {
-		private static void __tmp() {
-			  javax.swing.JPanel __wbp_panel = new javax.swing.JPanel();
-		}
 	}
 	
 	
-	public void setVisible(boolean b) {
-		// TODO Auto-generated method stub
-		
-	}
 }

@@ -20,6 +20,8 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.swing.JLabel;
 //import javax.swing.table.DefaultTableCellRenderer;
@@ -245,18 +247,20 @@ public class MainReport {
 				 if (c != null) {
 					 System.out.println(c);
 					 List<Object[]> info = new ArrayList<Object[]>();
-					 for (Student s : c.getAcceptedStudents()) {
-						 Map<String, Integer> preInfo = s.getPreReqInfo(c);
-						 String pGrade = (preInfo.get("primary")).toString();
-						 String sGrade = (preInfo.get("secondary")).toString();
-						 String tGrade= (preInfo.get("tertiary")).toString();
-						 Object [] temp = {s.toString(), pGrade, sGrade, tGrade, "Accepted", "Because I said so"};
+					 Set<Entry<Student, StatusMsg>> entires = c.getReasons().entrySet();
+					 for(Entry<Student,StatusMsg> ent: entires){
+						 Student s = ent.getKey();
+						 Map<String, String> preInfo = s.getPreReqInfo(c);
+						 String pGrade = preInfo.get("primary");
+						 String sGrade = preInfo.get("secondary");
+						 String tGrade= preInfo.get("tertiary");
+						 StatusMsg msg = ent.getValue();
+						 Object [] temp = {s.toString(), pGrade, sGrade, tGrade, msg.getStatus(), msg.getMsg()};
 						 info.add(temp);
 						}
-						Object[][] data = new Object[info.size()][];
-						data = info.toArray(data);
-						String[] col = {
-								"Student", c.getPrimary(), c.getSecondary(), c.getTertiary(), "Status", "Reason"
+					Object[][] data = new Object[info.size()][];
+					data = info.toArray(data);
+					String[] col = { "Student", c.getPrimary(), c.getSecondary(), c.getTertiary(), "Status", "Reason"
 							};
 						updateTable(data, col);
 				 }

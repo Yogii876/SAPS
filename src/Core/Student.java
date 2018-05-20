@@ -12,7 +12,7 @@ public class Student {
 	private ArrayList<CAPE> conflicts = new ArrayList<CAPE>();
 	private ArrayList<CAPE> alternates = new ArrayList<CAPE>();
 	private Map<CAPE, Integer> pointMapping = new HashMap<CAPE, Integer>();
-	private Map<CAPE, Map<String, Integer>> courseGrades = new HashMap<CAPE, Map<String, Integer>>();
+	private Map<CAPE, Map<String, String>> courseGrades = new HashMap<CAPE, Map<String, String>>();
 	private ArrayList<CAPE> rejected = new ArrayList<CAPE>();
 	
 	public Student(String fName, String lName, ArrayList<CSEC> cssubs, ArrayList<String> casubs) {
@@ -48,9 +48,9 @@ public class Student {
 		String primary = cape.getPrimary();
 		String secondary = cape.getSecondary();
 		String tertiary = cape.getTertiary();
-		int pGrade = -1;
-		int sGrade = -1;
-		int tGrade = -1;
+		int pGrade = 6;
+		int sGrade = 6;
+		int tGrade = 6;
 		int totalPoints = 0;
 		
 		
@@ -86,19 +86,27 @@ public class Student {
 				} 
 			}
 		}
-		Map<String, Integer> temp = new HashMap<String, Integer>();
-		temp.put("primary", pGrade);
-		temp.put("secondary", sGrade);
-		temp.put("tertiary", tGrade);
-		courseGrades.put(cape, temp);
+		Map<String, String> temp = new HashMap<String, String>();
 		
-		if (pGrade > 0) {	
-			totalPoints += Point.getPoints("primary", pGrade);
-			if (tGrade != -1 ) totalPoints += Point.getPoints("tertiary", tGrade);
-			else if (sGrade != -1 )	totalPoints += Point.getPoints("secondary", sGrade);
+		if (pGrade < 4 && sGrade < 4 && tGrade < 4) {	
+			totalPoints += Point.getPoints("primary", pGrade) + Point.getPoints("tertiary", tGrade) + Point.getPoints("secondary", sGrade);
+			//if (tGrade != -1 ) totalPoints += Point.getPoints("tertiary", tGrade);
+			//else if (sGrade != -1 )	totalPoints += Point.getPoints("secondary", sGrade);
 			
 			//if (totalPoints == 0) System.out.println(this.toString() + "\t" + cape.getName() + ":\tPrimary Grade:\t" + pGrade + "\t" + totalPoints);
+			temp.put("primary", Integer.toString(pGrade));
+			temp.put("secondary", Integer.toString(sGrade));
+			temp.put("tertiary", Integer.toString(tGrade));
 		}
+		else {
+			if (pGrade < 6) temp.put("primary", Integer.toString(pGrade));
+			else temp.put("primary", "");
+			if (sGrade <6) temp.put("secondary", Integer.toString(sGrade));
+			else temp.put("primary", "");
+			if (tGrade < 6) temp.put("tertiary", Integer.toString(tGrade));
+			else temp.put("tertiary", "");
+		}
+		courseGrades.put(cape, temp);
 		pointMapping.put(cape, totalPoints);
 		return totalPoints;
 		
@@ -157,8 +165,7 @@ public class Student {
 		this.rejected.add(c); 
 	}
 	
-	public Map<String, Integer> getPreReqInfo(CAPE c) {
-		System.out.println(courseGrades.get(c));
+	public Map<String, String> getPreReqInfo(CAPE c) {
 		return courseGrades.get(c);
 	}
 	

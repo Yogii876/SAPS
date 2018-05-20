@@ -26,6 +26,8 @@ public class CAPE extends Subject {
 	private ArrayList<Student> conflictStudents = new ArrayList<Student>();
 	private ArrayList<Student> alternateStudents = new ArrayList<Student>();
 	private ArrayList<Student> studFull = new ArrayList<Student>();
+	private Map<Student, StatusMsg> reasons =  new HashMap<Student, StatusMsg>();
+	private Map<Student, StatusMsg> oRejects = new HashMap<Student, StatusMsg>();
 	
 	public CAPE(String name, String primary, String secondary, String tertiary, int max) {
 		super(name.toLowerCase());
@@ -114,6 +116,7 @@ public class CAPE extends Subject {
 	
 	public void addRejected(Student s) {
 		this.rejected.add(s);
+		this.oRejects.put(s, new StatusMsg("Rejected", "Did not meet Requirements"));
 		rejecSize++;
 	}
 	
@@ -202,39 +205,69 @@ public class CAPE extends Subject {
 	public void generateAcceptedList(int maxDoable) {
 		if (!sorted) sortStudents();
 		boolean noMax = (classSize == -1);
+		LinkedHashMap<Student, StatusMsg> accepts = new LinkedHashMap<Student, StatusMsg>();
+		LinkedHashMap<Student, StatusMsg> pendings = new LinkedHashMap<Student, StatusMsg>();
+		LinkedHashMap<Student, StatusMsg> rejects = new LinkedHashMap<Student, StatusMsg>();
+		LinkedHashMap<Student, StatusMsg> alternates = new LinkedHashMap<Student, StatusMsg>();
 		for (Map.Entry<Student, Integer> entry : eligibleStudents.entrySet()) {
 			Student stud = entry.getKey();
 			ArrayList<String> choices = stud.getChoices();
 			if (choices.contains((super.name).toLowerCase())) {
 				boolean exculsive = isDisjoint(choices, antiRequisites);
-				if (exculsive && (noMax || ((accepted.size() + conflictStudents.size() < classSize)))) {
-					//System.out.println("Accepted: " + stud);
-					if (stud.addAcceptedSubject(this, maxDoable)) {
-						accepted.add(stud);						
+				if (exculsive) {
+					if (noMax || ((accepted.size() + conflictStudents.size() < classSize))) {
+						if (stud.addAcceptedSubject(this, maxDoable)) {
+							accepted.add(stud);
+							accepts.put(stud, new StatusMsg("Accepted", ""));
+						}
+						else {
+							//TODO change to arraylist as GUI can print message
+							//alternateStudents.put(stud, entry.getValue());
+							rejects.put(stud, new StatusMsg("Rejected", "Student is already doing the Maximum Number of Courses"));
+							studFull.add(stud);
+							stud.addAlternate(this);						
+						}
 					}
 					else {
-						//TODO change to arraylist as GUI can print message
-						//alternateStudents.put(stud, entry.getValue());
+						rejects.put(stud, new StatusMsg("Rejected", "Maximum Class Capacity Reached"));
 						studFull.add(stud);
-						stud.addAlternate(this);						
-					}
+						stud.addAlternate(this);			
+					}	
 				}
-				else if (!exculsive) {
-					conflictStudents.add(stud);
-					stud.addConflict(this);
+				else {
+					if (noMax || ((accepted.size() + conflictStudents.size() < classSize))) {
+						pendings.put(stud, new StatusMsg("Pending", "Student has Choosen an AntiRequisites"));
+						conflictStudents.add(stud);
+						stud.addConflict(this);
+					}
+					else {
+						rejects.put(stud, new StatusMsg("Rejected", "Student is already doing the Maximum Number of Courses"));
+						studFull.add(stud);
+						stud.addAlternate(this);	
+					}
 				}
 				else {
 					//System.out.println("Alternate: " + stud + "Points -	" + entry.getValue());
+					alternates.put(stud, new StatusMsg("Pending", "Possible space available due to students with antirequisites"));
 					alternateStudents.add(stud);
 					stud.addAlternate(this);
 				}
 			}
 			else {
+				alternates.put(stud, new StatusMsg("Alternate", "Did not Apply"));
 				stud.addAlternate(this);
 			}
 			choices = new ArrayList<String>();
-			
 		}
+		reasons.putAll(accepts);
+		reasons.putAll(pendings);
+		reasons.putAll(oRejects);
+		reasons.putAll(rejects);
+		reasons.putAll(alternates);
+	}
+	
+	public Map<Student, StatusMsg> getReasons() {
+		return this.reasons;
 	}
 	
 	private ArrayList<String> getString(Map<Student, Integer> mapping, boolean type) {
