@@ -228,29 +228,34 @@ public class CAPE extends Subject {
 							stud.addAlternate(this);						
 						}
 					}
+					else if (conflictStudents.size() != 0 && alternateStudents.size() < conflictStudents.size()) {
+						alternates.put(stud, new StatusMsg("Pending", "Possible Space Available"));
+						alternateStudents.add(stud);
+						stud.addAlternate(this);			
+					}
 					else {
 						rejects.put(stud, new StatusMsg("Rejected", "Maximum Class Capacity Reached"));
 						studFull.add(stud);
-						stud.addAlternate(this);			
-					}	
+						stud.addAlternate(this);
+						
+					}
 				}
 				else {
 					if (noMax || ((accepted.size() + conflictStudents.size() < classSize))) {
-						pendings.put(stud, new StatusMsg("Pending", "Student has Choosen an AntiRequisites"));
+						pendings.put(stud, new StatusMsg("Pending", "Has AntiRequisites"));
 						conflictStudents.add(stud);
 						stud.addConflict(this);
 					}
-					else {
-						rejects.put(stud, new StatusMsg("Rejected", "Student is already doing the Maximum Number of Courses"));
-						studFull.add(stud);
-						stud.addAlternate(this);	
+					else if (alternateStudents.size() < conflictStudents.size()) {
+						pendings.put(stud, new StatusMsg("Pending", "Has AntiRequisites - Space May Be Available"));
+						conflictStudents.add(stud);
+						stud.addAlternate(this);			
 					}
-				}
-				else {
-					//System.out.println("Alternate: " + stud + "Points -	" + entry.getValue());
-					alternates.put(stud, new StatusMsg("Pending", "Possible space available due to students with antirequisites"));
-					alternateStudents.add(stud);
-					stud.addAlternate(this);
+					else {
+						rejects.put(stud, new StatusMsg("Rejected", "Maximum Class Capacity Reached - Has AntiRequisites"));
+						studFull.add(stud);
+						stud.addAlternate(this);
+					}
 				}
 			}
 			else {
