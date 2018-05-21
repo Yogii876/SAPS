@@ -89,19 +89,22 @@ public class App {
 		int m = offeredSubjects.size();
 		
 
-		for (int k = 0; k < n-1; k++) {
+		for (int k = 0; k < n; k++) {
 			Student stud = students.get(k);
-			for (int j = 0; j < m-1; j++) {
+			for (int j = 0; j < m; j++) {
 				CAPE subj = offeredSubjects.get(j);
 				boolean applied = stud.getChoices().contains(subj.getName());
-				int points = stud.calcPoints(subj);
+				Object[] res = stud.calcPoints(subj);
+				int points = (Integer)res[0];
 				if (points > 0) {
 					subj.addStudent(stud, points);
 					stud.addPossibleSub(subj);
 				}
 				if (applied) {
 					subj.incApplied();
-					if (points == 0)	subj.addRejected(stud);
+					if (points == 0)	{
+						subj.addRejected(stud);
+					}
 				}
 			}
 		}

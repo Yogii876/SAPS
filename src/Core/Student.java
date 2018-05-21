@@ -1,7 +1,13 @@
  package Core;
-import java.util.ArrayList; 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Student {
 	private String fName, lName;
@@ -14,6 +20,8 @@ public class Student {
 	private Map<CAPE, Integer> pointMapping = new HashMap<CAPE, Integer>();
 	private Map<CAPE, Map<String, String>> courseGrades = new HashMap<CAPE, Map<String, String>>();
 	private ArrayList<CAPE> rejected = new ArrayList<CAPE>();
+	private Map<CAPE, StatusMsg> reasons =  new HashMap<CAPE, StatusMsg>();
+
 	
 	public Student(String fName, String lName, ArrayList<CSEC> cssubs, ArrayList<String> casubs) {
 		this.fName=fName;
@@ -43,72 +51,113 @@ public class Student {
 		return csecSubs;
 	}
 	
-	public int calcPoints(CAPE cape) {
+	public Object[] calcPoints(CAPE cape) {
 		//TODO change
 		String primary = cape.getPrimary();
 		String secondary = cape.getSecondary();
 		String tertiary = cape.getTertiary();
-		int pGrade = 6;
-		int sGrade = 6;
-		int tGrade = 6;
+		String reason = "";
+		boolean hasTer = tertiary != null;
+		boolean hasSec = secondary != null;
+		boolean studHasPrim = false;
+		boolean studHasSec = false;
+		boolean studHasTer = false;
+		
+		int pGrade = -1;
+		int sGrade = -1;
+		int tGrade = -1;
 		int totalPoints = 0;
 		
 		
-		if (tertiary != null) {
-			for (int i = 0; i < csecSubs.size() - 1; i++) {
+		if (hasTer) {
+			for (int i = 0; i < csecSubs.size(); i++) {
 				String tName = csecSubs.get(i).getName();
 				if (tName.equals(primary)) {
 					pGrade = csecSubs.get(i).getGrade();
+					studHasPrim = true;
 				} 
 				else if (tName.equals(secondary)) {
 					sGrade = csecSubs.get(i).getGrade();
+					studHasSec = true;
 				} 
 				else if (tName.equals(tertiary)) {
 					tGrade = csecSubs.get(i).getGrade();
+					studHasTer = true;
 				} 
 			}
 		}
-		else if (secondary != null) {
-			for (int i = 0; i < csecSubs.size() - 1; i++) {
+		else if (hasSec) {
+			for (int i = 0; i < csecSubs.size(); i++) {
 				String tName = csecSubs.get(i).getName();
 				if (tName.equals(primary)) {
 					pGrade = csecSubs.get(i).getGrade();
+					studHasPrim = true;
 				} 
 				if (tName.equals(secondary)) {
 					sGrade = csecSubs.get(i).getGrade();
+					studHasSec = true;
 				}
 			}
 		}
 		else {
-			for (int i = 0; i < csecSubs.size() - 1; i++) {
+			for (int i = 0; i < csecSubs.size(); i++) {
 				if (csecSubs.get(i).getName().equals(primary)) {
 					pGrade = csecSubs.get(i).getGrade();
+					studHasPrim = true;	
 				} 
 			}
 		}
 		Map<String, String> temp = new HashMap<String, String>();
 		
-		if (pGrade < 4 && sGrade < 4 && tGrade < 4) {	
-			totalPoints += Point.getPoints("primary", pGrade) + Point.getPoints("tertiary", tGrade) + Point.getPoints("secondary", sGrade);
-			//if (tGrade != -1 ) totalPoints += Point.getPoints("tertiary", tGrade);
-			//else if (sGrade != -1 )	totalPoints += Point.getPoints("secondary", sGrade);
+		if (hasTer) {
+			if (studHasTer && studHasPrim && studHasSec) {
+				totalPoints += Point.getPoints("primary", pGrade) + Point.getPoints("tertiary", tGrade) + Point.getPoints("secondary", sGrade);
+			}
+			else if (!studHasPrim) {
+				// TODO ADD MESSAGE FOR WHEN HE DOESN'T HAVE PRIMARY
+				reason = "Primary Requirement not met";
+			}
+			else if (!studHasSec) {
+				reason = "Secondary Requirement not met";
+			}
+			else {
+				reason = "Tertiary Requirement not met";
+			}
+		}
+		else if (hasSec) {
+			if (studHasPrim && studHasSec) {
+				totalPoints += Point.getPoints("primary", pGrade) + Point.getPoints("secondary", sGrade);
+			}
+			else if (!studHasPrim) {
+				// TODO ADD MESSAGE FOR WHEN HE DOESN'T HAVE PRIMARY
+				reason = "Primary Requirement not met";
+			}
+			else {
+				reason = "Secondary Requirement not met";
+			}
 			
-			//if (totalPoints == 0) System.out.println(this.toString() + "\t" + cape.getName() + ":\tPrimary Grade:\t" + pGrade + "\t" + totalPoints);
-			temp.put("primary", Integer.toString(pGrade));
-			temp.put("secondary", Integer.toString(sGrade));
-			temp.put("tertiary", Integer.toString(tGrade));
 		}
 		else {
-			if (pGrade < 6) temp.put("primary", Integer.toString(pGrade));
-			else temp.put("primary", "");
-			if (sGrade <6) temp.put("secondary", Integer.toString(sGrade));
-			else temp.put("primary", "");
-			if (tGrade < 6) temp.put("tertiary", Integer.toString(tGrade));
-			else temp.put("tertiary", "");
+			if (studHasPrim) {
+				totalPoints += Point.getPoints("primary", pGrade);
+			}
+			else {
+				reason = "Primary Requirement not met";
+			}
 		}
+		//if (tGrade != -1 ) totalPoints += Point.getPoints("tertiary", tGrade);
+		//else if (sGrade != -1 )	totalPoints += Point.getPoints("secondary", sGrade);	
+	    //if (totalPoints == 0) System.out.println(this.toString() + "\t" + cape.getName() + ":\tPrimary Grade:\t" + pGrade + "\t" + totalPoints);
+		if (pGrade != -1) temp.put("primary", Integer.toString(pGrade));
+		else temp.put("primary", "");
+		if (sGrade != -1) temp.put("secondary", Integer.toString(sGrade));
+		else temp.put("secondary", "");
+		if (tGrade != -1) temp.put("tertiary", Integer.toString(tGrade));
+		else temp.put("tertiary", "");
 		courseGrades.put(cape, temp);
 		pointMapping.put(cape, totalPoints);
-		return totalPoints;
+		Object [] result = {totalPoints, reason};
+		return result;
 		
 	}
 	
@@ -131,14 +180,41 @@ public class Student {
 	
 	public void addPossibleSub(CAPE subj) {
 		possibleSubjects.add(subj);
+		//reasons.put(subj, sMsg);
+	}
+	
+	public Map<CAPE, StatusMsg> getReasons() {
+		List<Entry<CAPE, StatusMsg>> list = new LinkedList<Entry<CAPE, StatusMsg>>(reasons.entrySet());
+		
+        // Sorting the list based on values
+        Collections.sort(list, new Comparator<Entry<CAPE, StatusMsg>>()
+        {
+            public int compare(Entry<CAPE, StatusMsg> o1,
+                    Entry<CAPE, StatusMsg> o2)
+            {
+                    return o2.getValue().getStatus().compareTo(o1.getValue().getMsg());
+            }
+        });
+
+        // Maintaining insertion order with the help of LinkedList
+        Map<CAPE, StatusMsg> sortedMap = new LinkedHashMap<CAPE, StatusMsg>();
+        //System.out.println(super.name);
+        for (Entry<CAPE, StatusMsg> entry : list)
+        {
+        	//System.out.print(entry.getKey().toString() + ": Points: " + entry.getValue() +"\t");
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+        reasons = sortedMap;
+		return this.reasons;
 	}
 	
 	
-	public boolean addAcceptedSubject(CAPE sub, int max) {
+	public boolean addAcceptedSubject(CAPE sub, StatusMsg sMsg, int max) {
 		if ((max != 0) && (acceptedFor.size() == max)) {
 			return false;
 		}
 		this.acceptedFor.add(sub);
+		reasons.put(sub, sMsg);
 		return true;
 	}
 	
@@ -150,19 +226,21 @@ public class Student {
 	}
 
 
-	public void addConflict(CAPE cape) {
+	public void addConflict(CAPE cape, StatusMsg sMsg) {
 		conflicts.add(cape);
-		
+		reasons.put(cape, sMsg);	
 	}
 
 
-	public void addAlternate(CAPE cape) {
+	public void addAlternate(CAPE cape, StatusMsg sMsg) {
 		alternates.add(cape);
+		reasons.put(cape, sMsg);
 		
 	}
 	
-	public void addRejected(CAPE c) {
-		this.rejected.add(c); 
+	public void addRejected(CAPE c, StatusMsg sMsg) {
+		this.rejected.add(c);
+		reasons.put(c, sMsg);
 	}
 	
 	public Map<String, String> getPreReqInfo(CAPE c) {
@@ -197,5 +275,6 @@ public class Student {
 		conflicts.remove(c);
 		alternates.remove(c);
 		acceptedFor.remove(c);
+		reasons.remove(c);
 	}
 }

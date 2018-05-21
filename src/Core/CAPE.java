@@ -209,58 +209,68 @@ public class CAPE extends Subject {
 		LinkedHashMap<Student, StatusMsg> pendings = new LinkedHashMap<Student, StatusMsg>();
 		LinkedHashMap<Student, StatusMsg> rejects = new LinkedHashMap<Student, StatusMsg>();
 		LinkedHashMap<Student, StatusMsg> alternates = new LinkedHashMap<Student, StatusMsg>();
+		StatusMsg reason = new StatusMsg("Accepted", "");
 		for (Map.Entry<Student, Integer> entry : eligibleStudents.entrySet()) {
 			Student stud = entry.getKey();
 			ArrayList<String> choices = stud.getChoices();
+			
 			if (choices.contains((super.name).toLowerCase())) {
 				boolean exculsive = isDisjoint(choices, antiRequisites);
 				if (exculsive) {
 					if (noMax || ((accepted.size() + conflictStudents.size() < classSize))) {
-						if (stud.addAcceptedSubject(this, maxDoable)) {
+						reason = new StatusMsg("Accepted", "");
+						if (stud.addAcceptedSubject(this, reason, maxDoable)) {
 							accepted.add(stud);
-							accepts.put(stud, new StatusMsg("Accepted", ""));
+							accepts.put(stud, reason);
 						}
 						else {
 							//TODO change to arraylist as GUI can print message
 							//alternateStudents.put(stud, entry.getValue());
-							rejects.put(stud, new StatusMsg("Rejected", "Student is already doing the Maximum Number of Courses"));
+							reason = new StatusMsg("Rejected", "Student is already doing the Maximum Number of Courses");
+							rejects.put(stud, reason);
 							studFull.add(stud);
-							stud.addAlternate(this);						
+							stud.addAlternate(this, reason);						
 						}
 					}
 					else if (conflictStudents.size() != 0 && alternateStudents.size() < conflictStudents.size()) {
-						alternates.put(stud, new StatusMsg("Pending", "Possible Space Available"));
+						reason = new StatusMsg("Pending", "Possible Space Available");
+						alternates.put(stud, reason);
 						alternateStudents.add(stud);
-						stud.addAlternate(this);			
+						stud.addAlternate(this, reason);			
 					}
 					else {
-						rejects.put(stud, new StatusMsg("Rejected", "Maximum Class Capacity Reached"));
+						reason = new StatusMsg("Rejected", "Maximum Class Capacity Reached");
+						rejects.put(stud, reason);
 						studFull.add(stud);
-						stud.addAlternate(this);
+						stud.addAlternate(this, reason);
 						
 					}
 				}
 				else {
 					if (noMax || ((accepted.size() + conflictStudents.size() < classSize))) {
-						pendings.put(stud, new StatusMsg("Pending", "Has AntiRequisites"));
+						reason = new StatusMsg("Pending", "Has AntiRequisites");
+						pendings.put(stud, reason);
 						conflictStudents.add(stud);
-						stud.addConflict(this);
+						stud.addConflict(this, reason);
 					}
 					else if (alternateStudents.size() < conflictStudents.size()) {
-						pendings.put(stud, new StatusMsg("Pending", "Has AntiRequisites - Space May Be Available"));
+						reason = new StatusMsg("Pending", "Has AntiRequisites - Space May Be Available");
+						pendings.put(stud, reason);
 						conflictStudents.add(stud);
-						stud.addAlternate(this);			
+						stud.addAlternate(this, reason);			
 					}
 					else {
-						rejects.put(stud, new StatusMsg("Rejected", "Maximum Class Capacity Reached - Has AntiRequisites"));
+						reason = new StatusMsg("Rejected", "Maximum Class Capacity Reached - Has AntiRequisites");
+						rejects.put(stud, reason);
 						studFull.add(stud);
-						stud.addAlternate(this);
+						stud.addAlternate(this, reason);
 					}
 				}
 			}
 			else {
-				alternates.put(stud, new StatusMsg("Alternate", "Did not Apply"));
-				stud.addAlternate(this);
+				reason = new StatusMsg("Alternate", "Did not Apply");
+				alternates.put(stud, reason);
+				stud.addAlternate(this, reason);
 			}
 			choices = new ArrayList<String>();
 		}
@@ -272,6 +282,27 @@ public class CAPE extends Subject {
 	}
 	
 	public Map<Student, StatusMsg> getReasons() {
+		/**List<Entry<Student, StatusMsg>> list = new LinkedList<Entry<Student, StatusMsg>>(reasons.entrySet());
+		
+        // Sorting the list based on values
+        Collections.sort(list, new Comparator<Entry<Student, StatusMsg>>()
+        {
+            public int compare(Entry<Student, StatusMsg> o1,
+                    Entry<Student, StatusMsg> o2)
+            {
+                    return o2.getValue().getStatus().compareTo(o1.getValue().getMsg());
+            }
+        });
+
+        // Maintaining insertion order with the help of LinkedList
+        Map<Student, StatusMsg> sortedMap = new LinkedHashMap<Student, StatusMsg>();
+        //System.out.println(super.name);
+        for (Entry<Student, StatusMsg> entry : list)
+        {
+        	//System.out.print(entry.getKey().toString() + ": Points: " + entry.getValue() +"\t");
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+        reasons = sortedMap;**/
 		return this.reasons;
 	}
 	

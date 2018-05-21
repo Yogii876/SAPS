@@ -231,6 +231,7 @@ public class MainScreen {
 					JOptionPane.showMessageDialog(frmSaps, "Please enter an Integer", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				catch (Exception ex) {
+					ex.printStackTrace();
 					JOptionPane.showMessageDialog(frmSaps, "Error While Assigning Students, Try Again", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -316,7 +317,7 @@ public class MainScreen {
 		});
 		btnLogOut.setBounds(512, 11, 99, 21);
 		frmSaps.getContentPane().add(btnLogOut);
-		fakeSubjects();
+		//fakeSubjects();
 	}
 	
 	private  void fakeSubjects() {

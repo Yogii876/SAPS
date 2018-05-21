@@ -20,15 +20,16 @@ public class Test {
 		Random r = new Random();
 		try {	
 			controller.populateStudents(new File("c:/users/yohan/Downloads/students2.csv"));
-			fakeSubjects();
+			//fakeSubjects();
+			controller.populateSubjects("chemistry", "chemistry", null, null, -1);
 			controller.generateMappings(0);
 			for (CAPE c : controller.getOffered()) {
 				System.out.println(c + "\t" + c.getMax());
-				//System.out.println("Accepted Students: \t" + c.getAccepted());
-				//System.out.println("Conflict Students: \t"+ c.getConflicts());
-				//System.out.println("Alternates Students: \t" + c.getAlternates() + "\n");
+				System.out.println("Accepted Students: \t" + c.getAcceptedStudents());
+				System.out.println("Conflict Students: \t"+ c.getConflictStudents());
+				System.out.println("Alternates Students: \t" + c.getAlternateStudents() + "\n");
  			}
-			for (Student s: controller.getStudents()) {
+			/**for (Student s: controller.getStudents()) {
 				System.out.println(s + "\t" + s.getChoices());
 				ArrayList<String> sa = s.getAccepted();
 				ArrayList<String> sc = s.getConflicts();
@@ -40,9 +41,8 @@ public class Test {
 				if (sal == null);
 				else System.out.println("Alternate Courses: \t" + s.getAlternates());
 				System.out.println("\n");
-				
+				**/
 			}
-		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
