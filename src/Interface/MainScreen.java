@@ -133,7 +133,6 @@ public class MainScreen {
 		}
 		frmSaps.getContentPane().setBackground(Color.WHITE);
 		frmSaps.setBounds(300, 300, 800, 493);
-		frmSaps.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSaps.getContentPane().setLayout(null);
 		
 		JLabel lblWelcomeSapsUser = new JLabel("Welcome");
@@ -179,13 +178,13 @@ public class MainScreen {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if (controller.getOffered().isEmpty()) {
-					JOptionPane.showMessageDialog(frmSaps, "Set CAPE Preferences Before Proceeding", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(frmSaps, "Set CAPE Preferences", "Error", JOptionPane.ERROR_MESSAGE);
 					new Preferences(self);
 					self.setVisible(false);
 					return;
 					}
 				if(controller.getStudents().isEmpty()){
-					JOptionPane.showMessageDialog(frmSaps, "Upload Student Data Before Proceeding", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(frmSaps, "Upload Student Data", "Error", JOptionPane.ERROR_MESSAGE);
 					chooser();
 					return;
 				}
@@ -198,23 +197,6 @@ public class MainScreen {
 				    else if (dialogResult == JOptionPane.NO_OPTION){
 						controller.generateMappings(0);
 					}
-					for (CAPE c : controller.getOffered()) {
-						System.out.println(c + "\t" + c.getMax());
-						//System.out.println("Accepted Students: \t" + c.getAccepted());
-						//System.out.println("Conflict Students: \t"+ c.getConflicts());
-						//System.out.println("Alternates Students: \t" + c.getAlternates() + "\n");
-		 			}
-					/**for (Student s: controller.getStudents()) {
-						System.out.println(s + "\t" + s.getChoices());
-						if (s.getAccepted().isEmpty());
-						else System.out.println("Accepted Courses: \t" + s.getAccepted());
-						if (s.getConflicts().isEmpty());
-						else System.out.println("Conflicts Courses: \t" + s.getConflicts());
-						if (s.getAlternates().isEmpty());
-						else System.out.println("Alternate Courses: \t" + s.getAlternates());
-						System.out.println("\n");
-						
-					}**/
 					List<Object[]> info = new ArrayList<Object[]>();
 
 					for (CAPE c: controller.getOffered()) {
@@ -223,9 +205,8 @@ public class MainScreen {
 					}
 					Object[][] data = new Object[info.size()][];
 					data = info.toArray(data);
-					new MainReport(self, data);
 					self.setVisible(false);
-					
+					new MainReport(self, data);	
 				}
 				catch(NumberFormatException ne) {
 					JOptionPane.showMessageDialog(frmSaps, "Please enter an Integer", "Error", JOptionPane.ERROR_MESSAGE);
@@ -313,6 +294,11 @@ public class MainScreen {
 		btnLogOut.setForeground(new Color(0, 128, 128));
 		btnLogOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int result = JOptionPane.showConfirmDialog(frmSaps, "Are you sure you want to log out?", "Logging Out", JOptionPane.YES_NO_OPTION);
+				if (result == JOptionPane.YES_OPTION) {
+					new Login();
+					frmSaps.dispose();
+				}
 			}
 		});
 		btnLogOut.setBounds(685, 11, 99, 21);

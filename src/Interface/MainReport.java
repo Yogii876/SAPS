@@ -262,15 +262,6 @@ public class MainReport {
 		rpFrame = new JFrame();
 		rpFrame.setBounds(100, 100, 759, 472);
 		rpFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		
-
-		String[] columnNames = {"Name", "Class Maximum", "Met Requirements", "Applied", "Accepted", "Pending", "Rejected"}; 
-		this.iRow = rData;
-		this.iCol = columnNames;
-		panel = new JPanel();
-		panel.setBorder(null);
-		panel.setBackground(new Color(0, 128, 128));
-		panel.setLayout(null);
 		rpFrame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -279,7 +270,15 @@ public class MainReport {
 				rpFrame.dispose();
 			}
 		});
-		rpFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		String[] columnNames = {"Name", "Class Maximum", "Met Requirements", "Applied", "Accepted", "Pending", "Rejected"}; 
+		this.iRow = rData;
+		this.iCol = columnNames;
+		panel = new JPanel();
+		panel.setBorder(null);
+		panel.setBackground(new Color(0, 128, 128));
+		panel.setLayout(null);
+		
 		rpFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(MainReport.class.getResource("/img/saps-logo.png")));
 		rpFrame.setResizable(false);
 		rpFrame.setTitle("SAPS");

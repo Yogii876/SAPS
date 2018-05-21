@@ -296,7 +296,7 @@ public class CAPE extends Subject {
 	}
 	
 	public Map<Student, StatusMsg> getReasons() {
-		/**List<Entry<Student, StatusMsg>> list = new LinkedList<Entry<Student, StatusMsg>>(reasons.entrySet());
+		List<Entry<Student, StatusMsg>> list = new LinkedList<Entry<Student, StatusMsg>>(reasons.entrySet());
 		
         // Sorting the list based on values
         Collections.sort(list, new Comparator<Entry<Student, StatusMsg>>()
@@ -304,7 +304,7 @@ public class CAPE extends Subject {
             public int compare(Entry<Student, StatusMsg> o1,
                     Entry<Student, StatusMsg> o2)
             {
-                    return o2.getValue().getStatus().compareTo(o1.getValue().getMsg());
+                    return o1.getValue().getStatus().compareTo(o2.getValue().getStatus());
             }
         });
 
@@ -313,10 +313,9 @@ public class CAPE extends Subject {
         //System.out.println(super.name);
         for (Entry<Student, StatusMsg> entry : list)
         {
-        	//System.out.print(entry.getKey().toString() + ": Points: " + entry.getValue() +"\t");
             sortedMap.put(entry.getKey(), entry.getValue());
         }
-        reasons = sortedMap;**/
+        reasons = sortedMap;
 		return this.reasons;
 	}
 	
