@@ -132,7 +132,7 @@ public class MainScreen {
 			e2.printStackTrace();
 		}
 		frmSaps.getContentPane().setBackground(Color.WHITE);
-		frmSaps.setBounds(300, 300, 655, 451);
+		frmSaps.setBounds(300, 300, 726, 493);
 		frmSaps.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSaps.getContentPane().setLayout(null);
 		
@@ -253,7 +253,7 @@ public class MainScreen {
 		});
 		lblManageUsers.setFont(new Font("Corbel", Font.PLAIN, 14));
 		lblManageUsers.setHorizontalAlignment(SwingConstants.CENTER);
-		lblManageUsers.setBounds(400, 193, 99, 16);
+		lblManageUsers.setBounds(493, 193, 99, 16);
 		frmSaps.getContentPane().add(lblManageUsers);
 		
 		MouseAdapter clickPref = new MouseAdapter() {
@@ -299,7 +299,7 @@ public class MainScreen {
 			public void mouseClicked(MouseEvent e) {
 			}
 		});
-		lblHehe.setBounds(382, 64, 144, 118);
+		lblHehe.setBounds(483, 64, 144, 118);
 		frmSaps.getContentPane().add(lblHehe);
 		
 		JLabel lblLabl = new JLabel(image4);
@@ -315,7 +315,7 @@ public class MainScreen {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnLogOut.setBounds(512, 11, 99, 21);
+		btnLogOut.setBounds(611, 21, 99, 21);
 		frmSaps.getContentPane().add(btnLogOut);
 		//fakeSubjects();
 	}

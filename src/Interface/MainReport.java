@@ -134,6 +134,7 @@ public class MainReport {
 		 }
 		Object[][] data = new Object[info.size()][];
 		data = info.toArray(data);
+		panel.remove(scrollPane);
 		table_1 = new JTable();
 		table_1.setModel(new DefaultTableModel(data,colData) {
 			public boolean isCellEditable(int row, int column) {
@@ -150,9 +151,32 @@ public class MainReport {
 		table_1.setSurrendersFocusOnKeystroke(true);
 		table_1.setBackground(new Color(255, 255, 255));
 		scrollPane = new JScrollPane(table_1);
+		//scrollPane.add(table_1);
 		scrollPane.setBounds(0, 103, 1204, 407);
-		panel.add(scrollPane);
 		table_1.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		table_1.addMouseListener(new MouseAdapter()  {
+			 public void mouseClicked(MouseEvent e)
+			 {
+				System.out.println("Went here");
+				int row=table_1.rowAtPoint(e.getPoint());
+				System.out.println("Didn't fail");
+				int col= table_1.columnAtPoint(e.getPoint());
+				String name = table_1.getValueAt(row,0).toString();
+				String colName = (table_1.getColumnName(col)).toLowerCase();
+				CAPE c = controller.searchSubjects(name.toLowerCase());
+				System.out.println(name);
+				if (c != null) {
+					subSearched(c, colName);
+				 }
+				else {
+					Student s = controller.searchStudents(name.toLowerCase());
+					if (s != null) {
+						searchedStud(s);
+					 }
+				 }
+				}
+			 }
+		);
 		panel.add(scrollPane);
 		panel.revalidate();
 		panel.repaint();
@@ -160,55 +184,64 @@ public class MainReport {
 	
 	private void searchedStud(Student s) {
 		List<Object[]> info = new ArrayList<Object[]>();
-		 for (Map.Entry<CAPE, StatusMsg> rns : s.getReasons().entrySet()) {
-			 Object [] temp = {rns.getKey().toString(), rns.getValue().getStatus(), rns.getValue().getMsg()};
-			 info.add(temp);
+		for (Map.Entry<CAPE, StatusMsg> rns : s.getReasons().entrySet()) {
+			Object [] temp = {rns.getKey().toString(), rns.getValue().getStatus(), rns.getValue().getMsg()};
+			info.add(temp);
 			}
-			Object[][] data = new Object[info.size()][];
-			data = info.toArray(data);
-			String[] col = {
-					"Course", "Status", "Reason"};
-	}
-	
-	MouseAdapter listener = new MouseAdapter()  {
-		 public void mouseClicked(MouseEvent e)
-		 {
-			System.out.println("Went here");
-			int row=table_1.rowAtPoint(e.getPoint());
-			System.out.println("Didn't fail");
-			int col= table_1.columnAtPoint(e.getPoint());
-			String name = table_1.getValueAt(row,0).toString();
-			String colName = (table_1.getColumnName(col)).toLowerCase();
-			CAPE c = controller.searchSubjects(name.toLowerCase());
-			System.out.println(name);
-			if (c != null) {
-				subSearched(c, colName);
-			 }
-			else {
-				Student s = controller.searchStudents(name.toLowerCase());
-				if (s != null) {
-					searchedStud(s);
+		Object[][] data = new Object[info.size()][];
+		data = info.toArray(data);
+		String[] col = {
+				"Course", "Status", "Reason"};
+		
+		panel.remove(scrollPane);
+		table_1 = new JTable();
+		table_1.setModel(new DefaultTableModel(data,col) {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		});
+		System.out.println("Went here");
+		table_1.setShowVerticalLines(false);
+		table_1.setShowHorizontalLines(false);
+		table_1.setBorder(null);
+		table_1.setFillsViewportHeight(true);
+		table_1.setForeground(new Color(0, 0, 0));
+		table_1.setFont(new Font("Corbel", Font.PLAIN, 14));
+		table_1.setSurrendersFocusOnKeystroke(true);
+		table_1.setBackground(new Color(255, 255, 255));
+		scrollPane = new JScrollPane(table_1);
+		//scrollPane.add(table_1);
+		scrollPane.setBounds(0, 103, 1204, 407);
+		table_1.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		table_1.addMouseListener(new MouseAdapter()  {
+			 public void mouseClicked(MouseEvent e)
+			 {
+				System.out.println("Went here");
+				int row=table_1.rowAtPoint(e.getPoint());
+				System.out.println("Didn't fail");
+				int col= table_1.columnAtPoint(e.getPoint());
+				String name = table_1.getValueAt(row,0).toString();
+				String colName = (table_1.getColumnName(col)).toLowerCase();
+				CAPE c = controller.searchSubjects(name.toLowerCase());
+				System.out.println(name);
+				if (c != null) {
+					subSearched(c, colName);
 				 }
+				else {
+					Student s = controller.searchStudents(name.toLowerCase());
+					if (s != null) {
+						searchedStud(s);
+					 }
+				 }
+				}
 			 }
-			System.out.println("Went here");
-			table_1.setShowVerticalLines(false);
-			table_1.setShowHorizontalLines(false);
-			table_1.setBorder(null);
-			table_1.setFillsViewportHeight(true);
-			table_1.setForeground(new Color(0, 0, 0));
-			table_1.setFont(new Font("Corbel", Font.PLAIN, 14));
-			table_1.setSurrendersFocusOnKeystroke(true);
-			table_1.setBackground(new Color(255, 255, 255));
-			scrollPane = new JScrollPane(table_1);
-			scrollPane.setBounds(0, 103, 1204, 407);
-			panel.add(scrollPane);
-			table_1.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-			panel.add(scrollPane);
-			panel.revalidate();
-			panel.repaint();
-			table_1.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		 }
-		 };	
+		);
+		panel.add(scrollPane);
+		panel.revalidate();
+		panel.repaint();
+	}
+		
+	
 
 	
 	private void initialize(Object[][] rData) {
@@ -246,7 +279,7 @@ public class MainReport {
 		table_1.setFont(new Font("Corbel", Font.PLAIN, 14));
 		table_1.setSurrendersFocusOnKeystroke(true);
 		table_1.setBackground(new Color(255, 255, 255));
-		//((DefaultTableCellRenderer) table_1.getTableHeader().getDefaultRenderer().getClass()).setHorizontalAlignment((int) JLabel.CENTER_ALIGNMENT);
+		//((TableCellRenderer) table_1.getTableHeader().getDefaultRenderer().getClass()).setHorizontalAlignment((int) JLabel.CENTER_ALIGNMENT);
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
@@ -255,7 +288,29 @@ public class MainReport {
 		scrollPane.setBounds(20, 103, 1174, 407);
 		panel.add(scrollPane);
 		table_1.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		table_1.addMouseListener(listener);			
+		table_1.addMouseListener(new MouseAdapter()  {
+			 public void mouseClicked(MouseEvent e)
+			 {
+				System.out.println("Went here");
+				int row=table_1.rowAtPoint(e.getPoint());
+				System.out.println("Didn't fail");
+				int col= table_1.columnAtPoint(e.getPoint());
+				String name = table_1.getValueAt(row,0).toString();
+				String colName = (table_1.getColumnName(col)).toLowerCase();
+				CAPE c = controller.searchSubjects(name.toLowerCase());
+				System.out.println(name);
+				if (c != null) {
+					subSearched(c, colName);
+				 }
+				else {
+					Student s = controller.searchStudents(name.toLowerCase());
+					if (s != null) {
+						searchedStud(s);
+					 }
+				 }
+				}
+			 }
+		);			
 		JRadioButton studBtn = new JRadioButton("Student");
 		studBtn.setFont(new Font("Corbel", Font.PLAIN, 10));
 		studBtn.setToolTipText("Search By Student Name Eg. \"John Brown\"");
