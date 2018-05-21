@@ -27,13 +27,17 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 //import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
+import javax.swing.JButton;
 
 public class MainReport {
 
@@ -43,6 +47,11 @@ public class MainReport {
 	private App controller;
 	private JScrollPane scrollPane;
 	private JPanel panel;
+	private MainScreen parent;
+	JLabel nameLbl;
+	JLabel secLbl;
+	Object[][] iRow;
+	Object[] iCol;
 
 	/**
 	 * Launch the application.
@@ -71,12 +80,59 @@ public class MainReport {
 			}
 		});
 	}
+	
+	private void alignText(JTable tb) {
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		tb.setDefaultRenderer(Object.class, centerRenderer);
+		table_1.setShowVerticalLines(false);
+		table_1.setShowHorizontalLines(false);
+		table_1.setBorder(null);
+		table_1.setFillsViewportHeight(true);
+		table_1.setForeground(new Color(0, 0, 0));
+		table_1.setFont(new Font("Corbel", Font.PLAIN, 14));
+		table_1.setSurrendersFocusOnKeystroke(true);
+		table_1.setBackground(new Color(255, 255, 255));
+		scrollPane = new JScrollPane(table_1);
+		//scrollPane.add(table_1);
+		scrollPane.setBounds(0, 103, 1204, 407);
+		table_1.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		table_1.addMouseListener(new MouseAdapter()  {
+			 public void mouseClicked(MouseEvent e)
+			 {
+				System.out.println("Went here");
+				int row=table_1.rowAtPoint(e.getPoint());
+				System.out.println("Didn't fail");
+				int col= table_1.columnAtPoint(e.getPoint());
+				String name = table_1.getValueAt(row,0).toString();
+				String colName = (table_1.getColumnName(col)).toLowerCase();
+				CAPE c = controller.searchSubjects(name.toLowerCase());
+				System.out.println(name);
+				if (c != null) {
+					subSearched(c, colName);
+				 }
+				else {
+					Student s = controller.searchStudents(name.toLowerCase());
+					if (s != null) {
+						searchedStud(s);
+					 }
+				 }
+				}
+			 }
+		);
+	}
+	
+	private void refreshPanel() {
+		panel.revalidate();
+		panel.repaint();
+	}
 
 	/**
 	 * Create the application.
 	 */
 	public MainReport(MainScreen parent, Object[][] rowData) {
 		initialize(rowData);
+		this.parent = parent;
 		this.controller = parent.getController();
 	}
 
@@ -141,45 +197,22 @@ public class MainReport {
 				return false;
 			}
 		});
-		System.out.println("Went here");
-		table_1.setShowVerticalLines(false);
-		table_1.setShowHorizontalLines(false);
-		table_1.setBorder(null);
-		table_1.setFillsViewportHeight(true);
-		table_1.setForeground(new Color(0, 0, 0));
-		table_1.setFont(new Font("Corbel", Font.PLAIN, 14));
-		table_1.setSurrendersFocusOnKeystroke(true);
-		table_1.setBackground(new Color(255, 255, 255));
-		scrollPane = new JScrollPane(table_1);
-		//scrollPane.add(table_1);
-		scrollPane.setBounds(0, 103, 1204, 407);
-		table_1.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		table_1.addMouseListener(new MouseAdapter()  {
-			 public void mouseClicked(MouseEvent e)
-			 {
-				System.out.println("Went here");
-				int row=table_1.rowAtPoint(e.getPoint());
-				System.out.println("Didn't fail");
-				int col= table_1.columnAtPoint(e.getPoint());
-				String name = table_1.getValueAt(row,0).toString();
-				String colName = (table_1.getColumnName(col)).toLowerCase();
-				CAPE c = controller.searchSubjects(name.toLowerCase());
-				System.out.println(name);
-				if (c != null) {
-					subSearched(c, colName);
-				 }
-				else {
-					Student s = controller.searchStudents(name.toLowerCase());
-					if (s != null) {
-						searchedStud(s);
-					 }
-				 }
-				}
-			 }
-		);
+		alignText(table_1);
+		panel.remove(nameLbl);
+		nameLbl = new JLabel(c.toString());
+		nameLbl.setForeground(Color.WHITE);
+		nameLbl.setFont(new Font("Corbel", Font.BOLD | Font.ITALIC, 26));
+		nameLbl.setBounds(22, 43, 350, 36);
+		panel.add(nameLbl);
+		
+		panel.remove(secLbl);
+		secLbl = new JLabel("Class Size: " + Integer.toString(c.getMax()));
+		secLbl.setForeground(Color.WHITE);
+		secLbl.setFont(new Font("Corbel", Font.BOLD | Font.ITALIC, 13));
+		secLbl.setBounds(20, 78, 404, 14);
+		panel.add(secLbl);
 		panel.add(scrollPane);
-		panel.revalidate();
-		panel.repaint();
+		refreshPanel();
 	}
 	
 	private void searchedStud(Student s) {
@@ -200,45 +233,26 @@ public class MainReport {
 				return false;
 			}
 		});
-		System.out.println("Went here");
-		table_1.setShowVerticalLines(false);
-		table_1.setShowHorizontalLines(false);
-		table_1.setBorder(null);
-		table_1.setFillsViewportHeight(true);
-		table_1.setForeground(new Color(0, 0, 0));
-		table_1.setFont(new Font("Corbel", Font.PLAIN, 14));
-		table_1.setSurrendersFocusOnKeystroke(true);
-		table_1.setBackground(new Color(255, 255, 255));
-		scrollPane = new JScrollPane(table_1);
-		//scrollPane.add(table_1);
-		scrollPane.setBounds(0, 103, 1204, 407);
-		table_1.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		table_1.addMouseListener(new MouseAdapter()  {
-			 public void mouseClicked(MouseEvent e)
-			 {
-				System.out.println("Went here");
-				int row=table_1.rowAtPoint(e.getPoint());
-				System.out.println("Didn't fail");
-				int col= table_1.columnAtPoint(e.getPoint());
-				String name = table_1.getValueAt(row,0).toString();
-				String colName = (table_1.getColumnName(col)).toLowerCase();
-				CAPE c = controller.searchSubjects(name.toLowerCase());
-				System.out.println(name);
-				if (c != null) {
-					subSearched(c, colName);
-				 }
-				else {
-					Student s = controller.searchStudents(name.toLowerCase());
-					if (s != null) {
-						searchedStud(s);
-					 }
-				 }
-				}
-			 }
-		);
+		alignText(table_1);
+		panel.remove(nameLbl);
+		nameLbl = new JLabel(s.toString());
+		nameLbl.setForeground(Color.WHITE);
+		nameLbl.setFont(new Font("Corbel", Font.BOLD | Font.ITALIC, 26));
+		nameLbl.setBounds(22, 43, 350, 36);
+		panel.add(nameLbl);
+		
+		panel.remove(secLbl);
+		String choices = "Choices: ";
+		for (String ch: s.getChoices()) {
+			choices = choices + ch + "   ";
+		}
+		secLbl = new JLabel(choices);
+		secLbl.setForeground(Color.WHITE);
+		secLbl.setFont(new Font("Corbel", Font.BOLD | Font.ITALIC, 13));
+		secLbl.setBounds(20, 78, 404, 14);
+		panel.add(secLbl);
 		panel.add(scrollPane);
-		panel.revalidate();
-		panel.repaint();
+		refreshPanel();
 	}
 		
 	
@@ -247,16 +261,22 @@ public class MainReport {
 	private void initialize(Object[][] rData) {
 		rpFrame = new JFrame();
 		rpFrame.setBounds(100, 100, 759, 472);
-		rpFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		rpFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 
 		String[] columnNames = {"Name", "Class Maximum", "Met Requirements", "Applied", "Accepted", "Pending", "Rejected"}; 
+		this.iRow = rData;
+		this.iCol = columnNames;
 		panel = new JPanel();
+		panel.setBorder(null);
 		panel.setBackground(new Color(0, 128, 128));
 		panel.setLayout(null);
 		rpFrame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
+				controller.resetMappings();
+				parent.setVisible(true);
+				rpFrame.dispose();
 			}
 		});
 		rpFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -279,11 +299,10 @@ public class MainReport {
 		table_1.setFont(new Font("Corbel", Font.PLAIN, 14));
 		table_1.setSurrendersFocusOnKeystroke(true);
 		table_1.setBackground(new Color(255, 255, 255));
-		//((TableCellRenderer) table_1.getTableHeader().getDefaultRenderer().getClass()).setHorizontalAlignment((int) JLabel.CENTER_ALIGNMENT);
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-		table_1.setDefaultRenderer(String.class, centerRenderer);
+		table_1.setDefaultRenderer(Object.class, centerRenderer);
 		scrollPane = new JScrollPane(table_1);
 		scrollPane.setBounds(20, 103, 1174, 407);
 		panel.add(scrollPane);
@@ -291,25 +310,29 @@ public class MainReport {
 		table_1.addMouseListener(new MouseAdapter()  {
 			 public void mouseClicked(MouseEvent e)
 			 {
-				System.out.println("Went here");
-				int row=table_1.rowAtPoint(e.getPoint());
-				System.out.println("Didn't fail");
-				int col= table_1.columnAtPoint(e.getPoint());
-				String name = table_1.getValueAt(row,0).toString();
-				String colName = (table_1.getColumnName(col)).toLowerCase();
-				CAPE c = controller.searchSubjects(name.toLowerCase());
-				System.out.println(name);
-				if (c != null) {
-					subSearched(c, colName);
-				 }
-				else {
-					Student s = controller.searchStudents(name.toLowerCase());
-					if (s != null) {
-						searchedStud(s);
+				try {
+					System.out.println("Went here");
+					int row=table_1.rowAtPoint(e.getPoint());
+					System.out.println("Didn't fail");
+					int col= table_1.columnAtPoint(e.getPoint());
+					String name = table_1.getValueAt(row,0).toString();
+					String colName = (table_1.getColumnName(col)).toLowerCase();
+					CAPE c = controller.searchSubjects(name.toLowerCase());
+					System.out.println(name);
+					if (c != null) {
+						subSearched(c, colName);
 					 }
-				 }
+					else {
+						Student s = controller.searchStudents(name.toLowerCase());
+						if (s != null) {
+							searchedStud(s);
+						 }
+					 }
+				}
+				catch (Exception ex) {
 				}
 			 }
+		}
 		);			
 		JRadioButton studBtn = new JRadioButton("Student");
 		studBtn.setFont(new Font("Corbel", Font.PLAIN, 10));
@@ -342,8 +365,7 @@ public class MainReport {
 						searchedStud(stu); 
 					}
 					else {
-						//TODO write sumn here
-						//JOptionPane();
+						JOptionPane.showMessageDialog(null, "Student Not Found!", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				else {
@@ -352,10 +374,10 @@ public class MainReport {
 						subSearched(cape, "");
 					}
 					else {
-						//TODO write sumn here
-						//JOptionPane();
+						JOptionPane.showMessageDialog(null, "Subject Not Found!", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
+				textField.setText("");
 			}
 		});
 		
@@ -367,6 +389,7 @@ public class MainReport {
 		textField.setBounds(1025, 25, 169, 20);
 		panel.add(textField);
 		textField.setColumns(10);
+		
 		lblEnterName.setLabelFor(textField);
 		
 		JLabel lblSaps = new JLabel("SAPS Report");
@@ -376,19 +399,55 @@ public class MainReport {
 		lblSaps.setBounds(452, 6, 243, 44);
 		panel.add(lblSaps);
 		
-		JLabel nameLbl = new JLabel("Yohan Brown");
+		nameLbl = new JLabel("");
 		nameLbl.setForeground(Color.WHITE);
 		nameLbl.setFont(new Font("Corbel", Font.BOLD | Font.ITALIC, 26));
 		nameLbl.setBounds(22, 43, 350, 36);
 		panel.add(nameLbl);
 		
-		JLabel secLbl = new JLabel("Chose: Physics, Chemistry, Pure Mathematics");
+		secLbl = new JLabel("");
 		secLbl.setForeground(Color.WHITE);
 		secLbl.setFont(new Font("Corbel", Font.BOLD | Font.ITALIC, 13));
 		secLbl.setBounds(20, 78, 404, 14);
 		panel.add(secLbl);
+		
+		JButton home = new JButton("Home");
+		home.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				returnHome();
+			}
+		});
+		home.setFont(new Font("Corbel", Font.BOLD, 12));
+		home.setBounds(23, 6, 89, 23);
+		panel.add(home);
 		rpFrame.setSize(1218,569);
 		rpFrame.setVisible(true);
 		
+	}
+	
+	private void returnHome() {
+		panel.remove(scrollPane);
+		table_1 = new JTable();
+		table_1.setModel(new DefaultTableModel(iRow,iCol) {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		});
+		alignText(table_1);
+		panel.remove(nameLbl);
+		nameLbl = new JLabel("");
+		nameLbl.setForeground(Color.WHITE);
+		nameLbl.setFont(new Font("Corbel", Font.BOLD | Font.ITALIC, 26));
+		nameLbl.setBounds(22, 43, 350, 36);
+		panel.add(nameLbl);
+		
+		panel.remove(secLbl);
+		secLbl = new JLabel("");
+		secLbl.setForeground(Color.WHITE);
+		secLbl.setFont(new Font("Corbel", Font.BOLD | Font.ITALIC, 13));
+		secLbl.setBounds(20, 78, 404, 14);
+		panel.add(secLbl);
+		panel.add(scrollPane);
+		refreshPanel();
 	}
 }

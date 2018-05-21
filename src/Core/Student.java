@@ -51,6 +51,17 @@ public class Student {
 		return csecSubs;
 	}
 	
+	public void clearMappings() {
+		possibleSubjects = new ArrayList<CAPE>();
+		acceptedFor = new ArrayList<CAPE>();
+		conflicts = new ArrayList<CAPE>();
+		alternates = new ArrayList<CAPE>();
+		pointMapping = new HashMap<CAPE, Integer>();
+		courseGrades = new HashMap<CAPE, Map<String, String>>();
+		rejected = new ArrayList<CAPE>();
+		reasons =  new HashMap<CAPE, StatusMsg>();
+	}
+	
 	public Object[] calcPoints(CAPE cape) {
 		//TODO change
 		String primary = cape.getPrimary();

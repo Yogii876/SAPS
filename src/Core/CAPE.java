@@ -87,7 +87,7 @@ public class CAPE extends Subject {
 		sorted = false;
 	}
 	
-	public void resetStudents() {
+	public void clearMappings() {
 		this.eligibleStudents = new HashMap<Student, Integer>();
 		this.accepted = new ArrayList<Student>();
 		this.antiRequisites = new ArrayList<String>();
@@ -96,6 +96,17 @@ public class CAPE extends Subject {
 		this.rejected = new ArrayList<Student>();
 		this.sorted = false;
 		this.applied = 0;
+		studFull = new ArrayList<Student>();
+		reasons =  new HashMap<Student, StatusMsg>();
+		oRejects = new HashMap<Student, StatusMsg>();
+	}
+	
+	public void resetStudents() {
+		clearMappings();
+		primary = null;
+		secondary = null;
+		tertiary = null;
+		classSize = -1;
 	}
 	
 	public void addAntiReq(String s) {
@@ -227,6 +238,7 @@ public class CAPE extends Subject {
 							//TODO change to arraylist as GUI can print message
 							//alternateStudents.put(stud, entry.getValue());
 							reason = new StatusMsg("Rejected", "Student is already doing the Maximum Number of Courses");
+							addRejected(stud);
 							rejects.put(stud, reason);
 							studFull.add(stud);
 							stud.addAlternate(this, reason);						
@@ -240,6 +252,7 @@ public class CAPE extends Subject {
 					}
 					else {
 						reason = new StatusMsg("Rejected", "Maximum Class Capacity Reached");
+						addRejected(stud);
 						rejects.put(stud, reason);
 						studFull.add(stud);
 						stud.addAlternate(this, reason);
@@ -261,6 +274,7 @@ public class CAPE extends Subject {
 					}
 					else {
 						reason = new StatusMsg("Rejected", "Maximum Class Capacity Reached - Has AntiRequisites");
+						addRejected(stud);
 						rejects.put(stud, reason);
 						studFull.add(stud);
 						stud.addAlternate(this, reason);
@@ -327,6 +341,7 @@ public class CAPE extends Subject {
 		return null;
 		
 	}
+	
 	
 	public ArrayList<String> getAllStudents() {
 		return getString(eligibleStudents, true);

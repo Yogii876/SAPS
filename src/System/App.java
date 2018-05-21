@@ -24,7 +24,6 @@ public class App {
 	
 	//TODO delete
 	public ArrayList<CAPE> getOffered() {
-		System.out.println(students.size());
 		return this.offeredSubjects;
 	}
 	
@@ -38,6 +37,11 @@ public class App {
 	}
 	
 	public void populateStudents(File csvFile) throws Exception {
+		if (status) {
+			for (CAPE c: offeredSubjects) {
+				c.clearMappings();
+			}
+		}
 		Reader fileReader = new Reader(csvFile);
 		students = fileReader.getStudents();
 		studentMap = fileReader.getMap();
@@ -114,32 +118,10 @@ public class App {
 	
 	private void assignStudents(int m) {
 		for (CAPE subj: offeredSubjects ) {
-			//System.out.println(subj);
 			subj.generateAcceptedList(m);
 		}
 	}
 			
-			
-	/*** private void assignStudents() {
-		Map<Integer, Map<String, Integer>>
-		Iterator it = studentMapping.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry pair = (Map.Entry)it.next();
-			Iterator pIT = (pair.getValue()).entrySet().iterator();
-			
-		for (Map.Entry<Integer, Map<CAPE, Integer>> sMap : studentMapping.entrySet()) {
-		    Integer sid = sMap.getKey();
-		    Map<CAPE, Integer> value = sMap.getValue();
-		    for (Map.Entry<CAPE, Integer> cMap : value.entrySet()) {
-		    // ...
-		    	CAPE sub = cMap.getKey();
-		    	int points = cMap.getValue();
-		    	if (points > 0) {
-		    		sub.addStudent(sid);
-		    	}
-		    }
-		}		
-	}***/
 
 	
 	public void setOfferedSubjects(ArrayList<CAPE> subs) {
@@ -158,6 +140,17 @@ public class App {
 		}
 		return null;	
 	}
+	
+	public void resetMappings() {
+		for (Student stud: students) {
+			stud.clearMappings();
+		}
+		for (CAPE c: offeredSubjects) {
+			c.clearMappings();
+		}
+	}
+	
+	
 	public void editSubject(CAPE c, String p, String s, String t, int max) {
 		c.resetStudents();
 		c.setPrimary(p);
