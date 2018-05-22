@@ -59,7 +59,6 @@ public class Login {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setResizable(false);
-		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("../img/book.ico")));
 		frame.setBackground(SystemColor.inactiveCaptionText);
 		frame.getContentPane().setBackground(new Color(95, 158, 160));
 		frame.setBounds(257, 133, 885, 427);
@@ -116,7 +115,7 @@ public class Login {
 		panel.add(btnLogin);
 		
 		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setIcon(new ImageIcon(Login.class.getResource("../img/lo.png")));
+		lblNewLabel_1.setIcon(new ImageIcon(Login.class.getResource("/img/lo.png")));
 		lblNewLabel_1.setBounds(10, 0, 555, 300);
 		panel.add(lblNewLabel_1);
 		btnLogin.addActionListener(new ActionListener() {

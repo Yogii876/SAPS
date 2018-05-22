@@ -174,10 +174,10 @@ public class MainScreen {
 		
 		
 		
-		ImageIcon image1 = new ImageIcon(getClass().getResource("../img/upload1.png"));
-		ImageIcon image2 = new ImageIcon(getClass().getResource("../img/report3.png"));
-		ImageIcon image3 = new ImageIcon(getClass().getResource("../img/users1.png"));	
-		ImageIcon image4 = new ImageIcon(getClass().getResource("../img/preference1.png"));
+		ImageIcon image1 = new ImageIcon(MainScreen.class.getResource("/img/upload1.png"));
+		ImageIcon image2 = new ImageIcon(MainScreen.class.getResource("/img/report3.png"));
+		ImageIcon image3 = new ImageIcon(MainScreen.class.getResource("/img/users1.png"));	
+		ImageIcon image4 = new ImageIcon(MainScreen.class.getResource("/img/preference1.png"));
 		
 		MouseAdapter clickReport = new MouseAdapter() {
 			@Override
