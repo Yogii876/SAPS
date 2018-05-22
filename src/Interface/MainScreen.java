@@ -318,7 +318,6 @@ public class MainScreen {
 		List<String> cape_subjs3 = Arrays.asList(cape_subjs);
 		ArrayList<String> cape_subjs2 = new ArrayList<String>();
 		cape_subjs2.addAll(cape_subjs3);
-		System.out.println(cape_subjs2.size());
 
 		//int sub = r.nextInt(cape_subjs2.length);  // [0...4] [min = 0, max = 4]
 		while (cape_subjs2.size() != 0) {

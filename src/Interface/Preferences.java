@@ -292,7 +292,6 @@ public class Preferences {
 						else {
 							int size = Integer.parseInt(cSize);
 							maxStud = size;
-							System.out.print(Integer.toString(maxStud));
 						}
 					}
 						catch (NumberFormatException e) {
@@ -411,7 +410,6 @@ public class Preferences {
 					else {
 						int size = Integer.parseInt(cSize);
 						maxStud = size;
-						System.out.print(Integer.toString(maxStud));
 					}
 				}
 					catch (NumberFormatException e) {

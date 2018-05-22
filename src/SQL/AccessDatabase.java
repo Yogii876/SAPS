@@ -86,7 +86,6 @@ public class AccessDatabase {
 			//statement.executeQuery("use " + database + ".users;insert into users values (" + name + "," + password + ");");
 			}
 		catch (Exception e) {
-			System.out.println(e.getMessage());
 			throw new Exception("Error reading users from database, please try again");
 		}
 		

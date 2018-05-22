@@ -101,14 +101,11 @@ public class MainReport {
 		table_1.addMouseListener(new MouseAdapter()  {
 			 public void mouseClicked(MouseEvent e)
 			 {
-				System.out.println("Went here");
 				int row=table_1.rowAtPoint(e.getPoint());
-				System.out.println("Didn't fail");
 				int col= table_1.columnAtPoint(e.getPoint());
 				String name = table_1.getValueAt(row,0).toString();
 				String colName = (table_1.getColumnName(col)).toLowerCase();
 				CAPE c = controller.searchSubjects(name.toLowerCase());
-				System.out.println(name);
 				if (c != null) {
 					subSearched(c, colName);
 				 }
@@ -323,7 +320,6 @@ public class MainReport {
 					String name = table_1.getValueAt(row,0).toString();
 					String colName = (table_1.getColumnName(col)).toLowerCase();
 					CAPE c = controller.searchSubjects(name.toLowerCase());
-					System.out.println(name);
 					if (c != null) {
 						subSearched(c, colName);
 					 }
