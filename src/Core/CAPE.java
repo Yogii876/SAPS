@@ -28,6 +28,11 @@ public class CAPE extends Subject {
 	private ArrayList<Student> studFull = new ArrayList<Student>();
 	private Map<Student, StatusMsg> reasons =  new HashMap<Student, StatusMsg>();
 	private Map<Student, StatusMsg> oRejects = new HashMap<Student, StatusMsg>();
+	private LinkedHashMap<Student, StatusMsg> accepts = new LinkedHashMap<Student, StatusMsg>();
+	private LinkedHashMap<Student, StatusMsg> pendings = new LinkedHashMap<Student, StatusMsg>();
+	private LinkedHashMap<Student, StatusMsg> rejects = new LinkedHashMap<Student, StatusMsg>();
+	private LinkedHashMap<Student, StatusMsg> alternates = new LinkedHashMap<Student, StatusMsg>();
+
 	
 	public CAPE(String name, String primary, String secondary, String tertiary, int max) {
 		super(name.toLowerCase());
@@ -99,6 +104,11 @@ public class CAPE extends Subject {
 		studFull = new ArrayList<Student>();
 		reasons =  new HashMap<Student, StatusMsg>();
 		oRejects = new HashMap<Student, StatusMsg>();
+		accepts = new LinkedHashMap<Student, StatusMsg>();
+		pendings = new LinkedHashMap<Student, StatusMsg>();
+		rejects = new LinkedHashMap<Student, StatusMsg>();
+		alternates = new LinkedHashMap<Student, StatusMsg>();
+
 	}
 	
 	public void resetStudents() {
@@ -127,7 +137,7 @@ public class CAPE extends Subject {
 	
 	public void addRejected(Student s) {
 		this.rejected.add(s);
-		this.oRejects.put(s, new StatusMsg("Rejected", "Did not meet Requirements"));
+		this.oRejects.put(s, new StatusMsg("Rejected", "Did not meet Requirements", 0));
 		rejecSize++;
 	}
 	
@@ -216,20 +226,17 @@ public class CAPE extends Subject {
 	public void generateAcceptedList(int maxDoable) {
 		if (!sorted) sortStudents();
 		boolean noMax = (classSize == -1);
-		LinkedHashMap<Student, StatusMsg> accepts = new LinkedHashMap<Student, StatusMsg>();
-		LinkedHashMap<Student, StatusMsg> pendings = new LinkedHashMap<Student, StatusMsg>();
-		LinkedHashMap<Student, StatusMsg> rejects = new LinkedHashMap<Student, StatusMsg>();
-		LinkedHashMap<Student, StatusMsg> alternates = new LinkedHashMap<Student, StatusMsg>();
-		StatusMsg reason = new StatusMsg("Accepted", "");
+		StatusMsg reason;
 		for (Map.Entry<Student, Integer> entry : eligibleStudents.entrySet()) {
 			Student stud = entry.getKey();
+			int points = entry.getValue();
 			ArrayList<String> choices = stud.getChoices();
 			
 			if (choices.contains((super.name).toLowerCase())) {
 				boolean exculsive = isDisjoint(choices, antiRequisites);
 				if (exculsive) {
 					if (noMax || ((accepted.size() + conflictStudents.size() < classSize))) {
-						reason = new StatusMsg("Accepted", "");
+						reason = new StatusMsg("Accepted", "", points);
 						if (stud.addAcceptedSubject(this, reason, maxDoable)) {
 							accepted.add(stud);
 							accepts.put(stud, reason);
@@ -237,7 +244,7 @@ public class CAPE extends Subject {
 						else {
 							//TODO change to arraylist as GUI can print message
 							//alternateStudents.put(stud, entry.getValue());
-							reason = new StatusMsg("Rejected", "Student is already doing the Maximum Number of Courses");
+							reason = new StatusMsg("Rejected", "Student is already doing the Maximum Number of Courses", points);
 							addRejected(stud);
 							rejects.put(stud, reason);
 							studFull.add(stud);
@@ -245,13 +252,13 @@ public class CAPE extends Subject {
 						}
 					}
 					else if (conflictStudents.size() != 0 && alternateStudents.size() < conflictStudents.size()) {
-						reason = new StatusMsg("Pending", "Possible Space Available");
+						reason = new StatusMsg("Pending", "Possible Space Available", points);
 						alternates.put(stud, reason);
 						alternateStudents.add(stud);
 						stud.addAlternate(this, reason);			
 					}
 					else {
-						reason = new StatusMsg("Rejected", "Maximum Class Capacity Reached");
+						reason = new StatusMsg("Rejected", "Maximum Class Capacity Reached", points);
 						addRejected(stud);
 						rejects.put(stud, reason);
 						studFull.add(stud);
@@ -261,19 +268,19 @@ public class CAPE extends Subject {
 				}
 				else {
 					if (noMax || ((accepted.size() + conflictStudents.size() < classSize))) {
-						reason = new StatusMsg("Pending", "Has AntiRequisites");
+						reason = new StatusMsg("Pending", "Has AntiRequisites", points);
 						pendings.put(stud, reason);
 						conflictStudents.add(stud);
 						stud.addConflict(this, reason);
 					}
 					else if (alternateStudents.size() < conflictStudents.size()) {
-						reason = new StatusMsg("Pending", "Has AntiRequisites - Space May Be Available");
+						reason = new StatusMsg("Pending", "Has AntiRequisites - Space May Be Available", points);
 						pendings.put(stud, reason);
 						conflictStudents.add(stud);
 						stud.addAlternate(this, reason);			
 					}
 					else {
-						reason = new StatusMsg("Rejected", "Maximum Class Capacity Reached - Has AntiRequisites");
+						reason = new StatusMsg("Rejected", "Maximum Class Capacity Reached - Has AntiRequisites", points);
 						addRejected(stud);
 						rejects.put(stud, reason);
 						studFull.add(stud);
@@ -282,20 +289,34 @@ public class CAPE extends Subject {
 				}
 			}
 			else {
-				reason = new StatusMsg("Alternate", "Did not Apply");
+				reason = new StatusMsg("Alternate", "Did not Apply", points);
 				alternates.put(stud, reason);
 				stud.addAlternate(this, reason);
 			}
 			choices = new ArrayList<String>();
 		}
+		
+	}
+	
+	public void sortResults() {
+		Comparator<Entry<Student, StatusMsg>> pCom = new Comparator<Entry<Student, StatusMsg>>()
+        {
+            public int compare(Entry<Student, StatusMsg> o1,
+                    Entry<Student, StatusMsg> o2)
+            {
+                    return ((Integer)o1.getValue().getPoints()).compareTo((Integer) o2.getValue().getPoints());
+            }
+        };
+        List<Entry<Student, StatusMsg>> list = new LinkedList<Entry<Student, StatusMsg>>(reasons.entrySet());
+        Collections.sort(list, pCom);
+	}
+	
+	public Map<Student, StatusMsg> getReasons() {
 		reasons.putAll(accepts);
 		reasons.putAll(pendings);
 		reasons.putAll(oRejects);
 		reasons.putAll(rejects);
 		reasons.putAll(alternates);
-	}
-	
-	public Map<Student, StatusMsg> getReasons() {
 		List<Entry<Student, StatusMsg>> list = new LinkedList<Entry<Student, StatusMsg>>(reasons.entrySet());
 		
         // Sorting the list based on values

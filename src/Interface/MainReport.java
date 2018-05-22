@@ -95,7 +95,7 @@ public class MainReport {
 		table_1.setBackground(new Color(255, 255, 255));
 		scrollPane = new JScrollPane(table_1);
 		//scrollPane.add(table_1);
-		scrollPane.setBounds(0, 103, 1204, 407);
+		scrollPane.setBounds(20, 103, 1174, 407);
 		table_1.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		table_1.addMouseListener(new MouseAdapter()  {
 			 public void mouseClicked(MouseEvent e)
@@ -199,14 +199,15 @@ public class MainReport {
 		});
 		alignText(table_1);
 		panel.remove(nameLbl);
-		nameLbl = new JLabel(c.toString());
+		nameLbl = new JLabel("Cape " + (c.toString()).toUpperCase() + " Information");
 		nameLbl.setForeground(Color.WHITE);
 		nameLbl.setFont(new Font("Corbel", Font.BOLD | Font.ITALIC, 26));
 		nameLbl.setBounds(22, 43, 350, 36);
 		panel.add(nameLbl);
 		
 		panel.remove(secLbl);
-		secLbl = new JLabel("Class Size: " + Integer.toString(c.getMax()));
+		if (c.getMax() != -1)	secLbl = new JLabel("Class Size: " + Integer.toString(c.getMax()));
+		else secLbl = new JLabel("No Limit On Class Size");
 		secLbl.setForeground(Color.WHITE);
 		secLbl.setFont(new Font("Corbel", Font.BOLD | Font.ITALIC, 13));
 		secLbl.setBounds(20, 78, 404, 14);
@@ -283,7 +284,6 @@ public class MainReport {
 		rpFrame.setResizable(false);
 		rpFrame.setTitle("SAPS");
 		rpFrame.getContentPane().add(panel, BorderLayout.CENTER);
-		//defaultTable(rData, columnNames);
 		JTable table_1 = new JTable();
 		table_1.setModel(new DefaultTableModel(rData,columnNames) {
 			public boolean isCellEditable(int row, int column) {
