@@ -240,7 +240,7 @@ public class CAPE extends Subject {
 				boolean exculsive = isDisjoint(choices, antiRequisites);
 				if (exculsive) {
 					if (noMax || ((accepted.size() + conflictStudents.size() < classSize))) {
-						reason = new StatusMsg("Accepted", "", points);
+						reason = new StatusMsg("Accepted", "N/A", points);
 						if (stud.addAcceptedSubject(this, reason, maxDoable)) {
 							accepted.add(stud);
 							accepts.put(stud, reason);
