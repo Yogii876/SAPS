@@ -1,6 +1,7 @@
 package Core;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.LinkedHashMap;
@@ -227,9 +228,12 @@ public class CAPE extends Subject {
 		if (!sorted) sortStudents();
 		boolean noMax = (classSize == -1);
 		StatusMsg reason;
-		for (Map.Entry<Student, Integer> entry : eligibleStudents.entrySet()) {
-			Student stud = entry.getKey();
-			int points = entry.getValue();
+		Set set = eligibleStudents.entrySet();
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator.next();
+			Student stud = (Student) entry.getKey();
+			int points = (int) entry.getValue();
 			ArrayList<String> choices = stud.getChoices();
 			
 			if (choices.contains((super.name).toLowerCase())) {
@@ -298,18 +302,11 @@ public class CAPE extends Subject {
 }
 	
 	public void sortResults(Map<Student, StatusMsg> unSortedList) {
-		Comparator<Entry<Student, StatusMsg>> pCom = new Comparator<Entry<Student, StatusMsg>>()
-        {
-            public int compare(Entry<Student, StatusMsg> o1,
-                    Entry<Student, StatusMsg> o2)
-            {
-                    return ((Integer)o1.getValue().getPoints()).compareTo((Integer) o2.getValue().getPoints());
-            }
-        };
-        List<Entry<Student, StatusMsg>> list = new LinkedList<Entry<Student, StatusMsg>>(unSortedList.entrySet());
-        Collections.sort(list, pCom);
-        for (Entry<Student, StatusMsg> ent : list) {
-        	reasons.put(ent.getKey(), ent.getValue());
+        Set set = unSortedList.entrySet();
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry ent = (Map.Entry) iterator.next();
+        	reasons.put((Student) ent.getKey(), (StatusMsg) ent.getValue());
         }
 	}
 	

@@ -21,6 +21,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -142,18 +143,21 @@ public class MainReport {
 	
 	private void subSearched(CAPE c, String column) {
 		 List<Object[]> info = new ArrayList<Object[]>();
-		 Set<Entry<Student, StatusMsg>> entires = c.getReasons().entrySet();
+		 Map<Student, StatusMsg> reasons = c.getReasons();
+		 Set set = reasons.entrySet();
 		 String[] colData = {};
 		 boolean hasSec = c.getSecondary() != null;
 		 boolean hasTer = c.getTertiary() != null;
 		 if (hasTer) {
-			 for(Entry<Student,StatusMsg> ent: entires) {
-				 Student s = ent.getKey();
+		     Iterator iterator = set.iterator();
+		     while (iterator.hasNext()) {
+		    	 Map.Entry ent = (Map.Entry) iterator.next();
+				 Student s = (Student) ent.getKey();
+				 StatusMsg msg = (StatusMsg) ent.getValue();
 				 Map<String, String> preInfo = s.getPreReqInfo(c);
 				 String pGrade = preInfo.get("primary");
 				 String sGrade = preInfo.get("secondary");
 				 String tGrade= preInfo.get("tertiary");
-				 StatusMsg msg = ent.getValue();
 				 Object [] temp = {s.toString(), pGrade, sGrade, tGrade, Integer.toString(msg.getPoints()), msg.getStatus(), msg.getMsg()};
 				 String[] col = { "Student", (c.getPrimary()).toUpperCase(), (c.getSecondary()).toUpperCase(), (c.getTertiary()).toUpperCase(), "Points", "Status", "Reason"
 					};
@@ -162,12 +166,14 @@ public class MainReport {
 				}
 		 }
 		 else if (hasSec) {
-			 for(Entry<Student,StatusMsg> ent: entires) {
-				 Student s = ent.getKey();
+			 Iterator iterator = set.iterator();
+		     while (iterator.hasNext()) {
+		    	 Map.Entry ent = (Map.Entry) iterator.next();
+				 Student s = (Student) ent.getKey();
+				 StatusMsg msg = (StatusMsg) ent.getValue();
 				 Map<String, String> preInfo = s.getPreReqInfo(c);
 				 String pGrade = preInfo.get("primary");
 				 String sGrade = preInfo.get("secondary");
-				 StatusMsg msg = ent.getValue();
 				 Object [] temp = {s.toString(), pGrade, sGrade, Integer.toString(msg.getPoints()), msg.getStatus(), msg.getMsg()};
 				 String[] col = { "Student", (c.getPrimary()).toUpperCase(), (c.getSecondary()).toUpperCase(), "Points", "Status", "Reason"
 					};
@@ -176,11 +182,13 @@ public class MainReport {
 			 }
 		 }
 		 else {
-			 for(Entry<Student,StatusMsg> ent: entires) {
-				 Student s = ent.getKey();
+			 Iterator iterator = set.iterator();
+		     while (iterator.hasNext()) {
+		    	 Map.Entry ent = (Map.Entry) iterator.next();
+				 Student s = (Student) ent.getKey();
+				 StatusMsg msg = (StatusMsg) ent.getValue();
 				 Map<String, String> preInfo = s.getPreReqInfo(c);
 				 String pGrade = preInfo.get("primary");
-				 StatusMsg msg = ent.getValue();
 				 Object [] temp = {s.toString(), pGrade, Integer.toString(msg.getPoints()), msg.getStatus(), msg.getMsg()};
 				 String[] col = { "Student", (c.getPrimary()).toUpperCase(), "Points", "Status", "Reason"
 					};
@@ -310,9 +318,7 @@ public class MainReport {
 			 public void mouseClicked(MouseEvent e)
 			 {
 				try {
-					System.out.println("Went here");
 					int row=table_1.rowAtPoint(e.getPoint());
-					System.out.println("Didn't fail");
 					int col= table_1.columnAtPoint(e.getPoint());
 					String name = table_1.getValueAt(row,0).toString();
 					String colName = (table_1.getColumnName(col)).toLowerCase();
