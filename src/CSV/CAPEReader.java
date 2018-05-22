@@ -16,7 +16,6 @@ public class CAPEReader {
 	private Map<String, CAPE> subMap = new HashMap<String, CAPE>();
 	private String prim, sec, ter = null;
 	
-	
 	public CAPEReader(File subFile) throws Exception {
 		//String subFile = filePath;
 		if (subFile.canRead()) {
@@ -28,7 +27,9 @@ public class CAPEReader {
 		    	//int id_num = 1;
 		        br = new BufferedReader(new FileReader(subFile));
 		        while ((line = br.readLine()) != null) {
-		
+		        	prim = null;
+		        	sec = null;
+		        	ter = null;
 		        	line = line.trim();
 		            String[] courseInfo = line.split(",,");
 		            String sName = (courseInfo[0].trim()).toLowerCase();             
@@ -36,13 +37,13 @@ public class CAPEReader {
 		            int count = 0;
 		            while (count < req_info.length) {
 		                if (count == 0) {
-		                	prim = req_info[0];
+		                	prim = req_info[count];
 		                }
 		                else if (count == 1) {
-		                	sec = req_info[0];
+		                	sec = req_info[count];
 		                }
 		                else if (count == 2) {
-		                	ter = req_info[0];
+		                	ter = req_info[count];
 		                }
 		                count++;
 		            }

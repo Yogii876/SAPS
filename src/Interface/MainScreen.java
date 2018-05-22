@@ -109,6 +109,8 @@ public class MainScreen {
 		}
 	}
 	
+	
+	
 	private void initialize() {
 		
 		frmSaps = new JFrame();
@@ -124,10 +126,26 @@ public class MainScreen {
 				}
 		}
 		});
+		
+		MouseAdapter clickedUpload = new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Object[] options = { "Subject", "Students" };
+				int res = JOptionPane.showOptionDialog(null, "What file is it?", "File Type",
+				JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
+						null, options, options[1]);
+				if (res == 0) {
+					chooser(false);
+				}
+				else {
+					chooser(true);
+				}
+			}
+			
+		};
 			
 		frmSaps.setTitle("Sixth Form Application Processing System");
 		frmSaps.setFont(new Font("Corbel", Font.PLAIN, 14));
-		frmSaps.setResizable(false);
 		frmSaps.setIconImage(Toolkit.getDefaultToolkit().getImage(MainScreen.class.getResource("/img/saps-logo.png")));
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -150,22 +168,7 @@ public class MainScreen {
 		JLabel lblUploadFilw = new JLabel("Upload File");
 		lblUploadFilw.setFont(new Font("Corbel", Font.PLAIN, 14));
 		lblUploadFilw.setHorizontalAlignment(SwingConstants.CENTER);
-		lblUploadFilw.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				Object[] options = { "Subject", "Students" };
-				int res = JOptionPane.showOptionDialog(null, "What file is it?", "File Type",
-				JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
-						null, options, options[1]);
-				if (res == 0) {
-					chooser(false);
-				}
-				else {
-					chooser(true);
-				}
-			}
-			
-		});
+		lblUploadFilw.addMouseListener(clickedUpload);
 		lblUploadFilw.setBounds(159, 171, 82, 16);
 		frmSaps.getContentPane().add(lblUploadFilw);
 		
@@ -260,12 +263,7 @@ public class MainScreen {
 		
 		
 		JLabel upLabel = new JLabel(image1);
-		upLabel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				chooser(true);
-			}
-		});
+		upLabel.addMouseListener(clickedUpload);
 		upLabel.setBounds(136, 57, 120, 118);
 		frmSaps.getContentPane().add(upLabel);
 		
@@ -298,8 +296,9 @@ public class MainScreen {
 			public void actionPerformed(ActionEvent e) {
 				int result = JOptionPane.showConfirmDialog(frmSaps, "Are you sure you want to log out?", "Logging Out", JOptionPane.YES_NO_OPTION);
 				if (result == JOptionPane.YES_OPTION) {
+					frmSaps.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 					new Login();
-					frmSaps.dispose();
+					frmSaps.dispose();					
 				}
 			}
 		});

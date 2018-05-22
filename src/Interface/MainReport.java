@@ -159,7 +159,7 @@ public class MainReport {
 				 String sGrade = preInfo.get("secondary");
 				 String tGrade= preInfo.get("tertiary");
 				 Object [] temp = {s.toString(), pGrade, sGrade, tGrade, Integer.toString(msg.getPoints()), msg.getStatus(), msg.getMsg()};
-				 String[] col = { "Student", (c.getPrimary()).toUpperCase(), (c.getSecondary()).toUpperCase(), (c.getTertiary()).toUpperCase(), "Points", "Status", "Reason"
+				 String[] col = { "Student", "CSEC " + (c.getPrimary()).toUpperCase(), "CSEC " + (c.getSecondary()).toUpperCase(), "CSEC " + (c.getTertiary()).toUpperCase(), "Points", "Status", "Reason"
 					};
 				 colData = col;
 				 info.add(temp);
@@ -175,7 +175,7 @@ public class MainReport {
 				 String pGrade = preInfo.get("primary");
 				 String sGrade = preInfo.get("secondary");
 				 Object [] temp = {s.toString(), pGrade, sGrade, Integer.toString(msg.getPoints()), msg.getStatus(), msg.getMsg()};
-				 String[] col = { "Student", (c.getPrimary()).toUpperCase(), (c.getSecondary()).toUpperCase(), "Points", "Status", "Reason"
+				 String[] col = { "Student", "CSEC " + (c.getPrimary()).toUpperCase(), "CSEC " + (c.getSecondary()).toUpperCase(), "Points", "Status", "Reason"
 					};
 				 colData = col;
 				 info.add(temp);
@@ -190,7 +190,7 @@ public class MainReport {
 				 Map<String, String> preInfo = s.getPreReqInfo(c);
 				 String pGrade = preInfo.get("primary");
 				 Object [] temp = {s.toString(), pGrade, Integer.toString(msg.getPoints()), msg.getStatus(), msg.getMsg()};
-				 String[] col = { "Student", (c.getPrimary()).toUpperCase(), "Points", "Status", "Reason"
+				 String[] col = { "Student", "CSEC " + (c.getPrimary()).toUpperCase(), "Points", "Status", "Reason"
 					};
 				 colData = col;
 				 info.add(temp);
@@ -207,7 +207,7 @@ public class MainReport {
 		});
 		alignText(table_1);
 		panel.remove(nameLbl);
-		nameLbl = new JLabel("Cape " + (c.toString()).toUpperCase() + " Information");
+		nameLbl = new JLabel("CAPE " + (c.toString()).toUpperCase());
 		nameLbl.setForeground(Color.WHITE);
 		nameLbl.setFont(new Font("Corbel", Font.BOLD | Font.ITALIC, 26));
 		nameLbl.setBounds(22, 43, 350, 36);
@@ -404,7 +404,7 @@ public class MainReport {
 		lblSaps.setBounds(452, 6, 243, 44);
 		panel.add(lblSaps);
 		
-		nameLbl = new JLabel("");
+		nameLbl = new JLabel("Assignment Report");
 		nameLbl.setForeground(Color.WHITE);
 		nameLbl.setFont(new Font("Corbel", Font.BOLD | Font.ITALIC, 26));
 		nameLbl.setBounds(22, 43, 350, 36);
@@ -440,7 +440,7 @@ public class MainReport {
 		});
 		alignText(table_1);
 		panel.remove(nameLbl);
-		nameLbl = new JLabel("");
+		nameLbl = new JLabel("Assignment Report");
 		nameLbl.setForeground(Color.WHITE);
 		nameLbl.setFont(new Font("Corbel", Font.BOLD | Font.ITALIC, 26));
 		nameLbl.setBounds(22, 43, 350, 36);
