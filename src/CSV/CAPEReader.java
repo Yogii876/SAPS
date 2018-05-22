@@ -49,8 +49,15 @@ public class CAPEReader {
 		            }
 		            CAPE sub;
 		            //TODO create 
+		            int max = 0;
 		            if (prim != null) {
-		            	sub = populateSubjects(sName, prim, sec, ter, Integer.parseInt(line.split(",,")[3]));
+		            	try {
+		            		max = Integer.parseInt(line.split(",,")[3]);
+		            	}
+		            	catch(NumberFormatException e) {
+		            		max = -1;
+		            	}
+		            	sub = populateSubjects(sName, prim, sec, ter, max);
 		            	subjects.add(sub);
 		            	}
 		            else {

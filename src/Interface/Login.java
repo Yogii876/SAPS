@@ -58,12 +58,48 @@ public class Login {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/img/saps-logo.png")));
+		frame.setAlwaysOnTop(true);
 		frame.setResizable(false);
 		frame.setBackground(SystemColor.inactiveCaptionText);
 		frame.getContentPane().setBackground(new Color(95, 158, 160));
 		frame.setBounds(257, 133, 885, 427);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		
+		ActionListener enter = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String password = txt_Password.getText().trim();
+				String username = (txt_Username.getText()).trim();
+				try {
+					Map<String, String> users= AccessDatabase.getUsers();
+					if (users.containsKey(username)) {
+						String pass1 = users.get(username);
+						if (pass1.equals(password)) {
+							txt_Password.setText(null);
+							txt_Username.setText(null);
+							frame.dispose();
+							new MainScreen();
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "Incorrect Password", "Login Error", JOptionPane.ERROR_MESSAGE);
+							txt_Password.setText(null);
+							txt_Username.setText(null);
+						}
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Invalid User Name", "Login Error", JOptionPane.ERROR_MESSAGE);
+						txt_Password.setText(null);
+						txt_Username.setText(null);
+					}
+				}
+				catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage(), "Login Error", JOptionPane.ERROR_MESSAGE);
+					txt_Password.setText(null);
+					txt_Username.setText(null);
+				}
+				}
+		};
 		
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setBounds(389, 379, 550, -4);
@@ -96,6 +132,7 @@ public class Login {
 		txt_Username.setColumns(10);
 		
 		txt_Password = new JPasswordField();
+		txt_Password.addActionListener(enter);
 		txt_Password.setBounds(315, 271, 291, 32);
 		panel.add(txt_Password);
 		
@@ -118,38 +155,7 @@ public class Login {
 		lblNewLabel_1.setIcon(new ImageIcon(Login.class.getResource("/img/lo.png")));
 		lblNewLabel_1.setBounds(10, 0, 555, 300);
 		panel.add(lblNewLabel_1);
-		btnLogin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String password = txt_Password.getText().trim();
-				String username = (txt_Username.getText()).trim();
-				try {
-					Map<String, String> users= AccessDatabase.getUsers();
-					if (users.containsKey(username)) {
-						String pass1 = users.get(username);
-						if (pass1.equals(password)) {
-							txt_Password.setText(null);
-							txt_Username.setText(null);
-							frame.dispose();
-							new MainScreen();
-						}
-						else {
-							JOptionPane.showMessageDialog(null, "Incorrect Password", "Login Error", JOptionPane.ERROR_MESSAGE);
-							txt_Password.setText(null);
-							txt_Username.setText(null);
-						}
-					}
-					else {
-						JOptionPane.showMessageDialog(null, "Invalid User Name", "Login Error", JOptionPane.ERROR_MESSAGE);
-						txt_Password.setText(null);
-						txt_Username.setText(null);
-					}
-				}
-				catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage(), "Login Error", JOptionPane.ERROR_MESSAGE);
-					txt_Password.setText(null);
-					txt_Username.setText(null);
-				}
-				}
-		});
+		btnLogin.addActionListener(enter);
+		frame.setVisible(true);
 	}
 }

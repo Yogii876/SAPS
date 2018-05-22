@@ -205,7 +205,15 @@ public class MainScreen {
 					List<Object[]> info = new ArrayList<Object[]>();
 
 					for (CAPE c: controller.getOffered()) {
-						Object [] temp = {c.getName(), c.getApplied(), c.getMetReq(), c.getClassSize(), c.getAccNum(), c.getPending(), c.getRejectedSize()};
+						int cSize = c.getClassSize();
+						String cMax;
+						if  (cSize == 0) {
+							cMax = "N/A";
+						}
+						else {
+							cMax = Integer.toString(cSize);
+						}
+						Object [] temp = {c.getName(), c.getApplied(), c.getMetReq(), cMax, c.getAccNum(), c.getPending(), c.getRejectedSize()};
 						info.add(temp);
 					}
 					Object[][] data = new Object[info.size()][];
@@ -304,49 +312,9 @@ public class MainScreen {
 		});
 		btnLogOut.setBounds(685, 11, 99, 21);
 		frmSaps.getContentPane().add(btnLogOut);
-		//fakeSubjects();
 	}
 	
-	private  void fakeSubjects() {
-		Random r = new Random();
-		String[] csec_subjs = {"ADDITIONAL MATHEMATICS", "AGRICULTURAL SCIENCE", "BIOLOGY", "CARIBBEAN HISTORY", "CHEMISTRY", "ECONOMICS", "ELECTRONIC DOCUMENT PREPARATION AND MANAGEMENT", "ENGLISH A", "ENGLISH B", "FAMILY AND RESOURCE MANAGEMENT", "FOOD, NUTRITION AND HEALTH", "FRENCH", "GEOGRAPHY", "HOME ECONOMICS", "HUMAN AND SOCIAL BIOLOGY", "INDUSTRIAL TECHNOLOGY", "INFORMATION TECHNOLOGY", "INTEGRATED SCIENCE", "MATHEMATICS", "MUSIC", "OFFICE ADMINISTRATION", "PHYSICAL EDUCATION AND SPORT", "PHYSICS", "PORTUGUESE", "PRINCIPLES OF ACCOUNTS", "PRINCIPLES OF BUSINESS", "RELIGIOUS EDUCATION", "SOCIAL STUDIES", "SPANISH", "TECHNICAL DRAWING", "TEXTILES, CLOTHING AND FASHION", "THEATRE ARTS", "VISUAL ARTS"};
-		String[] csec_subjs1 = {"None", "ADDITIONAL MATHEMATICS", "AGRICULTURAL SCIENCE", "BIOLOGY", "CARIBBEAN HISTORY", "CHEMISTRY", "ECONOMICS", "ELECTRONIC DOCUMENT PREPARATION AND MANAGEMENT", "ENGLISH A", "ENGLISH B", "FAMILY AND RESOURCE MANAGEMENT", "FOOD, NUTRITION AND HEALTH", "FRENCH", "GEOGRAPHY", "HOME ECONOMICS", "HUMAN AND SOCIAL BIOLOGY", "INDUSTRIAL TECHNOLOGY", "INFORMATION TECHNOLOGY", "INTEGRATED SCIENCE", "MATHEMATICS", "MUSIC", "OFFICE ADMINISTRATION", "PHYSICAL EDUCATION AND SPORT", "PHYSICS", "PORTUGUESE", "PRINCIPLES OF ACCOUNTS", "PRINCIPLES OF BUSINESS", "RELIGIOUS EDUCATION", "SOCIAL STUDIES", "SPANISH", "TECHNICAL DRAWING", "TEXTILES, CLOTHING AND FASHION", "THEATRE ARTS", "VISUAL ARTS"};
-
-		String[] cape_subjs = {"ACCOUNTING", "BIOLOGY", "CHEMISTRY", "COMPUTER SCIENCE",
-				"ECONOMICS", "GEOGRAPHY", "HISTORY",
-				 "LAW", "PHYSICS", "PURE MATHEMATICS", "SOCIOLOGY"};
-		List<String> cape_subjs3 = Arrays.asList(cape_subjs);
-		ArrayList<String> cape_subjs2 = new ArrayList<String>();
-		cape_subjs2.addAll(cape_subjs3);
-
-		//int sub = r.nextInt(cape_subjs2.length);  // [0...4] [min = 0, max = 4]
-		while (cape_subjs2.size() != 0) {
-			int sub = r.nextInt(cape_subjs2.size());
-			String name = cape_subjs2.get(sub);
-			String pReq = csec_subjs[r.nextInt(csec_subjs.length)];
-			String sReq = csec_subjs[r.nextInt(csec_subjs.length)];
-			String tReq = csec_subjs1[r.nextInt(csec_subjs1.length)];
-			
-			//String anti1 = cape_subjs[r.nextInt(csec_subjs.length)];
-			//String anti2 = cape_subjs[r.nextInt(csec_subjs.length)];
-			//String anti3 = cape_subjs[r.nextInt(csec_subjs.length)];
-			
-			//String[] antis = {anti1, anti2};
-			
-			int maxStud = r.nextInt(20) + 10;
-			//int maxStud =-1;
-			CAPE cape;
-			
-			if (!tReq.equals("None")) cape = controller.populateSubjects(name, pReq, sReq, tReq, maxStud);
-			else if (!sReq.equals("None")) cape = controller.populateSubjects(name, pReq, sReq, null, maxStud);
-			else cape = controller.populateSubjects(name, pReq, null, null, maxStud);
-
-			/**for (String s: antis) {
-				if (!s.equals("None")) cape.addAntiReq(s);
-			}**/
-			cape_subjs2.remove(sub);
-		}
-	}
+	
 	
 	public App getController() {
 		return this.controller;
