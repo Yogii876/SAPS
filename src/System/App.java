@@ -14,7 +14,7 @@ public class App {
 	private ArrayList<Student> students = new ArrayList<Student>();
 	private ArrayList<CAPE> offeredSubjects = new ArrayList<CAPE>();
 	private Map<String, Student>  studentMap = new HashMap<String, Student>();
-	private Map<String, CAPE>  capeBST = new HashMap<String, CAPE>();
+	private Map<String, CAPE>  subjectMap = new HashMap<String, CAPE>();
 	private boolean status = false;
 	
 	
@@ -48,9 +48,21 @@ public class App {
 	}
 	
 	public CAPE searchSubjects(String sName) {
-		CAPE subj = (CAPE)capeBST.get(sName.toLowerCase());
+		CAPE subj = (CAPE)subjectMap.get(sName.toLowerCase());
 		return subj;
 	}
+	
+	public void populateSubjects(File subFile) throws Exception{
+		if (status) {
+			for (Student s: students) {
+				s.clearMappings();
+			}
+		}
+		CAPEReader fileReader = new CAPEReader(subFile);
+		offeredSubjects = fileReader.getStudents();
+		subjectMap = fileReader.getMap();
+	}
+	
 	
 	public Student searchStudents(String name) {
 		Student subj = (Student)studentMap.get(name);
@@ -71,7 +83,7 @@ public class App {
 			subj = new CAPE(name, pReq, maxStud);
 			offeredSubjects.add(subj);
 		}
-		capeBST.put(subj.getName(), subj);
+		subjectMap.put(subj.getName(), subj);
 		status = false;
 		return subj;
 	}

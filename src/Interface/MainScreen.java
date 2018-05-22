@@ -72,7 +72,7 @@ public class MainScreen {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void chooser() {
+	private void chooser(boolean type) {
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.addChoosableFileFilter(new FileFilter() {
 
@@ -96,7 +96,12 @@ public class MainScreen {
 		if (result == JFileChooser.APPROVE_OPTION) {
 		    File selectedFile = fileChooser.getSelectedFile();
 		    try {
-		    	controller.populateStudents(selectedFile);
+		    	if (type)  {
+		    		controller.populateStudents(selectedFile);
+		    	}
+		    	else {
+		    		controller.populateSubjects(selectedFile);
+		    	}
 		    }
 		    catch (Exception e1) {
 		    	JOptionPane.showMessageDialog(null, e1.getMessage(), "Parsing Error", JOptionPane.ERROR_MESSAGE);
@@ -148,19 +153,16 @@ public class MainScreen {
 		lblUploadFilw.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				chooser();
-			}
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				JLabel src = (JLabel)e.getSource();
-	            src.setForeground(Color.BLUE);
-	            src.setFont(new Font("Corbel", Font.BOLD, 16));
-			}
-			public void mouseExited(MouseEvent e) {
-				JLabel src = (JLabel)e.getSource();
-	            src.setForeground(Color.BLACK);
-	            src.setBackground(Color.BLACK);
-	            src.setFont(new Font("Corbel", Font.PLAIN, 14));
+				Object[] options = { "Subject", "Students" };
+				int res = JOptionPane.showOptionDialog(null, "What file is it?", "File Type",
+				JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
+						null, options, options[1]);
+				if (res == 0) {
+					chooser(false);
+				}
+				else {
+					chooser(true);
+				}
 			}
 			
 		});
@@ -185,7 +187,7 @@ public class MainScreen {
 					}
 				if(controller.getStudents().isEmpty()){
 					JOptionPane.showMessageDialog(frmSaps, "Upload Student Data", "Error", JOptionPane.ERROR_MESSAGE);
-					chooser();
+					chooser(true);
 					return;
 				}
 				try {
@@ -261,7 +263,7 @@ public class MainScreen {
 		upLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				chooser();
+				chooser(true);
 			}
 		});
 		upLabel.setBounds(136, 57, 120, 118);
