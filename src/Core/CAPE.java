@@ -108,6 +108,7 @@ public class CAPE extends Subject {
 		pendings = new LinkedHashMap<Student, StatusMsg>();
 		rejects = new LinkedHashMap<Student, StatusMsg>();
 		alternates = new LinkedHashMap<Student, StatusMsg>();
+		rejecSize = 0;
 
 	}
 	
@@ -138,7 +139,6 @@ public class CAPE extends Subject {
 	public void addRejected(Student s) {
 		this.rejected.add(s);
 		this.oRejects.put(s, new StatusMsg("Rejected", "Did not meet Requirements", 0));
-		rejecSize++;
 	}
 	
 	public ArrayList<Student> getRejects() {
@@ -146,7 +146,7 @@ public class CAPE extends Subject {
 	}
 	
 	public int getRejectedSize() {
-		return this.rejecSize;
+		return this.rejected.size();
 	}
 	
 	public int getPending() {
@@ -295,10 +295,9 @@ public class CAPE extends Subject {
 			}
 			choices = new ArrayList<String>();
 		}
-		
-	}
+}
 	
-	public void sortResults() {
+	public void sortResults(Map<Student, StatusMsg> unSortedList) {
 		Comparator<Entry<Student, StatusMsg>> pCom = new Comparator<Entry<Student, StatusMsg>>()
         {
             public int compare(Entry<Student, StatusMsg> o1,
@@ -307,36 +306,19 @@ public class CAPE extends Subject {
                     return ((Integer)o1.getValue().getPoints()).compareTo((Integer) o2.getValue().getPoints());
             }
         };
-        List<Entry<Student, StatusMsg>> list = new LinkedList<Entry<Student, StatusMsg>>(reasons.entrySet());
+        List<Entry<Student, StatusMsg>> list = new LinkedList<Entry<Student, StatusMsg>>(unSortedList.entrySet());
         Collections.sort(list, pCom);
+        for (Entry<Student, StatusMsg> ent : list) {
+        	reasons.put(ent.getKey(), ent.getValue());
+        }
 	}
 	
 	public Map<Student, StatusMsg> getReasons() {
-		reasons.putAll(accepts);
-		reasons.putAll(pendings);
-		reasons.putAll(oRejects);
-		reasons.putAll(rejects);
-		reasons.putAll(alternates);
-		List<Entry<Student, StatusMsg>> list = new LinkedList<Entry<Student, StatusMsg>>(reasons.entrySet());
-		
-        // Sorting the list based on values
-        Collections.sort(list, new Comparator<Entry<Student, StatusMsg>>()
-        {
-            public int compare(Entry<Student, StatusMsg> o1,
-                    Entry<Student, StatusMsg> o2)
-            {
-                    return o1.getValue().getStatus().compareTo(o2.getValue().getStatus());
-            }
-        });
-
-        // Maintaining insertion order with the help of LinkedList
-        Map<Student, StatusMsg> sortedMap = new LinkedHashMap<Student, StatusMsg>();
-        //System.out.println(super.name);
-        for (Entry<Student, StatusMsg> entry : list)
-        {
-            sortedMap.put(entry.getKey(), entry.getValue());
-        }
-        reasons = sortedMap;
+		sortResults(accepts);
+		sortResults(pendings);
+		sortResults(alternates);
+		sortResults(oRejects);
+		sortResults(rejects);
 		return this.reasons;
 	}
 	

@@ -115,7 +115,6 @@ public class App {
 		assignStudents(i);
 		status = true;
 	}
-	
 	private void assignStudents(int m) {
 		for (CAPE subj: offeredSubjects ) {
 			subj.generateAcceptedList(m);

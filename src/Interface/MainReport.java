@@ -154,8 +154,8 @@ public class MainReport {
 				 String sGrade = preInfo.get("secondary");
 				 String tGrade= preInfo.get("tertiary");
 				 StatusMsg msg = ent.getValue();
-				 Object [] temp = {s.toString(), pGrade, sGrade, tGrade, msg.getStatus(), msg.getMsg()};
-				 String[] col = { "Student", c.getPrimary(), c.getSecondary(), c.getTertiary(), "Status", "Reason"
+				 Object [] temp = {s.toString(), pGrade, sGrade, tGrade, Integer.toString(msg.getPoints()), msg.getStatus(), msg.getMsg()};
+				 String[] col = { "Student", (c.getPrimary()).toUpperCase(), (c.getSecondary()).toUpperCase(), (c.getTertiary()).toUpperCase(), "Points", "Status", "Reason"
 					};
 				 colData = col;
 				 info.add(temp);
@@ -168,8 +168,8 @@ public class MainReport {
 				 String pGrade = preInfo.get("primary");
 				 String sGrade = preInfo.get("secondary");
 				 StatusMsg msg = ent.getValue();
-				 Object [] temp = {s.toString(), pGrade, sGrade, msg.getStatus(), msg.getMsg()};
-				 String[] col = { "Student", c.getPrimary(), c.getSecondary(), "Status", "Reason"
+				 Object [] temp = {s.toString(), pGrade, sGrade, Integer.toString(msg.getPoints()), msg.getStatus(), msg.getMsg()};
+				 String[] col = { "Student", (c.getPrimary()).toUpperCase(), (c.getSecondary()).toUpperCase(), "Points", "Status", "Reason"
 					};
 				 colData = col;
 				 info.add(temp);
@@ -181,8 +181,8 @@ public class MainReport {
 				 Map<String, String> preInfo = s.getPreReqInfo(c);
 				 String pGrade = preInfo.get("primary");
 				 StatusMsg msg = ent.getValue();
-				 Object [] temp = {s.toString(), pGrade, msg.getStatus(), msg.getMsg()};
-				 String[] col = { "Student", c.getPrimary(), "Status", "Reason"
+				 Object [] temp = {s.toString(), pGrade, Integer.toString(msg.getPoints()), msg.getStatus(), msg.getMsg()};
+				 String[] col = { "Student", (c.getPrimary()).toUpperCase(), "Points", "Status", "Reason"
 					};
 				 colData = col;
 				 info.add(temp);
@@ -272,7 +272,7 @@ public class MainReport {
 			}
 		});
 
-		String[] columnNames = {"Name", "Class Maximum", "Met Requirements", "Applied", "Accepted", "Pending", "Rejected"}; 
+		String[] columnNames = {"Name", "Applied", "Met Requirements", "Class Maximum", "Accepted", "Pending", "Rejected"}; 
 		this.iRow = rData;
 		this.iCol = columnNames;
 		panel = new JPanel();

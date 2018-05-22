@@ -200,7 +200,7 @@ public class MainScreen {
 					List<Object[]> info = new ArrayList<Object[]>();
 
 					for (CAPE c: controller.getOffered()) {
-						Object [] temp = {c.getName(), c.getClassSize(), c.getMetReq(), c.getApplied(), c.getAccNum(), c.getPending(), c.getRejectedSize()};
+						Object [] temp = {c.getName(), c.getApplied(), c.getMetReq(), c.getClassSize(), c.getAccNum(), c.getPending(), c.getRejectedSize()};
 						info.add(temp);
 					}
 					Object[][] data = new Object[info.size()][];
